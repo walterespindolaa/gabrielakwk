@@ -158,11 +158,11 @@ function Hero() {
         </div>
         <div className="order-1 lg:order-2 relative">
           <div className="absolute -inset-6 bg-gradient-to-br from-accent/40 via-brand/10 to-transparent blur-2xl pointer-events-none" />
-          <div className="relative aspect-[3/4] w-full max-w-md mx-auto overflow-hidden rounded-3xl border border-border/40 shadow-2xl shadow-brand/15">
+          <div className="relative aspect-[4/5] w-full max-w-xl lg:max-w-none mx-auto overflow-hidden rounded-3xl border border-border/40 shadow-2xl shadow-brand/15">
             <img
               src={heroPhoto.url}
               alt="Gabriela Kawikioni"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover scale-110"
             />
           </div>
         </div>
