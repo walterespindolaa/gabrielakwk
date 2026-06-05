@@ -14,6 +14,48 @@ export type Database = {
   }
   public: {
     Tables: {
+      form_invites: {
+        Row: {
+          cliente_id: string
+          created_at: string
+          created_by: string | null
+          form_id: string
+          submitted_at: string | null
+          token: string
+        }
+        Insert: {
+          cliente_id: string
+          created_at?: string
+          created_by?: string | null
+          form_id: string
+          submitted_at?: string | null
+          token?: string
+        }
+        Update: {
+          cliente_id?: string
+          created_at?: string
+          created_by?: string | null
+          form_id?: string
+          submitted_at?: string | null
+          token?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "form_invites_cliente_id_fkey"
+            columns: ["cliente_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "form_invites_form_id_fkey"
+            columns: ["form_id"]
+            isOneToOne: false
+            referencedRelation: "forms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       form_responses: {
         Row: {
           answers: Json | null
