@@ -14,6 +14,72 @@ export type Database = {
   }
   public: {
     Tables: {
+      form_responses: {
+        Row: {
+          answers: Json | null
+          cliente_id: string
+          form_id: string
+          id: string
+          submitted_at: string
+        }
+        Insert: {
+          answers?: Json | null
+          cliente_id: string
+          form_id: string
+          id?: string
+          submitted_at?: string
+        }
+        Update: {
+          answers?: Json | null
+          cliente_id?: string
+          form_id?: string
+          id?: string
+          submitted_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "form_responses_cliente_id_fkey"
+            columns: ["cliente_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "form_responses_form_id_fkey"
+            columns: ["form_id"]
+            isOneToOne: false
+            referencedRelation: "forms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      forms: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          schema: Json | null
+          stage: string | null
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          schema?: Json | null
+          stage?: string | null
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          schema?: Json | null
+          stage?: string | null
+          title?: string
+        }
+        Relationships: []
+      }
       habit_logs: {
         Row: {
           created_at: string
@@ -82,24 +148,145 @@ export type Database = {
         }
         Relationships: []
       }
+      journey_progress: {
+        Row: {
+          cliente_id: string
+          id: string
+          stage: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          cliente_id: string
+          id?: string
+          stage: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          cliente_id?: string
+          id?: string
+          stage?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "journey_progress_cliente_id_fkey"
+            columns: ["cliente_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      material_assignments: {
+        Row: {
+          assigned_at: string
+          cliente_id: string
+          id: string
+          material_id: string
+          unlocked: boolean
+        }
+        Insert: {
+          assigned_at?: string
+          cliente_id: string
+          id?: string
+          material_id: string
+          unlocked?: boolean
+        }
+        Update: {
+          assigned_at?: string
+          cliente_id?: string
+          id?: string
+          material_id?: string
+          unlocked?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "material_assignments_cliente_id_fkey"
+            columns: ["cliente_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "material_assignments_material_id_fkey"
+            columns: ["material_id"]
+            isOneToOne: false
+            referencedRelation: "materials"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      materials: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          external_url: string | null
+          file_path: string | null
+          id: string
+          stage: string | null
+          title: string
+          type: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          external_url?: string | null
+          file_path?: string | null
+          id?: string
+          stage?: string | null
+          title: string
+          type?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          external_url?: string | null
+          file_path?: string | null
+          id?: string
+          stage?: string | null
+          title?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "materials_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
           created_at: string
           display_name: string | null
+          full_name: string | null
           id: string
+          role: Database["public"]["Enums"]["user_role"]
         }
         Insert: {
           avatar_url?: string | null
           created_at?: string
           display_name?: string | null
+          full_name?: string | null
           id: string
+          role?: Database["public"]["Enums"]["user_role"]
         }
         Update: {
           avatar_url?: string | null
           created_at?: string
           display_name?: string | null
+          full_name?: string | null
           id?: string
+          role?: Database["public"]["Enums"]["user_role"]
         }
         Relationships: []
       }
@@ -108,10 +295,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_staff: { Args: never; Returns: boolean }
     }
     Enums: {
-      [_ in never]: never
+      user_role: "admin" | "consultora" | "cliente"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -238,6 +425,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      user_role: ["admin", "consultora", "cliente"],
+    },
   },
 } as const
