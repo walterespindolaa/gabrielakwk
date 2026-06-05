@@ -181,7 +181,7 @@ function Hero() {
               alt="Gabi KWK · Estrategista Social Media"
               className="hidden lg:block mx-auto lg:mx-0 w-[240px] sm:w-[420px] md:w-[480px] lg:w-[520px] h-auto mb-6 sm:mb-8"
             />
-            <p className="text-xs sm:text-base uppercase tracking-[0.2em] sm:tracking-[0.22em] text-foreground/70 font-medium mb-3 sm:mb-4">
+            <p className="hidden lg:block text-xs sm:text-base uppercase tracking-[0.2em] sm:tracking-[0.22em] text-foreground/70 font-medium mb-3 sm:mb-4">
               Seu trabalho é excelente. <span className="text-brand">Seu Instagram ainda não sabe disso.</span>
             </p>
             <h1
