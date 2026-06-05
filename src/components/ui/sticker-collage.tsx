@@ -27,8 +27,8 @@ const presets: Record<string, StickerPos[]> = {
     { src: sticker19.url, className: "bottom-24 -right-8 sm:right-6", rotate: 15, size: 170 },
   ],
   pullquote: [
-    { src: sticker17.url, className: "top-10 left-8 sm:left-24", rotate: -18, size: 120 },
-    { src: sticker6.url, className: "bottom-8 right-6 sm:right-32", rotate: 12, size: 150 },
+    { src: sticker17.url, className: "-top-4 -left-4 sm:top-4 sm:left-4 opacity-80", rotate: -18, size: 70 },
+    { src: sticker6.url, className: "-bottom-4 -right-4 sm:bottom-6 sm:right-6 opacity-80", rotate: 12, size: 80 },
   ],
   fits: [
     { src: sticker19.url, className: "top-16 -left-6 sm:left-10", rotate: -10, size: 130 },
