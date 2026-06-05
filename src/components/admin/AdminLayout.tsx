@@ -132,7 +132,12 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
         </div>
       )}
 
-      <main className="flex-1 min-w-0 pt-14 md:pt-0">{children}</main>
+      <main className="flex-1 min-w-0 pt-14 md:pt-0 relative">
+        <div aria-hidden className="absolute inset-0 opacity-[0.06] pointer-events-none overflow-hidden">
+          <StickerCollage variant="about" />
+        </div>
+        <div className="relative">{children}</div>
+      </main>
     </div>
   );
 }
