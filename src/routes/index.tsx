@@ -238,8 +238,9 @@ function PainSection() {
 /* ─── Pullquote ─── */
 function Pullquote() {
   return (
-    <section className="py-24 sm:py-32 bg-background">
-      <div className="max-w-4xl mx-auto px-5 text-center">
+    <section className="relative overflow-hidden py-24 sm:py-32 bg-background">
+      <StickerCollage variant="pullquote" />
+      <div className="relative z-10 max-w-4xl mx-auto px-5 text-center">
         <p className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium italic text-foreground" style={{ lineHeight: "1.2" }}>
           "Eu crio com você para você criar sozinha."
         </p>
