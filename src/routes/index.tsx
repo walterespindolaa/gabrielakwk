@@ -505,12 +505,12 @@ function SocialProof() {
 
 /* ─── Deliverables ─── */
 const deliverables: MaterialCarouselItem[] = [
-  { n: "01", title: "Relatório mestre", desc: "Posicionamento, persona, comunicação e plano de 90 dias em um documento completo.", image: meetingOnePhoto.url },
-  { n: "02", title: "Guia de equipamentos", desc: "Como gravar bem com o que você tem agora.", image: heroPhoto.url },
-  { n: "03", title: "Rotina de criação", desc: "Calendário flexível para criar com antecedência e consistência.", image: meetingTwoPhoto.url },
-  { n: "04", title: "Banco de carrosséis", desc: "20 estruturas prontas para personalizar + 20 prompts de IA.", image: meetingThreePhoto.url },
-  { n: "05", title: "Combinações de fontes", desc: "5 pares tipográficos para identidade visual consistente.", image: aboutPhoto.url },
-  { n: "06", title: "Mini dicionário", desc: "35 termos do marketing digital explicados sem tecnicismo.", image: meetingFourPhoto.url },
+  { n: "01", title: "Relatório mestre", desc: "Posicionamento, persona, comunicação e plano de 90 dias em um documento completo.", image: sticker21.url },
+  { n: "02", title: "Guia de equipamentos", desc: "Como gravar bem com o que você tem agora.", image: sticker10.url },
+  { n: "03", title: "Rotina de criação", desc: "Calendário flexível para criar com antecedência e consistência.", image: sticker9.url },
+  { n: "04", title: "Banco de carrosséis", desc: "20 estruturas prontas para personalizar + 20 prompts de IA.", image: sticker12.url },
+  { n: "05", title: "Combinações de fontes", desc: "5 pares tipográficos para identidade visual consistente.", image: sticker17.url },
+  { n: "06", title: "Mini dicionário", desc: "35 termos do marketing digital explicados sem tecnicismo.", image: sticker14.url },
 ];
 
 function Deliverables() {
