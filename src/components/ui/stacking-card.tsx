@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "motion/react";
-import { useCallback, useEffect, useRef, useState, type TouchEvent, type WheelEvent } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export interface StackingCardItem {
   letter: string;
@@ -15,7 +15,6 @@ interface CardProps extends StackingCardItem {
   i: number;
   total: number;
   activeIndex: number;
-  onBack: () => void;
 }
 
 function Card({
@@ -28,7 +27,6 @@ function Card({
   fg,
   accent,
   activeIndex,
-  onBack,
 }: CardProps) {
   const distance = i - activeIndex;
   const isActive = distance === 0;
@@ -43,10 +41,9 @@ function Card({
   return (
     <motion.div
       animate={{ y, scale, rotate, opacity }}
-      transition={{ type: "spring", stiffness: 170, damping: 24, mass: 0.9 }}
+      transition={{ type: "spring", stiffness: 180, damping: 26, mass: 0.8 }}
       style={{ backgroundColor: bg, color: fg, zIndex }}
-      onClick={isActive ? onBack : undefined}
-      className="absolute inset-0 rounded-3xl overflow-hidden shadow-2xl border border-foreground/10 origin-top cursor-pointer"
+      className="absolute inset-0 rounded-3xl overflow-hidden shadow-2xl border border-foreground/10 origin-top"
     >
       <div className="grid h-full grid-rows-[1fr_0.85fr] md:grid-cols-[1fr_1.1fr] md:grid-rows-1">
         <div className="p-8 sm:p-12 flex flex-col justify-between">
@@ -88,101 +85,61 @@ function Card({
 
 export function StackingCards({ items }: { items: StackingCardItem[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const lockUntil = useRef(0);
-  const touchStartY = useRef<number | null>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const lastIndex = items.length - 1;
 
-  const move = useCallback((direction: 1 | -1) => {
-    setActiveIndex((current) => Math.min(lastIndex, Math.max(0, current + direction)));
-  }, [lastIndex]);
-
-  const isInScrollZone = useCallback(() => {
-    const rect = containerRef.current?.getBoundingClientRect();
-    if (!rect) return false;
-
-    const viewportHeight = window.innerHeight;
-    return rect.top < viewportHeight * 0.78 && rect.bottom > viewportHeight * 0.22;
-  }, []);
-
-  const handleStep = useCallback((direction: 1 | -1) => {
-    const canMove = direction > 0 ? activeIndex < lastIndex : activeIndex > 0;
-    if (!canMove || !isInScrollZone()) return false;
-
-    const now = Date.now();
-    if (now < lockUntil.current) return true;
-
-    lockUntil.current = now + 640;
-    containerRef.current?.scrollIntoView({ block: "center", behavior: "auto" });
-    move(direction);
-    return true;
-  }, [activeIndex, isInScrollZone, lastIndex, move]);
-
   useEffect(() => {
-    const onWindowWheel = (event: globalThis.WheelEvent) => {
-      if (Math.abs(event.deltaY) < 10) return;
-      const direction = event.deltaY > 0 ? 1 : -1;
-
-      if (handleStep(direction)) {
-        event.preventDefault();
-      }
+    let raf = 0;
+    const compute = () => {
+      raf = 0;
+      const el = wrapperRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      // total scrollable distance inside the tall wrapper (height - 1 viewport for the sticky pin)
+      const scrollable = el.offsetHeight - vh;
+      if (scrollable <= 0) return;
+      // progress: 0 when wrapper top hits viewport top, 1 when wrapper bottom hits viewport bottom
+      const progressed = Math.min(Math.max(-rect.top, 0), scrollable);
+      const ratio = progressed / scrollable;
+      // map 0..1 → 0..lastIndex with a small bias so the last card lingers
+      const idx = Math.round(ratio * lastIndex);
+      setActiveIndex((prev) => (prev === idx ? prev : Math.min(lastIndex, Math.max(0, idx))));
     };
 
-    window.addEventListener("wheel", onWindowWheel, { passive: false });
-    return () => window.removeEventListener("wheel", onWindowWheel);
-  }, [handleStep]);
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(compute);
+    };
 
-  const handleWheel = (event: WheelEvent<HTMLDivElement>) => {
-    const direction = event.deltaY > 0 ? 1 : -1;
-    if (Math.abs(event.deltaY) < 10) return;
-    if (handleStep(direction)) event.preventDefault();
-  };
+    compute();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, [lastIndex]);
 
-  const handleTouchStart = (event: TouchEvent<HTMLDivElement>) => {
-    touchStartY.current = event.touches[0]?.clientY ?? null;
-  };
-
-  const handleTouchMove = (event: TouchEvent<HTMLDivElement>) => {
-    const start = touchStartY.current;
-    if (start === null) return;
-    const current = event.touches[0]?.clientY ?? start;
-    const direction = start - current > 0 ? 1 : -1;
-    const canMove = direction > 0 ? activeIndex < lastIndex : activeIndex > 0;
-
-    if (canMove && isInScrollZone() && Math.abs(start - current) > 8) event.preventDefault();
-  };
-
-  const handleTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
-    const start = touchStartY.current;
-    const end = event.changedTouches[0]?.clientY;
-    touchStartY.current = null;
-    if (start === null || end === undefined) return;
-
-    const delta = start - end;
-    if (Math.abs(delta) < 42) return;
-    const direction = delta > 0 ? 1 : -1;
-    handleStep(direction);
-  };
+  // Tall wrapper gives natural scroll distance: one viewport per step.
+  const wrapperHeight = `${(items.length) * 100}vh`;
 
   return (
-    <div
-      ref={containerRef}
-      onWheel={handleWheel}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-      className="relative mx-auto h-[min(76vh,580px)] min-h-[520px] max-w-4xl px-4"
-    >
-      {items.map((item, i) => (
-        <Card
-          key={`${item.letter}-${i}`}
-          i={i}
-          total={items.length}
-          activeIndex={activeIndex}
-          onBack={() => move(-1)}
-          {...item}
-        />
-      ))}
+    <div ref={wrapperRef} style={{ height: wrapperHeight }} className="relative">
+      <div className="sticky top-0 h-screen flex items-center">
+        <div className="relative mx-auto w-full max-w-4xl px-4 h-[min(76vh,580px)] min-h-[520px]">
+          {items.map((item, i) => (
+            <Card
+              key={`${item.letter}-${i}`}
+              i={i}
+              total={items.length}
+              activeIndex={activeIndex}
+              {...item}
+            />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
