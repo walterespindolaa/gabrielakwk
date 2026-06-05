@@ -85,10 +85,15 @@ function Card({
 
 export function StackingCards({ items }: { items: StackingCardItem[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const activeIndexRef = useRef(0);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const lastStepAtRef = useRef(0);
   const touchStartYRef = useRef<number | null>(null);
   const lastIndex = items.length - 1;
+
+  useEffect(() => {
+    activeIndexRef.current = activeIndex;
+  }, [activeIndex]);
 
   useEffect(() => {
     const isInStepZone = () => {
@@ -115,6 +120,7 @@ export function StackingCards({ items }: { items: StackingCardItem[] }) {
       setActiveIndex((prev) => {
         const next = Math.min(lastIndex, Math.max(0, prev + direction));
         didStep = next !== prev;
+        activeIndexRef.current = next;
         return next;
       });
 
@@ -129,7 +135,8 @@ export function StackingCards({ items }: { items: StackingCardItem[] }) {
     const onWheel = (event: WheelEvent) => {
       if (!isInStepZone()) return;
       const direction = event.deltaY > 0 ? 1 : -1;
-      const canStep = direction > 0 ? activeIndex < lastIndex : activeIndex > 0;
+      const current = activeIndexRef.current;
+      const canStep = direction > 0 ? current < lastIndex : current > 0;
       if (!canStep) return;
 
       event.preventDefault();
@@ -147,7 +154,8 @@ export function StackingCards({ items }: { items: StackingCardItem[] }) {
       if (Math.abs(delta) < 42) return;
 
       const direction = delta > 0 ? 1 : -1;
-      const canStep = direction > 0 ? activeIndex < lastIndex : activeIndex > 0;
+      const current = activeIndexRef.current;
+      const canStep = direction > 0 ? current < lastIndex : current > 0;
       if (!canStep) return;
 
       event.preventDefault();
@@ -172,7 +180,7 @@ export function StackingCards({ items }: { items: StackingCardItem[] }) {
       window.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("scroll", onScroll);
     };
-  }, [activeIndex, lastIndex]);
+  }, [lastIndex]);
 
   const goBack = () => setActiveIndex((prev) => Math.max(0, prev - 1));
 
