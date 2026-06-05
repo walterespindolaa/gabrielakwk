@@ -12,7 +12,7 @@ import { StickerCollage } from "@/components/ui/sticker-collage";
 import monogramAsset from "@/assets/kwk-monogram.png.asset.json";
 import wordmarkAsset from "@/assets/gabi-kwk-wordmark.png.asset.json";
 import circleAsset from "@/assets/kwk-circle.png.asset.json";
-import heroPhoto from "@/assets/gabi-hero.jpg.asset.json";
+import heroPhoto from "@/assets/gabi-hero-cutout.png.asset.json";
 import aboutPhoto from "@/assets/gabi-about-v2.jpg.asset.json";
 import fitPhoto from "@/assets/gabi-about.jpg.asset.json";
 import kwkPattern from "@/assets/kwk-pattern.jpg.asset.json";
@@ -194,33 +194,37 @@ function Hero() {
         </div>
 
         {/* Right full-bleed image */}
-        <div className="relative order-1 lg:order-2 min-h-[460px] lg:min-h-full">
+        <div className="relative order-1 lg:order-2 min-h-[460px] lg:min-h-full overflow-hidden">
+          {/* Brand-soft pink backdrop matching hero header band */}
+          <div
+            aria-hidden
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(ellipse at 65% 45%, color-mix(in oklab, var(--brand-soft) 100%, transparent) 0%, color-mix(in oklab, var(--brand-soft) 85%, transparent) 45%, color-mix(in oklab, var(--brand-soft) 55%, transparent) 75%, transparent 100%), linear-gradient(to bottom, var(--brand-soft) 0%, color-mix(in oklab, var(--brand-soft) 70%, var(--background)) 70%, var(--background) 100%)",
+            }}
+          />
+          {/* Soft glow behind subject */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[620px] h-[620px] rounded-full"
+            style={{
+              background:
+                "radial-gradient(circle, color-mix(in oklab, var(--brand) 18%, transparent) 0%, transparent 70%)",
+              filter: "blur(40px)",
+            }}
+          />
           <img
             src={heroPhoto.url}
             alt="Gabriela Kawikioni"
-            className="absolute inset-0 w-full h-full object-cover"
-            style={{
-              WebkitMaskImage:
-                "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.2) 8%, rgba(0,0,0,0.6) 18%, #000 32%)",
-              maskImage:
-                "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.2) 8%, rgba(0,0,0,0.6) 18%, #000 32%)",
-            }}
+            className="relative w-full h-full object-contain object-bottom"
           />
           {/* Horizontal smoky fade: blends the image's left edge into the content column (desktop) */}
           <div
             className="absolute inset-0 pointer-events-none hidden lg:block"
             style={{
               background:
-                "linear-gradient(to right, var(--background) 0%, var(--background) 6%, color-mix(in oklab, var(--background) 90%, transparent) 18%, color-mix(in oklab, var(--background) 60%, transparent) 34%, color-mix(in oklab, var(--background) 25%, transparent) 52%, transparent 72%)",
-            }}
-            aria-hidden
-          />
-          {/* Top fade: blends the image's top edge into the pink header band */}
-          <div
-            className="absolute inset-x-0 top-0 h-48 lg:h-64 pointer-events-none"
-            style={{
-              background:
-                "linear-gradient(to bottom, var(--brand-soft) 0%, color-mix(in oklab, var(--brand-soft) 70%, transparent) 35%, color-mix(in oklab, var(--brand-soft) 30%, transparent) 65%, transparent 100%)",
+                "linear-gradient(to right, var(--background) 0%, color-mix(in oklab, var(--background) 80%, transparent) 12%, color-mix(in oklab, var(--background) 40%, transparent) 24%, transparent 42%)",
             }}
             aria-hidden
           />
