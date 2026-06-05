@@ -642,13 +642,13 @@ const fits = [
 ];
 
 const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
+  hidden: { opacity: 0.001 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
 };
 
 const itemVariants = {
-  hidden: { y: 20, opacity: 0 },
-  visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease: "easeOut" as const } },
+  hidden: { y: 12, opacity: 0.001 },
+  visible: { y: 0, opacity: 1, transition: { duration: 0.4, ease: "easeOut" as const } },
 };
 
 type FitItemProps = {
