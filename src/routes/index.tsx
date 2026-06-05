@@ -753,6 +753,7 @@ function FitChecklist() {
                 }}
               />
             </div>
+          </motion.div>
 
           {/* Right column */}
           <div className="flex flex-col gap-5">
