@@ -135,24 +135,26 @@ function PublicFormPage() {
       {/* Header */}
       <header className="relative overflow-hidden bg-brand text-brand-foreground">
         <StickerCollage variant="pullquote" />
-        <div className="relative max-w-3xl mx-auto px-5 py-12 md:py-16">
-          <div className="flex items-center gap-3">
-            <img src={monogramAsset.url} alt="KWK" className="h-14 w-auto" />
-            <div className="text-xs uppercase tracking-[0.25em] opacity-80">
-              Consultoria CRIAR · KWK
-            </div>
+        <div className="relative max-w-3xl mx-auto px-5 py-12 md:py-16 text-center">
+          <img
+            src={monogramAsset.url}
+            alt="KWK"
+            className="h-20 md:h-24 w-auto mx-auto"
+          />
+          <div className="mt-4 text-[10px] md:text-xs uppercase tracking-[0.25em] opacity-80">
+            Consultoria CRIAR · KWK
           </div>
-          <h1 className="mt-6 font-display text-3xl md:text-5xl tracking-tight">
+          <h1 className="mt-5 font-display text-3xl md:text-5xl tracking-tight">
             {payload.form.title}
           </h1>
           {payload.cliente.full_name && (
             <p className="mt-3 text-sm opacity-80">
-              Olá, <span className="font-semibold">{payload.cliente.full_name}</span> — esse
+              Olá, <span className="font-semibold">{payload.cliente.full_name}</span>. Esse
               formulário foi preparado especialmente pra você.
             </p>
           )}
           {payload.form.description && (
-            <p className="mt-5 text-base md:text-lg opacity-90 leading-relaxed max-w-2xl">
+            <p className="mt-5 text-base md:text-lg opacity-90 leading-relaxed max-w-2xl mx-auto">
               {payload.form.description}
             </p>
           )}
