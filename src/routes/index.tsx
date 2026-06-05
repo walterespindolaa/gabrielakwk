@@ -253,10 +253,19 @@ function Hero() {
             className="lg:hidden absolute inset-0 pointer-events-none"
             style={{
               background:
-                "linear-gradient(to bottom, transparent 60%, var(--background) 100%)",
+                "linear-gradient(to bottom, transparent 55%, color-mix(in oklab, var(--brand-soft) 70%, transparent) 80%, var(--background) 100%)",
             }}
             aria-hidden
           />
+          {/* Mobile wordmark overlay (centered on image) */}
+          <div className="lg:hidden absolute inset-x-0 bottom-3 z-10 flex justify-center pointer-events-none px-6">
+            <img
+              src={wordmarkAsset.url}
+              alt="Gabi KWK · Estrategista Social Media"
+              className="w-[78%] max-w-[340px] h-auto drop-shadow-sm"
+            />
+          </div>
+
 
         </div>
       </div>
