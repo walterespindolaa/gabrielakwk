@@ -244,35 +244,15 @@ function ClienteDetail() {
         </button>
       </section>
 
-      {/* Jornada */}
-      <section className="mt-6 bg-card border border-border/60 rounded-xl p-6">
-        <h2 className="font-semibold mb-4">Jornada CRIAR</h2>
-        <div className="space-y-2">
-          {STAGES.map((s) => (
-            <div
-              key={s.key}
-              className="flex items-center justify-between gap-4 p-3 rounded-lg bg-muted/30"
-            >
-              <div>
-                <span className="inline-block w-7 h-7 rounded-md bg-brand text-brand-foreground text-xs font-bold leading-7 text-center mr-3">
-                  {s.short}
-                </span>
-                <span className="text-sm font-medium">{s.label}</span>
-              </div>
-              <select
-                value={progress[s.key] ?? "pendente"}
-                onChange={(e) => setStageStatus(s.key, e.target.value)}
-                className="bg-background border border-border/60 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:border-brand"
-              >
-                {STATUS_OPTIONS.map((o) => (
-                  <option key={o} value={o}>
-                    {o === "pendente" ? "Pendente" : o === "em_andamento" ? "Em andamento" : "Concluído"}
-                  </option>
-                ))}
-              </select>
-            </div>
-          ))}
+      {/* Jornada CRIAR */}
+      <section className="mt-6">
+        <div className="flex items-baseline justify-between mb-4 px-1">
+          <h2 className="font-display text-2xl tracking-tight">Jornada CRIAR</h2>
+          <span className="text-xs text-muted-foreground">
+            Pré-consultoria + 4 encontros
+          </span>
         </div>
+        <JornadaCRIARAdmin clienteId={id} />
       </section>
 
       {/* Materiais */}
