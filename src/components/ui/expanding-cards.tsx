@@ -72,7 +72,7 @@ export const ExpandingCards = React.forwardRef<HTMLUListElement, ExpandingCardsP
 
               <div className="absolute inset-0 flex items-center justify-center p-4 text-background transition-opacity duration-300 group-data-[active=true]:opacity-0 md:p-5">
                 <div className="flex items-center gap-3 md:flex-col">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full border border-background/40 bg-background/15 backdrop-blur-sm">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full border border-background/40 bg-background/15">
                     {item.icon}
                   </span>
                   <span className="text-xs font-semibold uppercase tracking-[0.22em] md:[writing-mode:vertical-rl] md:rotate-180">
