@@ -1,13 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Check, ArrowRight, Sparkles } from "lucide-react";
+import { Check, ArrowRight, Sparkles, MessageCircle, PenLine, LayoutGrid, Target } from "lucide-react";
 import { FlipWords } from "@/components/ui/flip-words";
 import { StackingCards, type StackingCardItem } from "@/components/ui/stacking-card";
+import { ExpandingCards, type CardItem } from "@/components/ui/expanding-cards";
 import monogramAsset from "@/assets/kwk-monogram.png.asset.json";
 import wordmarkAsset from "@/assets/gabi-kwk-wordmark.png.asset.json";
 import circleAsset from "@/assets/kwk-circle.png.asset.json";
 import heroPhoto from "@/assets/gabi-hero.jpg.asset.json";
 import aboutPhoto from "@/assets/gabi-about.jpg.asset.json";
+import meetingOnePhoto from "@/assets/meeting-1.jpg.asset.json";
+import meetingTwoPhoto from "@/assets/meeting-2.jpg.asset.json";
+import meetingThreePhoto from "@/assets/meeting-3.jpg.asset.json";
+import meetingFourPhoto from "@/assets/meeting-4.jpg.asset.json";
 
 const WHATSAPP_URL = "https://wa.me/5547988537412";
 const CTA_LABEL = "Quero conhecer a consultoria";
@@ -328,11 +333,43 @@ function MidCTA() {
 }
 
 /* ─── Meetings ─── */
-const meetings = [
-  { n: 1, badge: "C", title: "Quem é sua marca?", desc: "Mergulhamos na sua história, trajetória e o que te faz diferente. Entendemos quem você é antes de pensar em qualquer post." },
-  { n: 2, badge: "R", title: "Para quem você fala?", desc: "Mapeamos seu público com profundidade — dores, desejos, linguagem, jornada. Definimos posicionamento e diferencial." },
-  { n: 3, badge: "I + R", title: "Como sua marca fala?", desc: "Construímos a identidade de comunicação e reorganizamos o perfil para que ele transmita o que você realmente entrega." },
-  { n: 4, badge: "A", title: "Como transformar isso em resultado?", desc: "Funil, linha editorial, ideias de posts e plano para os próximos 90 dias. Você sai com tudo nas mãos." },
+const meetings: CardItem[] = [
+  {
+    id: "Encontro 1",
+    title: "Quem é sua marca?",
+    description:
+      "Mergulhamos na sua história, trajetória e no que te faz diferente. Antes de pensar em qualquer post, entendemos a essência que precisa aparecer.",
+    imgSrc: meetingOnePhoto.url,
+    icon: <MessageCircle className="h-5 w-5" />,
+    linkHref: "#",
+  },
+  {
+    id: "Encontro 2",
+    title: "Para quem você fala?",
+    description:
+      "Mapeamos público, dores, desejos, linguagem e jornada para criar uma comunicação que conecta sem parecer fórmula pronta.",
+    imgSrc: meetingTwoPhoto.url,
+    icon: <Target className="h-5 w-5" />,
+    linkHref: "#",
+  },
+  {
+    id: "Encontro 3",
+    title: "Como sua marca fala?",
+    description:
+      "Construímos identidade de comunicação, tom de voz, pilares e reorganização do perfil para transmitir o que você realmente entrega.",
+    imgSrc: meetingThreePhoto.url,
+    icon: <LayoutGrid className="h-5 w-5" />,
+    linkHref: "#",
+  },
+  {
+    id: "Encontro 4",
+    title: "Como transformar isso em resultado?",
+    description:
+      "Fechamos com funil, linha editorial, ideias de posts e um plano prático para os próximos 90 dias. Você sai com tudo nas mãos.",
+    imgSrc: meetingFourPhoto.url,
+    icon: <PenLine className="h-5 w-5" />,
+    linkHref: "#",
+  },
 ];
 
 function Meetings() {
@@ -347,22 +384,7 @@ function Meetings() {
             100% online. Cada encontro com foco em uma etapa do método.
           </p>
         </div>
-        <div className="grid md:grid-cols-2 gap-5">
-          {meetings.map((m) => (
-            <div key={m.n} className="rounded-2xl border border-border/60 bg-card p-7 hover:border-brand/30 transition-all relative">
-              <div className="flex items-start justify-between mb-4">
-                <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Encontro {m.n}</span>
-                <span className="inline-flex items-center justify-center min-w-[2.5rem] h-8 px-3 rounded-full bg-brand/10 text-brand text-xs font-bold tracking-wider">
-                  {m.badge}
-                </span>
-              </div>
-              <h3 className="font-display text-2xl font-medium mb-3" style={{ lineHeight: "1.2" }}>
-                {m.title}
-              </h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">{m.desc}</p>
-            </div>
-          ))}
-        </div>
+        <ExpandingCards items={meetings} />
       </div>
     </section>
   );
