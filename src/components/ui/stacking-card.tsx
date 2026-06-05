@@ -29,13 +29,17 @@ function Card({
   progress,
 }: CardProps) {
   const segment = total > 1 ? 1 / total : 1;
-  const start = i === 0 ? 0 : Math.max(0, (i - 1) * segment);
-  const center = i === 0 ? segment : i * segment;
-  const end = Math.min(1, (i + 1) * segment);
-  const y = useTransform(progress, [start, center, end], i === 0 ? [0, -24, -68] : [78, 0, -68]);
-  const scale = useTransform(progress, [start, center, end], i === 0 ? [1, 0.96, 0.88] : [0.92, 1, 0.88]);
-  const rotate = useTransform(progress, [start, center, end], i === 0 ? [0, -1, -2] : [2, 0, -2]);
-  const opacity = useTransform(progress, [start, center, end], i === 0 ? [1, 0.9, 0.68] : [0.74, 1, 0.68]);
+  const previous = Math.max(0, (i - 1) * segment);
+  const current = i * segment;
+  const next = Math.min(1, (i + 1) * segment);
+  const isFirst = i === 0;
+  const isLast = i === total - 1;
+  const input = isFirst ? [0, next] : isLast ? [previous, current, 1] : [previous, current, next];
+  const y = useTransform(progress, input, isFirst ? [0, -72] : isLast ? [78, 0, 0] : [78, 0, -72]);
+  const scale = useTransform(progress, input, isFirst ? [1, 0.88] : isLast ? [0.92, 1, 1] : [0.92, 1, 0.88]);
+  const rotate = useTransform(progress, input, isFirst ? [0, -2] : isLast ? [2, 0, 0] : [2, 0, -2]);
+  const opacity = useTransform(progress, input, isFirst ? [1, 0.64] : isLast ? [0.72, 1, 1] : [0.72, 1, 0.64]);
+  const zIndex = useTransform(progress, input, isFirst ? [total, 0] : isLast ? [i, total + i, total + i] : [i, total + i, i]);
 
   return (
     <motion.div
@@ -46,7 +50,7 @@ function Card({
         scale,
         rotate,
         opacity,
-        zIndex: total - i,
+        zIndex,
       }}
       className="absolute inset-x-4 mx-auto w-[calc(100%-2rem)] max-w-4xl h-[min(76vh,580px)] rounded-3xl overflow-hidden shadow-2xl border border-foreground/10 origin-top"
     >
@@ -96,7 +100,7 @@ export function StackingCards({ items }: { items: StackingCardItem[] }) {
   });
 
   return (
-    <div ref={container} className="relative h-[330vh] sm:h-[360vh]">
+    <div ref={container} className="relative h-[260vh] sm:h-[280vh]">
       <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
         {items.map((item, i) => (
           <Card
