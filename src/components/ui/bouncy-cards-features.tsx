@@ -41,7 +41,7 @@ export function BouncyCardsFeatures({ items }: BouncyCardsFeaturesProps) {
           )}
         >
           <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-current opacity-[0.06]" />
-          <div className="flex h-full min-h-[180px] flex-col justify-between gap-8">
+          <div className="relative flex flex-col gap-5 md:min-h-[180px] md:justify-between md:gap-8">
             <div className="flex items-center justify-between gap-4">
               <span className="text-xs font-semibold uppercase tracking-[0.24em] opacity-65">
                 {String(index + 1).padStart(2, "0")}
@@ -54,10 +54,10 @@ export function BouncyCardsFeatures({ items }: BouncyCardsFeaturesProps) {
             </div>
 
             <div>
-              <h3 className="font-display text-2xl font-medium tracking-tight sm:text-3xl" style={{ lineHeight: "1.08" }}>
+              <h3 className="font-display text-xl font-medium tracking-tight sm:text-3xl" style={{ lineHeight: "1.1" }}>
                 {item.title}
               </h3>
-              <p className="mt-4 max-w-xl text-sm leading-relaxed opacity-78 sm:text-base">
+              <p className="mt-3 max-w-xl text-sm leading-relaxed opacity-80 sm:mt-4 sm:text-base">
                 {item.description}
               </p>
             </div>
