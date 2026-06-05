@@ -49,7 +49,7 @@ function PerfilPage() {
     const { error } = await supabase
       .from("profiles")
       .update({ full_name: fullName.trim() })
-      .eq("id", auth.userId);
+      .eq("id", auth.userId!);
     setSaving(false);
     if (error) toast.error(error.message);
     else toast.success("Nome atualizado.");
@@ -79,7 +79,7 @@ function PerfilPage() {
       const { error: updErr } = await supabase
         .from("profiles")
         .update({ avatar_url: path })
-        .eq("id", auth.userId);
+        .eq("id", auth.userId!);
       if (updErr) throw updErr;
 
       setAvatarPath(path);

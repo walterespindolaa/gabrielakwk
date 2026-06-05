@@ -39,7 +39,7 @@ function FormulariosPage() {
         .from("forms")
         .select("id, title, description, stage, schema")
         .order("created_at", { ascending: false }),
-      supabase.from("form_responses").select("form_id").eq("cliente_id", auth.userId),
+      supabase.from("form_responses").select("form_id").eq("cliente_id", auth.userId!),
     ]);
     setForms((fs as Form[]) ?? []);
     setAnswered(new Set((rs ?? []).map((r: any) => r.form_id)));
