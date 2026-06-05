@@ -50,7 +50,7 @@
   --color-surface-alt: var(--surface-alt);
   --color-success: var(--success);
   --font-sans: 'Red Hat Display', system-ui, sans-serif;
-  --font-display: 'Italiana', 'Fraunces', Georgia, serif;
+  --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
   --font-mono: 'Geist Mono', ui-monospace, monospace;
   --color-brand: var(--brand);
   --color-brand-foreground: var(--brand-foreground);
