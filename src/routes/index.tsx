@@ -152,7 +152,7 @@ function Hero() {
           >
             <span className="text-brand">Cria</span>
             <FlipWords
-              words={["tividade.", "ção.", "dores.", "r você."]}
+              words={["tividade.", "ção.", "dores.", "tivos."]}
               className="italic text-brand px-0"
             />
           </h1>
