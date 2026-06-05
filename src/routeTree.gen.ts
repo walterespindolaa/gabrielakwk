@@ -24,6 +24,7 @@ import { Route as AreaPerfilRouteImport } from './routes/area.perfil'
 import { Route as AreaMateriaisRouteImport } from './routes/area.materiais'
 import { Route as AreaFormulariosRouteImport } from './routes/area.formularios'
 import { Route as AdminMateriaisRouteImport } from './routes/admin.materiais'
+import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
 import { Route as AdminFormulariosRouteImport } from './routes/admin.formularios'
 import { Route as AdminClientesIndexRouteImport } from './routes/admin.clientes.index'
 import { Route as AdminClientesIdRouteImport } from './routes/admin.clientes.$id'
@@ -103,6 +104,11 @@ const AdminMateriaisRoute = AdminMateriaisRouteImport.update({
   path: '/materiais',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminLeadsRoute = AdminLeadsRouteImport.update({
+  id: '/leads',
+  path: '/leads',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminFormulariosRoute = AdminFormulariosRouteImport.update({
   id: '/formularios',
   path: '/formularios',
@@ -129,6 +135,7 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/settings': typeof SettingsRoute
   '/admin/formularios': typeof AdminFormulariosRoute
+  '/admin/leads': typeof AdminLeadsRoute
   '/admin/materiais': typeof AdminMateriaisRoute
   '/area/formularios': typeof AreaFormulariosRoute
   '/area/materiais': typeof AreaMateriaisRoute
@@ -147,6 +154,7 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/settings': typeof SettingsRoute
   '/admin/formularios': typeof AdminFormulariosRoute
+  '/admin/leads': typeof AdminLeadsRoute
   '/admin/materiais': typeof AdminMateriaisRoute
   '/area/formularios': typeof AreaFormulariosRoute
   '/area/materiais': typeof AreaMateriaisRoute
@@ -168,6 +176,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/settings': typeof SettingsRoute
   '/admin/formularios': typeof AdminFormulariosRoute
+  '/admin/leads': typeof AdminLeadsRoute
   '/admin/materiais': typeof AdminMateriaisRoute
   '/area/formularios': typeof AreaFormulariosRoute
   '/area/materiais': typeof AreaMateriaisRoute
@@ -190,6 +199,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/settings'
     | '/admin/formularios'
+    | '/admin/leads'
     | '/admin/materiais'
     | '/area/formularios'
     | '/area/materiais'
@@ -208,6 +218,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/settings'
     | '/admin/formularios'
+    | '/admin/leads'
     | '/admin/materiais'
     | '/area/formularios'
     | '/area/materiais'
@@ -228,6 +239,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/settings'
     | '/admin/formularios'
+    | '/admin/leads'
     | '/admin/materiais'
     | '/area/formularios'
     | '/area/materiais'
@@ -358,6 +370,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminMateriaisRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/leads': {
+      id: '/admin/leads'
+      path: '/leads'
+      fullPath: '/admin/leads'
+      preLoaderRoute: typeof AdminLeadsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/formularios': {
       id: '/admin/formularios'
       path: '/formularios'
@@ -384,6 +403,7 @@ declare module '@tanstack/react-router' {
 
 interface AdminRouteChildren {
   AdminFormulariosRoute: typeof AdminFormulariosRoute
+  AdminLeadsRoute: typeof AdminLeadsRoute
   AdminMateriaisRoute: typeof AdminMateriaisRoute
   AdminIndexRoute: typeof AdminIndexRoute
   AdminClientesIdRoute: typeof AdminClientesIdRoute
@@ -392,6 +412,7 @@ interface AdminRouteChildren {
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminFormulariosRoute: AdminFormulariosRoute,
+  AdminLeadsRoute: AdminLeadsRoute,
   AdminMateriaisRoute: AdminMateriaisRoute,
   AdminIndexRoute: AdminIndexRoute,
   AdminClientesIdRoute: AdminClientesIdRoute,
