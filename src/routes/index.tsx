@@ -196,16 +196,25 @@ function Hero() {
             alt="Gabriela Kawikioni"
             className="absolute inset-0 w-full h-full object-cover"
           />
-          {/* Smoky brand gradient blending image into the left content (desktop) */}
+          {/* Horizontal smoky fade: blends the image's left edge into the content column (desktop) */}
           <div
             className="absolute inset-0 pointer-events-none hidden lg:block"
             style={{
               background:
-                "linear-gradient(to right, var(--background) 0%, var(--background) 8%, color-mix(in oklab, var(--background) 88%, transparent) 24%, color-mix(in oklab, var(--background) 55%, transparent) 42%, color-mix(in oklab, var(--background) 20%, transparent) 60%, transparent 78%)",
+                "linear-gradient(to right, var(--background) 0%, var(--background) 6%, color-mix(in oklab, var(--background) 90%, transparent) 18%, color-mix(in oklab, var(--background) 60%, transparent) 34%, color-mix(in oklab, var(--background) 25%, transparent) 52%, transparent 72%)",
             }}
             aria-hidden
           />
-          {/* Mobile fade from top into content */}
+          {/* Top fade: blends the image's top edge into the pink header band */}
+          <div
+            className="absolute inset-x-0 top-0 h-48 lg:h-64 pointer-events-none"
+            style={{
+              background:
+                "linear-gradient(to bottom, var(--brand-soft) 0%, color-mix(in oklab, var(--brand-soft) 70%, transparent) 35%, color-mix(in oklab, var(--brand-soft) 30%, transparent) 65%, transparent 100%)",
+            }}
+            aria-hidden
+          />
+          {/* Mobile fade from bottom into content */}
           <div
             className="lg:hidden absolute inset-0 pointer-events-none"
             style={{
@@ -214,6 +223,7 @@ function Hero() {
             }}
             aria-hidden
           />
+
         </div>
       </div>
     </section>
