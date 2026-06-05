@@ -17,7 +17,11 @@ import { Route as AreaRouteImport } from './routes/area'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AreaIndexRouteImport } from './routes/area.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AreaPerfilRouteImport } from './routes/area.perfil'
+import { Route as AreaMateriaisRouteImport } from './routes/area.materiais'
+import { Route as AreaFormulariosRouteImport } from './routes/area.formularios'
 import { Route as AdminMateriaisRouteImport } from './routes/admin.materiais'
 import { Route as AdminFormulariosRouteImport } from './routes/admin.formularios'
 import { Route as AdminClientesRouteImport } from './routes/admin.clientes'
@@ -63,10 +67,30 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AreaIndexRoute = AreaIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AreaRoute,
+} as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AdminRoute,
+} as any)
+const AreaPerfilRoute = AreaPerfilRouteImport.update({
+  id: '/perfil',
+  path: '/perfil',
+  getParentRoute: () => AreaRoute,
+} as any)
+const AreaMateriaisRoute = AreaMateriaisRouteImport.update({
+  id: '/materiais',
+  path: '/materiais',
+  getParentRoute: () => AreaRoute,
+} as any)
+const AreaFormulariosRoute = AreaFormulariosRouteImport.update({
+  id: '/formularios',
+  path: '/formularios',
+  getParentRoute: () => AreaRoute,
 } as any)
 const AdminMateriaisRoute = AdminMateriaisRouteImport.update({
   id: '/materiais',
@@ -93,7 +117,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/app': typeof AppRoute
-  '/area': typeof AreaRoute
+  '/area': typeof AreaRouteWithChildren
   '/insights': typeof InsightsRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -101,13 +125,16 @@ export interface FileRoutesByFullPath {
   '/admin/clientes': typeof AdminClientesRouteWithChildren
   '/admin/formularios': typeof AdminFormulariosRoute
   '/admin/materiais': typeof AdminMateriaisRoute
+  '/area/formularios': typeof AreaFormulariosRoute
+  '/area/materiais': typeof AreaMateriaisRoute
+  '/area/perfil': typeof AreaPerfilRoute
   '/admin/': typeof AdminIndexRoute
+  '/area/': typeof AreaIndexRoute
   '/admin/clientes/$id': typeof AdminClientesIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/app': typeof AppRoute
-  '/area': typeof AreaRoute
   '/insights': typeof InsightsRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -115,7 +142,11 @@ export interface FileRoutesByTo {
   '/admin/clientes': typeof AdminClientesRouteWithChildren
   '/admin/formularios': typeof AdminFormulariosRoute
   '/admin/materiais': typeof AdminMateriaisRoute
+  '/area/formularios': typeof AreaFormulariosRoute
+  '/area/materiais': typeof AreaMateriaisRoute
+  '/area/perfil': typeof AreaPerfilRoute
   '/admin': typeof AdminIndexRoute
+  '/area': typeof AreaIndexRoute
   '/admin/clientes/$id': typeof AdminClientesIdRoute
 }
 export interface FileRoutesById {
@@ -123,7 +154,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
   '/app': typeof AppRoute
-  '/area': typeof AreaRoute
+  '/area': typeof AreaRouteWithChildren
   '/insights': typeof InsightsRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -131,7 +162,11 @@ export interface FileRoutesById {
   '/admin/clientes': typeof AdminClientesRouteWithChildren
   '/admin/formularios': typeof AdminFormulariosRoute
   '/admin/materiais': typeof AdminMateriaisRoute
+  '/area/formularios': typeof AreaFormulariosRoute
+  '/area/materiais': typeof AreaMateriaisRoute
+  '/area/perfil': typeof AreaPerfilRoute
   '/admin/': typeof AdminIndexRoute
+  '/area/': typeof AreaIndexRoute
   '/admin/clientes/$id': typeof AdminClientesIdRoute
 }
 export interface FileRouteTypes {
@@ -148,13 +183,16 @@ export interface FileRouteTypes {
     | '/admin/clientes'
     | '/admin/formularios'
     | '/admin/materiais'
+    | '/area/formularios'
+    | '/area/materiais'
+    | '/area/perfil'
     | '/admin/'
+    | '/area/'
     | '/admin/clientes/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/app'
-    | '/area'
     | '/insights'
     | '/login'
     | '/reset-password'
@@ -162,7 +200,11 @@ export interface FileRouteTypes {
     | '/admin/clientes'
     | '/admin/formularios'
     | '/admin/materiais'
+    | '/area/formularios'
+    | '/area/materiais'
+    | '/area/perfil'
     | '/admin'
+    | '/area'
     | '/admin/clientes/$id'
   id:
     | '__root__'
@@ -177,7 +219,11 @@ export interface FileRouteTypes {
     | '/admin/clientes'
     | '/admin/formularios'
     | '/admin/materiais'
+    | '/area/formularios'
+    | '/area/materiais'
+    | '/area/perfil'
     | '/admin/'
+    | '/area/'
     | '/admin/clientes/$id'
   fileRoutesById: FileRoutesById
 }
@@ -185,7 +231,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
   AppRoute: typeof AppRoute
-  AreaRoute: typeof AreaRoute
+  AreaRoute: typeof AreaRouteWithChildren
   InsightsRoute: typeof InsightsRoute
   LoginRoute: typeof LoginRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
@@ -250,12 +296,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/area/': {
+      id: '/area/'
+      path: '/'
+      fullPath: '/area/'
+      preLoaderRoute: typeof AreaIndexRouteImport
+      parentRoute: typeof AreaRoute
+    }
     '/admin/': {
       id: '/admin/'
       path: '/'
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/area/perfil': {
+      id: '/area/perfil'
+      path: '/perfil'
+      fullPath: '/area/perfil'
+      preLoaderRoute: typeof AreaPerfilRouteImport
+      parentRoute: typeof AreaRoute
+    }
+    '/area/materiais': {
+      id: '/area/materiais'
+      path: '/materiais'
+      fullPath: '/area/materiais'
+      preLoaderRoute: typeof AreaMateriaisRouteImport
+      parentRoute: typeof AreaRoute
+    }
+    '/area/formularios': {
+      id: '/area/formularios'
+      path: '/formularios'
+      fullPath: '/area/formularios'
+      preLoaderRoute: typeof AreaFormulariosRouteImport
+      parentRoute: typeof AreaRoute
     }
     '/admin/materiais': {
       id: '/admin/materiais'
@@ -316,11 +390,27 @@ const AdminRouteChildren: AdminRouteChildren = {
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
+interface AreaRouteChildren {
+  AreaFormulariosRoute: typeof AreaFormulariosRoute
+  AreaMateriaisRoute: typeof AreaMateriaisRoute
+  AreaPerfilRoute: typeof AreaPerfilRoute
+  AreaIndexRoute: typeof AreaIndexRoute
+}
+
+const AreaRouteChildren: AreaRouteChildren = {
+  AreaFormulariosRoute: AreaFormulariosRoute,
+  AreaMateriaisRoute: AreaMateriaisRoute,
+  AreaPerfilRoute: AreaPerfilRoute,
+  AreaIndexRoute: AreaIndexRoute,
+}
+
+const AreaRouteWithChildren = AreaRoute._addFileChildren(AreaRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
   AppRoute: AppRoute,
-  AreaRoute: AreaRoute,
+  AreaRoute: AreaRouteWithChildren,
   InsightsRoute: InsightsRoute,
   LoginRoute: LoginRoute,
   ResetPasswordRoute: ResetPasswordRoute,
