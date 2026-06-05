@@ -603,6 +603,7 @@ function FitChecklist() {
       {/* Decorative background */}
       <div aria-hidden className="pointer-events-none absolute top-20 left-10 w-64 h-64 rounded-full bg-brand/5 blur-3xl" />
       <div aria-hidden className="pointer-events-none absolute bottom-20 right-10 w-72 h-72 rounded-full bg-brand/10 blur-3xl" />
+      <StickerCollage variant="fits" />
 
       <div className="relative max-w-6xl mx-auto px-5">
         <div className="text-center max-w-2xl mx-auto mb-14">
