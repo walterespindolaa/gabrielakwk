@@ -294,3 +294,12 @@
   transform: translateY(0) !important;
   filter: blur(0) !important;
 }
+
+@keyframes waves {
+  0% { transform: translateY(-170px); }
+  100% { transform: translateY(0); }
+}
+
+.animate-waves {
+  animation: waves 8s linear infinite alternate;
+}
