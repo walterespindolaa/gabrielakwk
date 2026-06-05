@@ -133,26 +133,35 @@ function LandingPage() {
 function Nav() {
   return (
     <nav className="absolute top-0 inset-x-0 z-30">
-      <div className="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-3" aria-label="KWK · Consultoria CRIAR">
-          <img
-            src={monogramAsset.url}
-            alt="KWK"
-            className="h-16 sm:h-20 w-auto"
-          />
-        </Link>
-        <a
-          href={WHATSAPP_URL}
-          target="_blank"
-          rel="noopener noreferrer"
+      <div className="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between gap-4">
+        <div className="flex items-center gap-6">
+          <Link to="/" className="flex items-center gap-3" aria-label="KWK · Consultoria CRIAR">
+            <img
+              src={monogramAsset.url}
+              alt="KWK"
+              className="h-16 sm:h-20 w-auto"
+            />
+          </Link>
+          <a
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden sm:inline-flex items-center text-sm font-medium text-foreground/80 hover:text-brand transition-colors"
+          >
+            Consultoria
+          </a>
+        </div>
+        <Link
+          to="/login"
           className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-brand/30 bg-brand/5 text-brand px-4 py-2 text-sm font-medium hover:bg-brand/10 transition-colors"
         >
-          {CTA_LABEL}
-        </a>
+          Acesso à área de membros
+        </Link>
       </div>
     </nav>
   );
 }
+
 
 /* ─── Hero ─── */
 function Hero() {
@@ -219,12 +228,13 @@ function Hero() {
             alt="Gabriela Kawikioni"
             className="absolute inset-0 w-full h-full object-cover object-center"
           />
-          {/* Horizontal smoky fade: blends the image's left edge into the content column (desktop) */}
+          {/* Horizontal smoky fade: blends image's left edge into the content column (desktop)
+              Uses brand-soft to match the right column's pink and avoid a hard white seam. */}
           <div
             className="absolute inset-0 pointer-events-none hidden lg:block"
             style={{
               background:
-                "linear-gradient(to right, var(--background) 0%, color-mix(in oklab, var(--background) 80%, transparent) 12%, color-mix(in oklab, var(--background) 40%, transparent) 24%, transparent 42%)",
+                "linear-gradient(to right, var(--brand-soft) 0%, color-mix(in oklab, var(--brand-soft) 70%, transparent) 14%, color-mix(in oklab, var(--brand-soft) 30%, transparent) 28%, transparent 46%)",
             }}
             aria-hidden
           />
@@ -665,16 +675,16 @@ function FitChecklist() {
   const rightItems = fits.slice(3, 6);
 
   return (
-    <section className="relative py-24 sm:py-28 overflow-hidden" style={{ backgroundColor: "#6b1133" }}>
-      {/* Burgundy KWK pattern background (tiled) */}
+    <section className="relative py-24 sm:py-28 bg-background overflow-hidden">
+      {/* Burgundy KWK pattern background — single stretched image, max 50% opacity */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0"
+        className="pointer-events-none absolute inset-0 opacity-50"
         style={{
           backgroundImage: `url(${kwkPatternBurgundy.url})`,
-          backgroundSize: "640px auto",
+          backgroundSize: "cover",
           backgroundPosition: "center",
-          backgroundRepeat: "repeat",
+          backgroundRepeat: "no-repeat",
         }}
       />
       {/* Soft top/bottom fade into surrounding background */}
