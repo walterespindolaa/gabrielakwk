@@ -228,12 +228,13 @@ function Hero() {
             alt="Gabriela Kawikioni"
             className="absolute inset-0 w-full h-full object-cover object-center"
           />
-          {/* Horizontal smoky fade: blends the image's left edge into the content column (desktop) */}
+          {/* Horizontal smoky fade: blends image's left edge into the content column (desktop)
+              Uses brand-soft to match the right column's pink and avoid a hard white seam. */}
           <div
             className="absolute inset-0 pointer-events-none hidden lg:block"
             style={{
               background:
-                "linear-gradient(to right, var(--background) 0%, color-mix(in oklab, var(--background) 80%, transparent) 12%, color-mix(in oklab, var(--background) 40%, transparent) 24%, transparent 42%)",
+                "linear-gradient(to right, var(--brand-soft) 0%, color-mix(in oklab, var(--brand-soft) 70%, transparent) 14%, color-mix(in oklab, var(--brand-soft) 30%, transparent) 28%, transparent 46%)",
             }}
             aria-hidden
           />
