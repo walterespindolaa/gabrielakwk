@@ -7,7 +7,7 @@ import circleAsset from "@/assets/kwk-circle.png.asset.json";
 import heroPhoto from "@/assets/gabi-hero.jpg.asset.json";
 import aboutPhoto from "@/assets/gabi-about.jpg.asset.json";
 
-const WHATSAPP_URL = "https://wa.me/55SEUNUMERO";
+const WHATSAPP_URL = "https://wa.me/5547988537412";
 const CTA_LABEL = "Quero conhecer a consultoria";
 
 export const Route = createFileRoute("/")({
@@ -132,10 +132,10 @@ function Nav() {
 /* ─── Hero ─── */
 function Hero() {
   return (
-    <section className="relative pt-28 pb-16 sm:pt-36 sm:pb-24 bg-gradient-to-b from-brand-soft via-background to-background overflow-hidden">
+    <section className="relative pt-20 pb-10 sm:pt-24 sm:pb-14 bg-gradient-to-b from-brand-soft via-background to-background overflow-hidden">
       <div className="absolute top-20 -right-32 w-[500px] h-[500px] rounded-full bg-brand/10 blur-3xl pointer-events-none" />
       <div className="absolute top-40 -left-32 w-[400px] h-[400px] rounded-full bg-accent/40 blur-3xl pointer-events-none" />
-      <div className="relative max-w-6xl mx-auto px-5 grid lg:grid-cols-[1.05fr_1fr] gap-10 lg:gap-14 items-center">
+      <div className="relative max-w-6xl mx-auto px-5 grid lg:grid-cols-[1fr_1.1fr] gap-10 lg:gap-12 items-center">
         <div className="text-center lg:text-left order-2 lg:order-1">
           <img
             src={wordmarkAsset.url}
@@ -158,11 +158,11 @@ function Hero() {
         </div>
         <div className="order-1 lg:order-2 relative">
           <div className="absolute -inset-6 bg-gradient-to-br from-accent/40 via-brand/10 to-transparent blur-2xl pointer-events-none" />
-          <div className="relative aspect-[3/4] w-full max-w-md mx-auto overflow-hidden rounded-3xl border border-border/40 shadow-2xl shadow-brand/15">
+          <div className="relative aspect-[4/5] w-full max-w-xl lg:max-w-none mx-auto overflow-hidden rounded-3xl border border-border/40 shadow-2xl shadow-brand/15">
             <img
               src={heroPhoto.url}
               alt="Gabriela Kawikioni"
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover scale-110"
             />
           </div>
         </div>
