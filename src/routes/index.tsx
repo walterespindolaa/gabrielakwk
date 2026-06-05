@@ -13,7 +13,7 @@ import monogramAsset from "@/assets/kwk-monogram.png.asset.json";
 import wordmarkAsset from "@/assets/gabi-kwk-wordmark.png.asset.json";
 import circleAsset from "@/assets/kwk-circle.png.asset.json";
 import heroPhoto from "@/assets/gabi-hero.jpg.asset.json";
-import aboutPhoto from "@/assets/gabi-about.jpg.asset.json";
+import aboutPhoto from "@/assets/gabi-about-v2.jpg.asset.json";
 import meetingOnePhoto from "@/assets/meeting-1.jpg.asset.json";
 import meetingTwoPhoto from "@/assets/meeting-2.jpg.asset.json";
 import meetingThreePhoto from "@/assets/meeting-3.jpg.asset.json";
