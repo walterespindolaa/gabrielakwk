@@ -713,19 +713,19 @@ function FitChecklist() {
       <StickerCollage variant="fits" />
 
       <div className="relative max-w-6xl mx-auto px-5">
-        <div className="text-center max-w-2xl mx-auto mb-14">
+        <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-14">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.6 }}
-            transition={{ duration: 0.5 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.4 }}
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-alt border border-brand/20 text-brand text-xs font-medium tracking-wider uppercase mb-5 shadow-sm"
           >
             <Sparkles className="w-3.5 h-3.5" />
             Para quem é
           </motion.div>
-          <div className="inline-block bg-surface-alt/95 border border-brand/15 rounded-3xl px-8 py-6 shadow-md">
-            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight" style={{ lineHeight: "1.15" }}>
+          <div className="inline-block bg-surface-alt/95 border border-brand/15 rounded-3xl px-5 sm:px-8 py-5 sm:py-6 shadow-md">
+            <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-medium tracking-tight" style={{ lineHeight: "1.15" }}>
               Essa consultoria é <span className="italic text-brand">para você</span> que:
             </h2>
           </div>
@@ -735,8 +735,8 @@ function FitChecklist() {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.15 }}
-          className="grid md:grid-cols-[1fr_auto_1fr] gap-6 md:gap-8 items-center"
+          viewport={{ once: true, amount: 0.02 }}
+          className="grid md:grid-cols-[1fr_auto_1fr] gap-5 md:gap-8 items-center"
         >
           {/* Left column */}
           <div className="flex flex-col gap-5">
