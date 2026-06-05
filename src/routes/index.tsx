@@ -257,13 +257,16 @@ function Hero() {
             }}
             aria-hidden
           />
-          {/* Mobile wordmark overlay (centered on image) */}
-          <div className="lg:hidden absolute inset-x-0 bottom-3 z-10 flex justify-center pointer-events-none px-6">
+          {/* Mobile wordmark + tagline overlay (centered on image) */}
+          <div className="lg:hidden absolute inset-x-0 bottom-4 z-10 flex flex-col items-center pointer-events-none px-6">
             <img
               src={wordmarkAsset.url}
               alt="Gabi KWK · Estrategista Social Media"
               className="w-[78%] max-w-[340px] h-auto drop-shadow-sm"
             />
+            <p className="mt-3 text-[11px] uppercase tracking-[0.18em] text-foreground/75 font-medium text-center leading-snug">
+              Seu trabalho é excelente. <span className="text-brand">Seu Instagram ainda não sabe disso.</span>
+            </p>
           </div>
 
 
