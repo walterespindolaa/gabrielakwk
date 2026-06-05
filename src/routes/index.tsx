@@ -13,7 +13,7 @@ import monogramAsset from "@/assets/kwk-monogram.png.asset.json";
 import wordmarkAsset from "@/assets/gabi-kwk-wordmark.png.asset.json";
 import circleAsset from "@/assets/kwk-circle.png.asset.json";
 import heroPhoto from "@/assets/gabi-hero.jpg.asset.json";
-import aboutPhoto from "@/assets/gabi-about.jpg.asset.json";
+import aboutPhoto from "@/assets/gabi-about-v2.jpg.asset.json";
 import meetingOnePhoto from "@/assets/meeting-1.jpg.asset.json";
 import meetingTwoPhoto from "@/assets/meeting-2.jpg.asset.json";
 import meetingThreePhoto from "@/assets/meeting-3.jpg.asset.json";
@@ -36,17 +36,17 @@ export const Route = createFileRoute("/")({
   component: LandingPage,
   head: () => ({
     meta: [
-      { title: "Consultoria CRIAR — KWK | Gabriela Kawikioni" },
+      { title: "Consultoria CRIAR | KWK | Gabriela Kawikioni" },
       {
         name: "description",
         content:
           "Um processo de 4 encontros para transformar quem você é em uma presença digital que atrai, conecta e gera resultado. Método CRIAR por Gabriela Kawikioni.",
       },
-      { property: "og:title", content: "Consultoria CRIAR — KWK" },
+      { property: "og:title", content: "Consultoria CRIAR | KWK" },
       {
         property: "og:description",
         content:
-          "Seu trabalho é excelente. Seu Instagram ainda não sabe disso. Método CRIAR — 4 encontros, estratégia e autonomia.",
+          "Seu trabalho é excelente. Seu Instagram ainda não sabe disso. Método CRIAR. 4 encontros, estratégia e autonomia.",
       },
     ],
   }),
@@ -131,7 +131,7 @@ function Nav() {
   return (
     <nav className="absolute top-0 inset-x-0 z-30">
       <div className="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-3" aria-label="KWK — Consultoria CRIAR">
+        <Link to="/" className="flex items-center gap-3" aria-label="KWK · Consultoria CRIAR">
           <img
             src={monogramAsset.url}
             alt="KWK"
@@ -155,8 +155,9 @@ function Nav() {
 function Hero() {
   return (
     <section className="relative bg-gradient-to-b from-brand-soft via-background to-background overflow-hidden">
-      <div className="absolute top-20 -left-32 w-[500px] h-[500px] rounded-full bg-brand/10 blur-3xl pointer-events-none" />
-      <div className="absolute top-40 left-1/3 w-[400px] h-[400px] rounded-full bg-accent/40 blur-3xl pointer-events-none" />
+      {/* Pink seam-blob: sits on top of the image's left edge to dissolve the straight cut */}
+      <div className="hidden lg:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[760px] h-[760px] rounded-full bg-brand/20 blur-[120px] pointer-events-none z-10" />
+      <div className="absolute top-40 left-10 w-[400px] h-[400px] rounded-full bg-accent/40 blur-3xl pointer-events-none" />
 
       <div className="relative grid lg:grid-cols-2 items-stretch min-h-[680px] lg:min-h-[820px]">
         {/* Left content */}
@@ -164,7 +165,7 @@ function Hero() {
           <div className="w-full max-w-xl ml-auto mr-auto lg:mr-0 lg:ml-auto px-5 lg:pl-10 lg:pr-16 pt-12 pb-12 lg:pt-32 lg:pb-20 text-center lg:text-left">
             <img
               src={wordmarkAsset.url}
-              alt="Gabi KWK — Estrategista Social Media"
+              alt="Gabi KWK · Estrategista Social Media"
               className="mx-auto lg:mx-0 w-[320px] sm:w-[420px] md:w-[480px] lg:w-[520px] h-auto mb-8"
             />
             <p className="text-sm sm:text-base uppercase tracking-[0.22em] text-foreground/70 font-medium mb-4">
@@ -181,7 +182,7 @@ function Hero() {
               />
             </h1>
             <p className="mt-6 text-base sm:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0" style={{ textWrap: "pretty", lineHeight: "1.55" }}>
-              Um processo de 4 encontros para transformar quem você é em uma presença digital que atrai, conecta e gera resultado — seja você iniciante ou já presente no digital.
+              Um processo de 4 encontros para transformar quem você é em uma presença digital que atrai, conecta e gera resultado. Seja você iniciante ou já presente no digital.
             </p>
             <div className="mt-9 flex justify-center lg:justify-start">
               <CTAButton size="lg">{CTA_LABEL}</CTAButton>
@@ -234,10 +235,10 @@ function Hero() {
 
 /* ─── Pain section ─── */
 const pains = [
-  "Tenho um negócio que funciona — mas quando olho pro meu Instagram, parece que ele não diz nada sobre o que eu faço.",
+  "Tenho um negócio que funciona, mas quando olho pro meu Instagram, parece que ele não diz nada sobre o que eu faço.",
   "Nunca postei nada. Sei que precisava ter começado antes, mas não sei por onde começar agora.",
   "Posto, mas não tem consistência, não tem retorno, não tem fio condutor.",
-  "Já contratei alguém — mas as entregas ficaram desalinhadas com quem eu sou de verdade.",
+  "Já contratei alguém, mas as entregas ficaram desalinhadas com quem eu sou de verdade.",
   "Tenho muito a oferecer, mas na hora de mostrar isso no digital, trava tudo.",
 ];
 
@@ -261,7 +262,7 @@ function PainSection() {
           ))}
         </div>
         <p className="mt-14 max-w-2xl mx-auto text-center text-lg text-foreground/90" style={{ textWrap: "pretty" }}>
-          O problema não é você. É a falta de um caminho claro — e de alguém que entenda quem você é antes de sugerir o que você deve postar.
+          O problema não é você. É a falta de um caminho claro, e alguém que entenda quem você é antes de sugerir o que você deve postar.
         </p>
       </div>
     </section>
@@ -278,7 +279,7 @@ function Pullquote() {
           "Eu crio com você para você criar sozinha."
         </p>
         <p className="mt-8 text-sm uppercase tracking-[0.25em] text-brand">
-          — a essência do Método CRIAR
+          a essência do Método CRIAR
         </p>
       </div>
     </section>
@@ -293,7 +294,7 @@ const methodSteps: StackingCardItem[] = [
     letter: "C",
     title: "Compreender",
     description:
-      "Sua história, seus valores, seu diferencial — tudo que te torna única antes de falar em conteúdo.",
+      "Sua história, seus valores, seu diferencial. Tudo que te torna única antes de falar em conteúdo.",
     bg: "#F4ECDF",
     fg: "#3A1320",
     accent: "#E8DCC7",
@@ -302,7 +303,7 @@ const methodSteps: StackingCardItem[] = [
     letter: "R",
     title: "Reconhecer",
     description:
-      "Seu público com profundidade real — quem ele é, o que sente e como você pode falar com ele de verdade.",
+      "Seu público com profundidade real. Quem ele é, o que sente e como você pode falar com ele de verdade.",
     bg: "#F6DCDC",
     fg: "#3A1320",
     accent: "#EBC4C4",
@@ -311,7 +312,7 @@ const methodSteps: StackingCardItem[] = [
     letter: "I",
     title: "Identificar",
     description:
-      "A identidade da sua marca — tom de voz, mensagem, pilares e como ela aparece no digital.",
+      "A identidade da sua marca. Tom de voz, mensagem, pilares e como ela aparece no digital.",
     bg: "#D9DFEC",
     fg: "#3A1320",
     accent: "#C3CCDF",
@@ -320,7 +321,7 @@ const methodSteps: StackingCardItem[] = [
     letter: "A",
     title: "Ativar",
     description:
-      "Tudo em plano de ação — o que postar, quando postar e com qual objetivo.",
+      "Tudo em plano de ação. O que postar, quando postar e com qual objetivo.",
     bg: "#3A1320",
     fg: "#F4ECDF",
     accent: "#581B2E",
@@ -359,7 +360,7 @@ function Method() {
             Um sistema para transformar negócios confusos em marcas claras, organizadas e posicionadas.
           </h3>
           <p className="mt-6 text-muted-foreground max-w-2xl mx-auto" style={{ textWrap: "pretty" }}>
-            Cada letra é uma etapa. Cada etapa tem uma entrega. E tudo é construído em cima de quem você é — não de fórmulas prontas.
+            Cada letra é uma etapa. Cada etapa tem uma entrega. E tudo é construído em cima de quem você é, não de fórmulas prontas.
           </p>
         </div>
       </div>
@@ -445,7 +446,7 @@ const outcomes: BouncyFeatureItem[] = [
   {
     id: "clareza",
     title: "Clareza digital",
-    description: "Você entende quem é no digital — nada mais de perfil confuso ou mensagem solta.",
+    description: "Você entende quem é no digital. Nada mais de perfil confuso ou mensagem solta.",
     icon: <Compass className="h-5 w-5" />,
   },
   {
@@ -457,7 +458,7 @@ const outcomes: BouncyFeatureItem[] = [
   {
     id: "conteudo",
     title: "Conteúdo com propósito",
-    description: "Cada publicação passa a ter intenção, conexão e direção — sem postar por postar.",
+    description: "Cada publicação passa a ter intenção, conexão e direção. Sem postar por postar.",
     icon: <Megaphone className="h-5 w-5" />,
   },
   {
@@ -503,7 +504,7 @@ function SocialProof() {
   const seals = [
     "Estrategista com background em saúde, compliance e mercado financeiro",
     "Método próprio, construído sobre quem você é",
-    "Você sai com autonomia — não dependente",
+    "Você sai com autonomia. Não dependente",
   ];
   return (
     <section className="py-24 sm:py-28 bg-background">
@@ -580,12 +581,12 @@ function Deliverables() {
 
 /* ─── Fit checklist ─── */
 const fits = [
-  { icon: Compass, secondary: Sparkles, title: "Está começando", desc: "Quer começar no digital e não sabe por onde — precisa de clareza e um caminho." },
+  { icon: Compass, secondary: Sparkles, title: "Está começando", desc: "Quer começar no digital e não sabe por onde. Precisa de clareza e um caminho." },
   { icon: TrendingUp, secondary: Target, title: "Posta sem resultado", desc: "Já posta, mas não vê resultado e não entende por quê. Quer parar de tentar no escuro." },
   { icon: Briefcase, secondary: Megaphone, title: "Tem expertise para mostrar", desc: "Tem um negócio ou expertise real e quer mostrar isso com estratégia, não no improviso." },
-  { icon: Lightbulb, secondary: PenLine, title: "Quer entender o processo", desc: "Quer entender o porquê de cada escolha — não só receber um feed bonito pronto." },
+  { icon: Lightbulb, secondary: PenLine, title: "Quer entender o processo", desc: "Quer entender o porquê de cada escolha. Não só receber um um feed bonito pronto." },
   { icon: Zap, secondary: UserCheck, title: "Busca autonomia", desc: "Quer sair com autonomia para criar conteúdo sem depender de terceiros toda vez." },
-  { icon: Heart, secondary: Sparkles, title: "Quer atrair certo", desc: "Quer atrair as pessoas certas — clientes, oportunidades — não só seguidores." },
+  { icon: Heart, secondary: Sparkles, title: "Quer atrair certo", desc: "Quer atrair as pessoas certas: clientes, oportunidades. Não só seguidores." },
 ];
 
 const containerVariants = {
@@ -708,7 +709,7 @@ function About() {
             Prazer, <span className="italic text-brand">Gabriela Kawikioni</span>.
           </h2>
           <p className="text-foreground/85 leading-relaxed mb-4">
-            Sou Social Media Estrategista com background em saúde, compliance e mercado financeiro. Comecei no marketing sem grandes cursos — só com coragem, curiosidade e vontade real de aprender.
+            Sou Social Media Estrategista com background em saúde, compliance e mercado financeiro. Comecei no marketing sem grandes cursos. Só com coragem, curiosidade e vontade real de aprender.
           </p>
           <p className="text-foreground/85 leading-relaxed mb-6">
             Sei o que é começar do zero, sentir medo de aparecer e duvidar do próprio trabalho. Por isso me conecto de verdade com quem está nesse momento.
@@ -726,8 +727,8 @@ function About() {
 
 /* ─── FAQ ─── */
 const faqs = [
-  { q: "Nunca postei nada. Essa consultoria é para mim?", a: "Sim. O Método CRIAR foi pensado também para quem está começando do zero. Você não precisa ter histórico de conteúdo — precisa ter vontade de começar com clareza." },
-  { q: "Já contratei social media antes e me frustrei.", a: "Eu entendo. A maioria das entregas de social media é execução sem estratégia. Aqui você sai com posicionamento construído — não só com posts prontos." },
+  { q: "Nunca postei nada. Essa consultoria é para mim?", a: "Sim. O Método CRIAR foi pensado também para quem está começando do zero. Você não precisa ter histórico de conteúdo. Precisa ter vontade de começar com clareza." },
+  { q: "Já contratei social media antes e me frustrei.", a: "Eu entendo. A maioria das entregas de social media é execução sem estratégia. Aqui você sai com posicionamento construído. Não só com posts prontos." },
   { q: "Preciso aparecer em vídeo?", a: "Não necessariamente. Trabalhamos juntas para encontrar a forma que faz mais sentido para a sua realidade." },
   { q: "Minha essência vai ser respeitada?", a: "É a base de tudo. Não uso fórmulas prontas. O processo parte inteiramente de quem você é." },
   { q: "E se eu não souber nada de marketing?", a: "Melhor assim. Começamos do zero juntas. O mini dicionário que você recebe já cobre todos os termos que você vai precisar conhecer." },
