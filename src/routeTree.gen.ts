@@ -19,6 +19,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AreaIndexRouteImport } from './routes/area.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as FTokenRouteImport } from './routes/f.$token'
 import { Route as AreaPerfilRouteImport } from './routes/area.perfil'
 import { Route as AreaMateriaisRouteImport } from './routes/area.materiais'
 import { Route as AreaFormulariosRouteImport } from './routes/area.formularios'
@@ -77,6 +78,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const FTokenRoute = FTokenRouteImport.update({
+  id: '/f/$token',
+  path: '/f/$token',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AreaPerfilRoute = AreaPerfilRouteImport.update({
   id: '/perfil',
   path: '/perfil',
@@ -128,6 +134,7 @@ export interface FileRoutesByFullPath {
   '/area/formularios': typeof AreaFormulariosRoute
   '/area/materiais': typeof AreaMateriaisRoute
   '/area/perfil': typeof AreaPerfilRoute
+  '/f/$token': typeof FTokenRoute
   '/admin/': typeof AdminIndexRoute
   '/area/': typeof AreaIndexRoute
   '/admin/clientes/$id': typeof AdminClientesIdRoute
@@ -145,6 +152,7 @@ export interface FileRoutesByTo {
   '/area/formularios': typeof AreaFormulariosRoute
   '/area/materiais': typeof AreaMateriaisRoute
   '/area/perfil': typeof AreaPerfilRoute
+  '/f/$token': typeof FTokenRoute
   '/admin': typeof AdminIndexRoute
   '/area': typeof AreaIndexRoute
   '/admin/clientes/$id': typeof AdminClientesIdRoute
@@ -165,6 +173,7 @@ export interface FileRoutesById {
   '/area/formularios': typeof AreaFormulariosRoute
   '/area/materiais': typeof AreaMateriaisRoute
   '/area/perfil': typeof AreaPerfilRoute
+  '/f/$token': typeof FTokenRoute
   '/admin/': typeof AdminIndexRoute
   '/area/': typeof AreaIndexRoute
   '/admin/clientes/$id': typeof AdminClientesIdRoute
@@ -186,6 +195,7 @@ export interface FileRouteTypes {
     | '/area/formularios'
     | '/area/materiais'
     | '/area/perfil'
+    | '/f/$token'
     | '/admin/'
     | '/area/'
     | '/admin/clientes/$id'
@@ -203,6 +213,7 @@ export interface FileRouteTypes {
     | '/area/formularios'
     | '/area/materiais'
     | '/area/perfil'
+    | '/f/$token'
     | '/admin'
     | '/area'
     | '/admin/clientes/$id'
@@ -222,6 +233,7 @@ export interface FileRouteTypes {
     | '/area/formularios'
     | '/area/materiais'
     | '/area/perfil'
+    | '/f/$token'
     | '/admin/'
     | '/area/'
     | '/admin/clientes/$id'
@@ -236,6 +248,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SettingsRoute: typeof SettingsRoute
+  FTokenRoute: typeof FTokenRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -309,6 +322,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
+    }
+    '/f/$token': {
+      id: '/f/$token'
+      path: '/f/$token'
+      fullPath: '/f/$token'
+      preLoaderRoute: typeof FTokenRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/area/perfil': {
       id: '/area/perfil'
@@ -415,6 +435,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SettingsRoute: SettingsRoute,
+  FTokenRoute: FTokenRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
