@@ -135,7 +135,7 @@ function Nav() {
           <img
             src={monogramAsset.url}
             alt="KWK"
-            className="h-12 sm:h-14 w-auto"
+            className="h-16 sm:h-20 w-auto"
           />
         </Link>
         <a
@@ -154,50 +154,81 @@ function Nav() {
 /* ─── Hero ─── */
 function Hero() {
   return (
-    <section className="relative pt-20 pb-10 sm:pt-24 sm:pb-14 bg-gradient-to-b from-brand-soft via-background to-background overflow-hidden">
-      <div className="absolute top-20 -right-32 w-[500px] h-[500px] rounded-full bg-brand/10 blur-3xl pointer-events-none" />
-      <div className="absolute top-40 -left-32 w-[400px] h-[400px] rounded-full bg-accent/40 blur-3xl pointer-events-none" />
-      <div className="relative max-w-6xl mx-auto px-5 grid lg:grid-cols-[1fr_1.1fr] gap-10 lg:gap-12 items-center">
-        <div className="text-center lg:text-left order-2 lg:order-1">
-          <img
-            src={wordmarkAsset.url}
-            alt="Gabi KWK — Estrategista Social Media"
-            className="mx-auto lg:mx-0 w-[240px] sm:w-[320px] md:w-[380px] h-auto mb-7"
-          />
-          <p className="text-sm sm:text-base uppercase tracking-[0.22em] text-foreground/70 font-medium mb-4">
-            Seu trabalho é excelente. <span className="text-brand">Seu Instagram ainda não sabe disso.</span>
-          </p>
-          <h1
-            className="font-display text-5xl sm:text-6xl md:text-7xl font-medium tracking-tight text-foreground"
-            style={{ lineHeight: "1.02" }}
-          >
-            <span className="text-brand">Cria</span>
-            <FlipWords
-              words={["tividade.", "ção.", "dores.", "tivos."]}
-              className="italic text-brand px-0"
+    <section className="relative pt-20 sm:pt-24 bg-gradient-to-b from-brand-soft via-background to-background overflow-hidden">
+      <div className="absolute top-20 -left-32 w-[500px] h-[500px] rounded-full bg-brand/10 blur-3xl pointer-events-none" />
+      <div className="absolute top-40 left-1/3 w-[400px] h-[400px] rounded-full bg-accent/40 blur-3xl pointer-events-none" />
+
+      <div className="relative grid lg:grid-cols-2 items-stretch min-h-[640px] lg:min-h-[760px]">
+        {/* Left content */}
+        <div className="relative z-20 flex items-center order-2 lg:order-1">
+          <div className="w-full max-w-xl ml-auto mr-auto lg:mr-0 lg:ml-auto px-5 lg:pl-10 lg:pr-16 py-12 lg:py-20 text-center lg:text-left">
+            <img
+              src={wordmarkAsset.url}
+              alt="Gabi KWK — Estrategista Social Media"
+              className="mx-auto lg:mx-0 w-[320px] sm:w-[420px] md:w-[480px] lg:w-[520px] h-auto mb-8"
             />
-          </h1>
-          <p className="mt-6 text-base sm:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0" style={{ textWrap: "pretty", lineHeight: "1.55" }}>
-            Um processo de 4 encontros para transformar quem você é em uma presença digital que atrai, conecta e gera resultado — seja você iniciante ou já presente no digital.
-          </p>
-          <div className="mt-9 flex justify-center lg:justify-start">
-            <CTAButton size="lg">{CTA_LABEL}</CTAButton>
+            <p className="text-sm sm:text-base uppercase tracking-[0.22em] text-foreground/70 font-medium mb-4">
+              Seu trabalho é excelente. <span className="text-brand">Seu Instagram ainda não sabe disso.</span>
+            </p>
+            <h1
+              className="font-display text-5xl sm:text-6xl md:text-7xl font-medium tracking-tight text-foreground"
+              style={{ lineHeight: "1.02" }}
+            >
+              <span className="text-brand">Cria</span>
+              <FlipWords
+                words={["tividade.", "ção.", "dores.", "tivos."]}
+                className="italic text-brand px-0"
+              />
+            </h1>
+            <p className="mt-6 text-base sm:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0" style={{ textWrap: "pretty", lineHeight: "1.55" }}>
+              Um processo de 4 encontros para transformar quem você é em uma presença digital que atrai, conecta e gera resultado — seja você iniciante ou já presente no digital.
+            </p>
+            <div className="mt-9 flex justify-center lg:justify-start">
+              <CTAButton size="lg">{CTA_LABEL}</CTAButton>
+            </div>
           </div>
         </div>
-        <div className="order-1 lg:order-2 relative">
-          <div className="absolute -inset-6 bg-gradient-to-br from-accent/40 via-brand/10 to-transparent blur-2xl pointer-events-none" />
-          <div className="relative aspect-[4/5] w-full max-w-xl lg:max-w-none mx-auto overflow-hidden rounded-3xl border border-border/40 shadow-2xl shadow-brand/15">
-            <img
-              src={heroPhoto.url}
-              alt="Gabriela Kawikioni"
-              className="w-full h-full object-cover scale-110"
-            />
-          </div>
+
+        {/* Right full-bleed image */}
+        <div className="relative order-1 lg:order-2 min-h-[420px] lg:min-h-full">
+          <img
+            src={heroPhoto.url}
+            alt="Gabriela Kawikioni"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+          {/* Smoky brand gradient blending image into the left content */}
+          <div
+            className="absolute inset-0 pointer-events-none hidden lg:block"
+            style={{
+              background:
+                "linear-gradient(to right, var(--background) 0%, color-mix(in oklab, var(--background) 85%, transparent) 18%, color-mix(in oklab, var(--background) 35%, transparent) 38%, transparent 62%)",
+            }}
+            aria-hidden
+          />
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                "linear-gradient(to top, var(--background) 0%, transparent 20%)",
+            }}
+            aria-hidden
+          />
+          {/* Mobile fade from top */}
+          <div
+            className="lg:hidden absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                "linear-gradient(to bottom, var(--brand-soft) 0%, transparent 28%)",
+            }}
+            aria-hidden
+          />
+
         </div>
       </div>
     </section>
   );
 }
+
 
 /* ─── Pain section ─── */
 const pains = [
