@@ -133,30 +133,31 @@ function LandingPage() {
 function Nav() {
   return (
     <nav className="absolute top-0 inset-x-0 z-30">
-      <div className="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between gap-4">
-        <div className="flex items-center gap-6">
-          <Link to="/" className="flex items-center gap-3" aria-label="KWK · Consultoria CRIAR">
-            <img
-              src={monogramAsset.url}
-              alt="KWK"
-              className="h-16 sm:h-20 w-auto"
-            />
-          </Link>
+      <div className="max-w-6xl mx-auto px-4 sm:px-5 h-16 flex items-center justify-between gap-3">
+        <Link to="/" className="flex items-center gap-3 shrink-0" aria-label="KWK · Consultoria CRIAR">
+          <img
+            src={monogramAsset.url}
+            alt="KWK"
+            className="h-12 sm:h-20 w-auto"
+          />
+        </Link>
+        <div className="flex items-center gap-2 sm:gap-3">
           <a
             href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-brand text-brand-foreground px-4 py-2 text-sm font-semibold shadow-sm shadow-brand/20 hover:bg-brand/90 transition-colors"
+            className="inline-flex items-center gap-1.5 rounded-full bg-brand text-brand-foreground px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold shadow-sm shadow-brand/20 hover:bg-brand/90 transition-colors"
           >
             Consultoria
           </a>
+          <Link
+            to="/login"
+            className="inline-flex items-center gap-1.5 rounded-full border border-brand/30 bg-brand/5 text-brand px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium hover:bg-brand/10 transition-colors"
+          >
+            <span className="sm:hidden">Entrar</span>
+            <span className="hidden sm:inline">Acesso à área de membros</span>
+          </Link>
         </div>
-        <Link
-          to="/login"
-          className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-brand/30 bg-brand/5 text-brand px-4 py-2 text-sm font-medium hover:bg-brand/10 transition-colors"
-        >
-          Acesso à área de membros
-        </Link>
       </div>
     </nav>
   );
