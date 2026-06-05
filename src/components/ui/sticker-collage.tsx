@@ -69,7 +69,7 @@ export function StickerCollage({ variant }: { variant: keyof typeof presets }) {
           alt=""
           loading="lazy"
           style={{ width: s.size, height: s.size, transform: `rotate(${s.rotate}deg)` }}
-          className={`absolute opacity-25 mix-blend-multiply object-contain select-none ${s.className}`}
+          className={`absolute object-contain select-none ${s.className}`}
         />
       ))}
     </div>
