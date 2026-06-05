@@ -1,310 +1,540 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
-import {
-  Infinity as InfinityIcon, Flame, CalendarDays, Moon, Bell, BarChart3, CloudUpload,
-  CheckCircle2, TrendingUp, Sparkles, ArrowRight, Star, Quote,
-} from "lucide-react";
-import heroBg from "@/assets/hero-bg.jpg";
-import shadowBg from "@/assets/shadow-bg.jpg";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { Check, ArrowRight, Sparkles } from "lucide-react";
 
+const WHATSAPP_URL = "https://wa.me/55SEUNUMERO";
+const CTA_LABEL = "Quero conhecer a consultoria";
 
 export const Route = createFileRoute("/")({
   component: LandingPage,
   head: () => ({
     meta: [
-      { title: "Continuum — Build lasting habits, one day at a time" },
-      { name: "description", content: "A calm, focused habit tracker. Track streaks, visualize progress, and build your daily ritual. Free, ad-free, distraction-free." },
+      { title: "Consultoria CRIAR — KWK | Gabriela Kawikioni" },
+      {
+        name: "description",
+        content:
+          "Um processo de 4 encontros para transformar quem você é em uma presença digital que atrai, conecta e gera resultado. Método CRIAR por Gabriela Kawikioni.",
+      },
+      { property: "og:title", content: "Consultoria CRIAR — KWK" },
+      {
+        property: "og:description",
+        content:
+          "Seu trabalho é excelente. Seu Instagram ainda não sabe disso. Método CRIAR — 4 encontros, estratégia e autonomia.",
+      },
     ],
   }),
 });
 
-function LandingPage() {
-  const navigate = useNavigate();
-  const [checked, setChecked] = useState(false);
+function CTAButton({
+  children,
+  size = "md",
+  variant = "primary",
+  className = "",
+}: {
+  children: React.ReactNode;
+  size?: "md" | "lg";
+  variant?: "primary" | "ghost-light";
+  className?: string;
+}) {
+  const sizes = size === "lg" ? "px-8 py-4 text-base" : "px-6 py-3.5 text-sm";
+  const variants =
+    variant === "primary"
+      ? "bg-brand text-brand-foreground hover:bg-brand/90 shadow-lg shadow-brand/20"
+      : "bg-white text-brand hover:bg-white/90";
+  return (
+    <a
+      href={WHATSAPP_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 active:scale-[0.97] ${sizes} ${variants} ${className}`}
+    >
+      {children}
+      <ArrowRight className="w-4 h-4" />
+    </a>
+  );
+}
 
+function LandingPage() {
+  const [showSticky, setShowSticky] = useState(false);
   useEffect(() => {
-    import("@/integrations/supabase/client").then(({ supabase }) => {
-      supabase.auth.getSession().then(({ data: { session } }) => {
-        if (session?.user) {
-          navigate({ to: "/app" });
-        } else {
-          setChecked(true);
-        }
-      });
-    }).catch(() => setChecked(true));
-  }, [navigate]);
+    const onScroll = () => setShowSticky(window.scrollY > 600);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+      <Nav />
       <Hero />
-      <Features />
-      <HowItWorks />
-      <Reviews />
+      <PainSection />
+      <Pullquote />
+      <Method />
+      <MidCTA />
+      <Meetings />
+      <Outcomes />
+      <SocialProof />
+      <Deliverables />
+      <FitChecklist />
+      <About />
+      <FAQ />
       <FinalCTA />
       <Footer />
+      {/* Sticky mobile CTA */}
+      <div
+        className={`fixed bottom-4 inset-x-4 z-40 sm:hidden transition-all duration-300 ${
+          showSticky ? "translate-y-0 opacity-100" : "translate-y-24 opacity-0 pointer-events-none"
+        }`}
+      >
+        <a
+          href={WHATSAPP_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center gap-2 w-full rounded-full bg-brand text-brand-foreground px-6 py-3.5 text-sm font-semibold shadow-2xl shadow-brand/30"
+        >
+          {CTA_LABEL}
+          <ArrowRight className="w-4 h-4" />
+        </a>
+      </div>
     </div>
   );
 }
 
-/* ─── Hero (dark, full-bleed, with navbar) ─── */
+/* ─── Nav ─── */
+function Nav() {
+  return (
+    <nav className="absolute top-0 inset-x-0 z-30">
+      <div className="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
+        <Link to="/" className="flex items-center gap-2">
+          <span className="font-display text-2xl font-semibold tracking-tight text-foreground">
+            KWK
+          </span>
+          <span className="hidden sm:inline text-xs uppercase tracking-[0.2em] text-muted-foreground">
+            Consultoria CRIAR
+          </span>
+        </Link>
+        <a
+          href={WHATSAPP_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-brand/30 bg-brand/5 text-brand px-4 py-2 text-sm font-medium hover:bg-brand/10 transition-colors"
+        >
+          {CTA_LABEL}
+        </a>
+      </div>
+    </nav>
+  );
+}
+
+/* ─── Hero ─── */
 function Hero() {
   return (
-    <>
-      <section className="relative pb-24 pt-0 lg:pb-32 lg:pt-8 xl:pb-40 xl:pt-12" style={{ background: "#050d0a" }}>
-        {/* Background image — weighted to the right */}
-        <img
-          src={heroBg}
-          alt=""
-          width={1920}
-          height={1080}
-          className="absolute inset-0 w-full h-full object-cover object-right pointer-events-none select-none"
-          aria-hidden="true"
-        />
-        {/* Left-side gradient for text legibility */}
-        <div className="absolute inset-0 pointer-events-none" style={{ background: `linear-gradient(to right, rgba(5,13,10,0.5), rgba(5,13,10,0.13), transparent)` }} />
-        <div className="absolute inset-0 pointer-events-none" style={{ background: `linear-gradient(to bottom, rgba(0,0,0,0.26), transparent, rgba(5,13,10,0))` }} />
-
-        {/* Navbar */}
-        <nav className="relative z-20 max-w-5xl mx-auto px-5 h-16 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2.5">
-            <InfinityIcon className="w-7 h-7 text-white" strokeWidth={2.5} />
-            <span className="text-xl font-semibold text-white/90 tracking-tight">Continuum</span>
-          </Link>
-
-          <div className="hidden sm:flex items-center gap-8 text-sm text-white">
-            <a href="#features" className="hover:text-white/70 transition-colors">Features</a>
-            <a href="#how-it-works" className="hover:text-white/70 transition-colors">How it works</a>
-            <a href="#reviews" className="hover:text-white/70 transition-colors">Reviews</a>
-          </div>
-
-          <Link
-            to="/login"
-            className="inline-flex items-center gap-1.5 rounded-xl border border-white/30 bg-white/10 text-white px-5 py-2.5 text-sm font-medium hover:bg-white/20 backdrop-blur-sm transition-all duration-200 active:scale-[0.97]"
-          >
-            Get started
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
-        </nav>
-
-        {/* Hero content — left aligned */}
-        <div className="relative z-10 max-w-5xl mx-auto px-5 pt-24 pb-12">
-          <div className="max-w-xl">
-            <ScrollReveal delay={80}>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white text-left" style={{ lineHeight: "1.08" }}>
-                Build lasting habits,<br />one day at a time
-              </h1>
-            </ScrollReveal>
-
-            <ScrollReveal delay={160}>
-              <p className="mt-6 text-lg text-white text-left" style={{ textWrap: "pretty", lineHeight: "1.6" }}>
-                Continuum is a calm, focused habit tracker that helps you build consistency through streaks, visual progress, and zero distractions.
-              </p>
-            </ScrollReveal>
-
-            <ScrollReveal delay={240}>
-              <div className="mt-10 flex flex-col sm:flex-row items-start gap-3">
-                <Link
-                  to="/login"
-                  className="inline-flex items-center gap-2 rounded-xl bg-[#FDAA3E] text-[#1a1a1a] px-7 py-3.5 text-sm font-bold hover:bg-[#fdb95e] transition-all duration-200 active:scale-[0.97] shadow-lg shadow-[#FDAA3E]/25"
-                >
-                  Get started free
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-            </ScrollReveal>
-          </div>
-        </div>
-      </section>
-    </>
-  );
-}
-
-/* ─── Features ─── */
-const features = [
-  { icon: Flame, title: "Streak tracking", desc: "Watch your momentum build day by day. Never break the chain." },
-  { icon: CalendarDays, title: "Calendar heatmap", desc: "See your consistency at a glance with a beautiful 30-day view." },
-  { icon: BarChart3, title: "Smart insights", desc: "Current streak, longest streak, completion rate — all the stats that matter." },
-  { icon: Bell, title: "Gentle reminders", desc: "Set custom reminder times so you never forget your daily rituals." },
-  { icon: Moon, title: "Dark mode", desc: "Easy on the eyes, day or night. Follows your system or your choice." },
-  { icon: CloudUpload, title: "Cloud sync", desc: "Sign in to sync your habits across devices. Your data, always safe." },
-];
-
-function Features() {
-  return (
-    <section id="features" className="py-28 relative bg-white">
-      <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: `url(${shadowBg})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundAttachment: 'fixed', opacity: 0.75 }} />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-primary/5 rounded-full blur-3xl pointer-events-none" />
-
-      <div className="max-w-6xl mx-auto px-5 relative">
-        <div className="flex flex-col lg:flex-row items-start gap-12 lg:gap-16">
-          {/* Left: App preview — light mode on mint bg */}
-          <div className="w-full lg:w-[420px] flex-shrink-0">
-            <div className="relative">
-              <div className="rounded-xl bg-white border border-black/[0.06] shadow-xl overflow-hidden">
-                {/* Mock browser chrome */}
-                <div className="border-b border-black/5 px-5 py-3 flex items-center gap-3 bg-gray-50/80">
-                  <div className="flex gap-1.5">
-                    <div className="w-2.5 h-2.5 rounded-full bg-black/10" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-black/10" />
-                    <div className="w-2.5 h-2.5 rounded-full bg-black/10" />
-                  </div>
-                  <div className="flex-1" />
-                </div>
-
-                {/* Mock app content — light mode */}
-                <div className="p-6 space-y-4">
-                  <div>
-                    <p className="text-xs text-black/40">Good morning</p>
-                    <p className="text-lg font-semibold text-black/90 mt-0.5">Your daily ritual</p>
-                    <p className="text-xs text-black/40 mt-1">Tuesday, March 25 · 2 of 4 minted</p>
-                  </div>
-
-                  {/* Mock progress ring */}
-                  <div className="flex justify-center py-3">
-                    <div className="w-20 h-20 rounded-full border-[4px] border-black/[0.06] flex items-center justify-center relative">
-                      <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 80 80">
-                        <circle cx="40" cy="40" r="35" fill="none" strokeWidth="4" stroke="#FDAA3E" strokeDasharray="220" strokeDashoffset="110" strokeLinecap="round" />
-                      </svg>
-                      <span className="text-lg font-bold text-black/80">50%</span>
-                    </div>
-                  </div>
-
-                  {/* Mock habit cards */}
-                  {[
-                    { name: "Morning meditation", color: "#FDAA3E", done: true },
-                    { name: "Read 20 pages", color: "hsl(217, 91%, 60%)", done: true },
-                    { name: "Exercise 30 min", color: "hsl(25, 95%, 53%)", done: false },
-                    { name: "Journal", color: "hsl(270, 95%, 75%)", done: false },
-                  ].map((h) => (
-                    <div key={h.name} className="flex items-center gap-3 rounded-xl border border-black/[0.06] bg-black/[0.02] px-4 py-3">
-                      <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ backgroundColor: h.color }} />
-                      <span className={`flex-1 text-sm ${h.done ? "line-through text-black/30" : "text-black/70"}`}>{h.name}</span>
-                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${h.done ? "bg-primary border-primary" : "border-black/15"}`}>
-                        {h.done && <CheckCircle2 className="w-3.5 h-3.5 text-white" />}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right: Features content */}
-          <div className="flex-1">
-            <ScrollReveal>
-              <div className="mb-10">
-                <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-3">Features</p>
-                <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground" style={{ lineHeight: "1.15" }}>
-                  Everything you need,<br />nothing you don't
-                </h2>
-              </div>
-            </ScrollReveal>
-
-            <div className="grid sm:grid-cols-2 gap-5">
-              {features.map((f, i) => (
-                <ScrollReveal key={f.title} delay={i * 70}>
-                  <div className="group rounded-2xl border border-black/[0.04] bg-black/[0.03] p-5 hover:bg-black/[0.05] hover:border-black/[0.08] transition-all duration-300">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary/15 to-primary/5 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform duration-300">
-                      <f.icon className="w-5 h-5 text-primary" />
-                    </div>
-                    <h3 className="font-semibold text-foreground mb-1">{f.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
-                  </div>
-                </ScrollReveal>
-              ))}
-            </div>
-          </div>
+    <section className="relative pt-32 pb-20 sm:pt-40 sm:pb-28 bg-gradient-to-b from-brand-soft via-background to-background">
+      <div className="absolute top-20 -right-32 w-[500px] h-[500px] rounded-full bg-brand/10 blur-3xl pointer-events-none" />
+      <div className="absolute top-40 -left-32 w-[400px] h-[400px] rounded-full bg-accent/40 blur-3xl pointer-events-none" />
+      <div className="relative max-w-4xl mx-auto px-5 text-center">
+        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand mb-6">
+          Consultoria CRIAR — KWK
+        </p>
+        <h1
+          className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium tracking-tight text-foreground"
+          style={{ lineHeight: "1.05" }}
+        >
+          Seu trabalho é excelente.<br />
+          <span className="italic text-brand">Seu Instagram</span> ainda não sabe disso.
+        </h1>
+        <p className="mt-7 text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto" style={{ textWrap: "pretty", lineHeight: "1.55" }}>
+          Um processo de 4 encontros para transformar quem você é em uma presença digital que atrai, conecta e gera resultado — seja você iniciante ou já presente no digital.
+        </p>
+        <div className="mt-10 flex justify-center">
+          <CTAButton size="lg">{CTA_LABEL}</CTAButton>
         </div>
       </div>
     </section>
   );
 }
 
-/* ─── How it works ─── */
-const steps = [
-  { num: "1", icon: CheckCircle2, title: "Create your habits", desc: "Add the habits you want to build — daily, specific days, or a weekly goal." },
-  { num: "2", icon: Sparkles, title: "Tap to complete", desc: "One tap each day to log your progress. Quick, satisfying, done." },
-  { num: "3", icon: TrendingUp, title: "Watch your growth", desc: "See streaks grow, heatmaps fill in, and your consistency compound over time." },
+/* ─── Pain section ─── */
+const pains = [
+  "Tenho um negócio que funciona — mas quando olho pro meu Instagram, parece que ele não diz nada sobre o que eu faço.",
+  "Nunca postei nada. Sei que precisava ter começado antes, mas não sei por onde começar agora.",
+  "Posto, mas não tem consistência, não tem retorno, não tem fio condutor.",
+  "Já contratei alguém — mas as entregas ficaram desalinhadas com quem eu sou de verdade.",
+  "Tenho muito a oferecer, mas na hora de mostrar isso no digital, trava tudo.",
 ];
 
-function HowItWorks() {
+function PainSection() {
   return (
-    <section id="how-it-works" className="py-28 bg-white border-y border-border/30">
-      <div className="max-w-4xl mx-auto px-5">
-        <ScrollReveal>
-          <div className="text-center mb-16">
-            <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-3">How it works</p>
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground" style={{ lineHeight: "1.15" }}>
-              Three steps to a better routine
-            </h2>
-          </div>
-        </ScrollReveal>
-
-        <div className="relative grid md:grid-cols-3 gap-8">
-          {/* Connecting line between steps (desktop only) */}
-          <div className="hidden md:block absolute top-7 left-[calc(16.67%+28px)] right-[calc(16.67%+28px)] h-px border-t-2 border-dashed border-primary/20" />
-
-          {steps.map((s, i) => (
-            <ScrollReveal key={s.num} delay={i * 100}>
-              <div className="text-center relative">
-                <div className="w-14 h-14 rounded-2xl bg-primary text-primary-foreground flex items-center justify-center mx-auto mb-5 text-lg font-bold shadow-lg shadow-primary/15">
-                  {s.num}
-                </div>
-                <h3 className="font-semibold text-foreground text-lg mb-2">{s.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed max-w-xs mx-auto">{s.desc}</p>
-              </div>
-            </ScrollReveal>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── Reviews ─── */
-const reviews = [
-  { name: "Daniel Cooper", role: "Product designer", avatar: "https://trovdwfeqyzlxzrtfbjv.supabase.co/storage/v1/object/public/assets/avatars/e20b66f6-e7e9-4c00-93d3-506c78cb66c2/avatar-19.jpg", quote: "Finally a habit app that doesn't try to be a social network. Just me and my habits.", rating: 5 },
-  { name: "Emma Lindström", role: "Software engineer", avatar: "https://trovdwfeqyzlxzrtfbjv.supabase.co/storage/v1/object/public/assets/avatars/307e7512-1637-4ea2-a5cd-875afeb1002b/avatar-21.jpg", quote: "The streak tracking is addictive in the best way. I've been consistent for 47 days now.", rating: 5 },
-  { name: "Ryan Mitchell", role: "Grad student", avatar: "https://trovdwfeqyzlxzrtfbjv.supabase.co/storage/v1/object/public/assets/avatars/6b77ccde-dbfd-4c23-8c9f-ce748683068a/avatar-16.jpg", quote: "Love the heatmap. Seeing my progress visually keeps me motivated more than any badge system.", rating: 5 },
-  { name: "Mei Lin", role: "Freelance writer", avatar: "https://trovdwfeqyzlxzrtfbjv.supabase.co/storage/v1/object/public/assets/avatars/b706d9a7-3a45-4fdd-ab47-c7023d4d0cfa/avatar-20.jpg", quote: "Simple, clean, no ads. This is what every habit tracker should be. Dark mode is gorgeous too.", rating: 5 },
-];
-
-function Reviews() {
-  return (
-    <section id="reviews" className="py-28">
+    <section className="py-24 sm:py-28 bg-surface-alt">
       <div className="max-w-5xl mx-auto px-5">
-        <ScrollReveal>
-          <div className="text-center mb-16">
-            <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-3">Reviews</p>
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground" style={{ lineHeight: "1.15" }}>
-              Loved by habit builders
-            </h2>
+        <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-center max-w-3xl mx-auto" style={{ lineHeight: "1.15" }}>
+          Talvez você também já tenha pensado nisso:
+        </h2>
+        <div className="mt-14 grid sm:grid-cols-2 gap-4">
+          {pains.map((p, i) => (
+            <div
+              key={i}
+              className={`rounded-2xl bg-card border border-border/60 p-6 text-foreground/80 leading-relaxed shadow-sm ${
+                i === 4 ? "sm:col-span-2 sm:max-w-2xl sm:mx-auto" : ""
+              }`}
+            >
+              <span className="text-brand text-2xl font-display leading-none">"</span>
+              <p className="mt-1 text-[15px]">{p}</p>
+            </div>
+          ))}
+        </div>
+        <p className="mt-14 max-w-2xl mx-auto text-center text-lg text-foreground/90" style={{ textWrap: "pretty" }}>
+          O problema não é você. É a falta de um caminho claro — e de alguém que entenda quem você é antes de sugerir o que você deve postar.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Pullquote ─── */
+function Pullquote() {
+  return (
+    <section className="py-24 sm:py-32 bg-background">
+      <div className="max-w-4xl mx-auto px-5 text-center">
+        <p className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium italic text-foreground" style={{ lineHeight: "1.2" }}>
+          "Eu crio com você para você criar sozinha."
+        </p>
+        <p className="mt-8 text-sm uppercase tracking-[0.25em] text-brand">
+          — a essência do Método CRIAR
+        </p>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Method ─── */
+const methodSteps = [
+  { letter: "C", name: "Compreender", desc: "Sua história, seus valores, seu diferencial — tudo que te torna única antes de falar em conteúdo." },
+  { letter: "R", name: "Reconhecer", desc: "Seu público com profundidade real — quem ele é, o que sente e como você pode falar com ele de verdade." },
+  { letter: "I", name: "Identificar", desc: "A identidade da sua marca — tom de voz, mensagem, pilares e como ela aparece no digital." },
+  { letter: "A", name: "Ativar", desc: "Tudo em plano de ação — o que postar, quando postar e com qual objetivo." },
+  { letter: "R", name: "Reorganizar", desc: "O perfil digital para que ele reflita, de verdade, quem você é e o que você entrega.", complementary: true },
+];
+
+function Method() {
+  return (
+    <section className="py-24 sm:py-32 bg-surface-alt relative overflow-hidden">
+      <div className="absolute -top-20 right-0 w-[400px] h-[400px] rounded-full bg-brand/5 blur-3xl pointer-events-none" />
+      <div className="relative max-w-6xl mx-auto px-5">
+        <div className="text-center mb-16">
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand mb-4">O método</p>
+          <h2 className="font-display text-7xl sm:text-8xl md:text-9xl font-medium tracking-tighter text-brand leading-none">
+            CRIAR
+          </h2>
+          <h3 className="mt-8 font-display text-2xl sm:text-3xl md:text-4xl font-medium tracking-tight max-w-3xl mx-auto" style={{ lineHeight: "1.2" }}>
+            Um sistema para transformar negócios confusos em marcas claras, organizadas e posicionadas.
+          </h3>
+          <p className="mt-6 text-muted-foreground max-w-2xl mx-auto" style={{ textWrap: "pretty" }}>
+            Cada letra é uma etapa. Cada etapa tem uma entrega. E tudo é construído em cima de quem você é — não de fórmulas prontas.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {methodSteps.slice(0, 4).map((s) => (
+            <MethodCard key={s.name} {...s} />
+          ))}
+        </div>
+        <div className="mt-4 flex justify-center">
+          <div className="w-full md:w-1/2 lg:w-1/3">
+            <MethodCard {...methodSteps[4]} />
           </div>
-        </ScrollReveal>
+        </div>
+      </div>
+    </section>
+  );
+}
 
-        <div className="grid sm:grid-cols-2 gap-5">
-          {reviews.map((r, i) => (
-            <ScrollReveal key={r.name} delay={i * 80}>
-              <div className="relative rounded-2xl border border-border/50 bg-card p-6 overflow-hidden">
-                {/* Decorative quote mark */}
-                <Quote className="absolute top-4 right-4 w-10 h-10 text-primary/[0.06] rotate-180" />
+function MethodCard({ letter, name, desc, complementary }: { letter: string; name: string; desc: string; complementary?: boolean }) {
+  return (
+    <div className={`rounded-2xl bg-card border border-border/60 p-6 transition-all hover:border-brand/30 hover:shadow-lg ${complementary ? "opacity-90" : ""}`}>
+      <div className="flex items-baseline gap-3 mb-3">
+        <span className="font-display text-5xl font-medium text-brand leading-none">{letter}</span>
+        <span className="font-semibold text-foreground">{name}</span>
+      </div>
+      <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
+    </div>
+  );
+}
 
-                <div className="flex gap-0.5 mb-4">
-                  {Array.from({ length: r.rating }).map((_, j) => (
-                    <Star key={j} className="w-4 h-4 fill-primary text-primary" />
-                  ))}
+/* ─── Mid CTA ─── */
+function MidCTA() {
+  return (
+    <section className="py-16 bg-background">
+      <div className="max-w-3xl mx-auto px-5 text-center">
+        <CTAButton size="lg">{CTA_LABEL}</CTAButton>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Meetings ─── */
+const meetings = [
+  { n: 1, badge: "C", title: "Quem é sua marca?", desc: "Mergulhamos na sua história, trajetória e o que te faz diferente. Entendemos quem você é antes de pensar em qualquer post." },
+  { n: 2, badge: "R", title: "Para quem você fala?", desc: "Mapeamos seu público com profundidade — dores, desejos, linguagem, jornada. Definimos posicionamento e diferencial." },
+  { n: 3, badge: "I + R", title: "Como sua marca fala?", desc: "Construímos a identidade de comunicação e reorganizamos o perfil para que ele transmita o que você realmente entrega." },
+  { n: 4, badge: "A", title: "Como transformar isso em resultado?", desc: "Funil, linha editorial, ideias de posts e plano para os próximos 90 dias. Você sai com tudo nas mãos." },
+];
+
+function Meetings() {
+  return (
+    <section className="py-24 sm:py-28 bg-background">
+      <div className="max-w-5xl mx-auto px-5">
+        <div className="text-center mb-14">
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight" style={{ lineHeight: "1.15" }}>
+            4 encontros. Um processo. Um resultado.
+          </h2>
+          <p className="mt-4 text-muted-foreground">
+            100% online. Cada encontro com foco em uma etapa do método.
+          </p>
+        </div>
+        <div className="grid md:grid-cols-2 gap-5">
+          {meetings.map((m) => (
+            <div key={m.n} className="rounded-2xl border border-border/60 bg-card p-7 hover:border-brand/30 transition-all relative">
+              <div className="flex items-start justify-between mb-4">
+                <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Encontro {m.n}</span>
+                <span className="inline-flex items-center justify-center min-w-[2.5rem] h-8 px-3 rounded-full bg-brand/10 text-brand text-xs font-bold tracking-wider">
+                  {m.badge}
+                </span>
+              </div>
+              <h3 className="font-display text-2xl font-medium mb-3" style={{ lineHeight: "1.2" }}>
+                {m.title}
+              </h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">{m.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Outcomes ─── */
+const outcomes = [
+  "Clareza sobre quem você é no digital — nada mais de perfil confuso.",
+  "Posicionamento definido — você vai saber exatamente o que diz, para quem e por quê.",
+  "Conteúdo com propósito — sem postar por postar. Cada publicação com intenção.",
+  "Consistência sem sobrecarga — uma rotina que cabe na sua vida.",
+  "Um perfil que trabalha por você — mesmo quando você não está postando.",
+  "Autonomia para continuar — você sai criando, não dependendo de terceiros.",
+];
+
+function Outcomes() {
+  return (
+    <section className="py-24 sm:py-28 bg-surface-alt">
+      <div className="max-w-4xl mx-auto px-5">
+        <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-center mb-14" style={{ lineHeight: "1.15" }}>
+          O que muda depois da consultoria.
+        </h2>
+        <ul className="space-y-4">
+          {outcomes.map((o, i) => (
+            <li key={i} className="flex items-start gap-4 rounded-xl bg-card border border-border/50 p-5">
+              <div className="flex-shrink-0 w-7 h-7 rounded-full bg-success/15 flex items-center justify-center mt-0.5">
+                <Check className="w-4 h-4 text-success" strokeWidth={3} />
+              </div>
+              <p className="text-foreground/85 leading-relaxed">{o}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Social proof ─── */
+function SocialProof() {
+  const testimonials = [
+    { name: "[Nome do depoimento]", context: "[Profissão / contexto]" },
+    { name: "[Nome do depoimento]", context: "[Profissão / contexto]" },
+    { name: "[Nome do depoimento]", context: "[Profissão / contexto]" },
+  ];
+  const seals = [
+    "Estrategista com background em saúde, compliance e mercado financeiro",
+    "Método próprio, construído sobre quem você é",
+    "Você sai com autonomia — não dependente",
+  ];
+  return (
+    <section className="py-24 sm:py-28 bg-background">
+      <div className="max-w-6xl mx-auto px-5">
+        <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-center mb-14" style={{ lineHeight: "1.15" }}>
+          Por que confiar nesse processo.
+        </h2>
+        <div className="grid md:grid-cols-3 gap-5 mb-14">
+          {testimonials.map((t, i) => (
+            <div key={i} className="rounded-2xl border border-border/60 bg-card p-6">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-12 h-12 rounded-full bg-brand-soft border border-brand/15 flex items-center justify-center text-brand font-display text-lg">
+                  ✦
                 </div>
-                <p className="text-sm text-foreground leading-relaxed mb-5 relative">"{r.quote}"</p>
-                <div className="flex items-center gap-3">
-                  <img src={r.avatar} alt={r.name} className="w-[4.5rem] h-[4.5rem] rounded-full object-cover" loading="lazy" />
-                  <div>
-                    <p className="text-sm font-medium text-foreground">{r.name}</p>
-                    <p className="text-xs text-muted-foreground">{r.role}</p>
-                  </div>
+                <div>
+                  <p className="text-sm font-semibold text-foreground">{t.name}</p>
+                  <p className="text-xs text-muted-foreground">{t.context}</p>
                 </div>
               </div>
-            </ScrollReveal>
+              <p className="text-sm text-muted-foreground italic leading-relaxed">
+                [Depoimento aqui]
+              </p>
+            </div>
           ))}
+        </div>
+        <div className="grid sm:grid-cols-3 gap-3">
+          {seals.map((s, i) => (
+            <div key={i} className="rounded-xl border border-brand/15 bg-brand/[0.04] p-4 text-center text-sm text-foreground/85">
+              {s}
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Deliverables ─── */
+const deliverables = [
+  { n: "01", title: "Relatório mestre", desc: "Posicionamento, persona, comunicação e plano de 90 dias em um documento completo." },
+  { n: "02", title: "Guia de equipamentos", desc: "Como gravar bem com o que você tem agora." },
+  { n: "03", title: "Rotina de criação", desc: "Calendário flexível para criar com antecedência e consistência." },
+  { n: "04", title: "Banco de carrosséis", desc: "20 estruturas prontas para personalizar + 20 prompts de IA." },
+  { n: "05", title: "Combinações de fontes", desc: "5 pares tipográficos para identidade visual consistente." },
+  { n: "06", title: "Mini dicionário", desc: "35 termos do marketing digital explicados sem tecnicismo." },
+];
+
+function Deliverables() {
+  return (
+    <section className="py-24 sm:py-28 bg-surface-alt">
+      <div className="max-w-5xl mx-auto px-5">
+        <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-center mb-14" style={{ lineHeight: "1.15" }}>
+          Materiais para você continuar depois.
+        </h2>
+        <div className="grid sm:grid-cols-2 gap-4">
+          {deliverables.map((d) => (
+            <div key={d.n} className="rounded-2xl border border-border/60 bg-card p-6 hover:border-brand/30 transition-all">
+              <div className="flex items-baseline gap-3 mb-2">
+                <span className="font-display text-2xl font-medium text-brand">{d.n}</span>
+                <h3 className="font-semibold text-foreground">{d.title}</h3>
+              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed">{d.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-10 rounded-3xl bg-brand text-brand-foreground p-8 sm:p-10 relative overflow-hidden">
+          <Sparkles className="absolute top-6 right-6 w-6 h-6 opacity-50" />
+          <p className="text-xs uppercase tracking-[0.25em] font-semibold opacity-80 mb-3">
+            Bônus exclusivo
+          </p>
+          <p className="font-display text-2xl sm:text-3xl font-medium" style={{ lineHeight: "1.25" }}>
+            Acesso ao Sistema CRIA
+          </p>
+          <p className="mt-4 text-brand-foreground/85 max-w-2xl leading-relaxed">
+            Sua área de membros para organizar e planejar conteúdo, com todos os materiais da consultoria em um só lugar. Disponível primeiro para quem passa pela consultoria.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── Fit checklist ─── */
+const fits = [
+  "Quer começar no digital e não sabe por onde",
+  "Já posta, mas não vê resultado e não entende por quê",
+  "Tem um negócio ou expertise e quer mostrar isso com estratégia",
+  "Quer entender o processo — não só receber um feed bonito",
+  "Quer sair com autonomia para criar sem depender de terceiros",
+  "Quer atrair as pessoas certas — não só seguidores",
+];
+
+function FitChecklist() {
+  return (
+    <section className="py-24 sm:py-28 bg-background">
+      <div className="max-w-3xl mx-auto px-5">
+        <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-center mb-12" style={{ lineHeight: "1.15" }}>
+          Essa consultoria é para você que:
+        </h2>
+        <ul className="space-y-3">
+          {fits.map((f, i) => (
+            <li key={i} className="flex items-start gap-4 py-3 border-b border-border/50 last:border-0">
+              <span className="text-brand text-xl leading-none mt-0.5">✦</span>
+              <span className="text-foreground/85 leading-relaxed">{f}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  );
+}
+
+/* ─── About ─── */
+function About() {
+  return (
+    <section className="py-24 sm:py-28 bg-surface-alt">
+      <div className="max-w-5xl mx-auto px-5 grid md:grid-cols-[280px_1fr] gap-10 items-start">
+        <div className="mx-auto md:mx-0 w-56 h-72 rounded-3xl bg-gradient-to-br from-brand/25 via-accent to-brand-soft border border-brand/10 flex items-center justify-center text-brand font-display text-5xl">
+          GK
+        </div>
+        <div>
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight mb-6" style={{ lineHeight: "1.15" }}>
+            Prazer, <span className="italic text-brand">Gabriela Kawikioni</span>.
+          </h2>
+          <p className="text-foreground/85 leading-relaxed mb-4">
+            Sou Social Media Estrategista com background em saúde, compliance e mercado financeiro. Comecei no marketing sem grandes cursos — só com coragem, curiosidade e vontade real de aprender.
+          </p>
+          <p className="text-foreground/85 leading-relaxed mb-6">
+            Sei o que é começar do zero, sentir medo de aparecer e duvidar do próprio trabalho. Por isso me conecto de verdade com quem está nesse momento.
+          </p>
+          <div className="border-l-2 border-brand pl-5 py-2">
+            <p className="font-display text-lg italic text-foreground" style={{ lineHeight: "1.5" }}>
+              Meu trabalho não é fazer posts bonitos. É traduzir a essência de cada profissional em presença digital com estratégia, autenticidade e resultado.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── FAQ ─── */
+const faqs = [
+  { q: "Nunca postei nada. Essa consultoria é para mim?", a: "Sim. O Método CRIAR foi pensado também para quem está começando do zero. Você não precisa ter histórico de conteúdo — precisa ter vontade de começar com clareza." },
+  { q: "Já contratei social media antes e me frustrei.", a: "Eu entendo. A maioria das entregas de social media é execução sem estratégia. Aqui você sai com posicionamento construído — não só com posts prontos." },
+  { q: "Preciso aparecer em vídeo?", a: "Não necessariamente. Trabalhamos juntas para encontrar a forma que faz mais sentido para a sua realidade." },
+  { q: "Minha essência vai ser respeitada?", a: "É a base de tudo. Não uso fórmulas prontas. O processo parte inteiramente de quem você é." },
+  { q: "E se eu não souber nada de marketing?", a: "Melhor assim. Começamos do zero juntas. O mini dicionário que você recebe já cobre todos os termos que você vai precisar conhecer." },
+];
+
+function FAQ() {
+  const [open, setOpen] = useState<number | null>(0);
+  return (
+    <section className="py-24 sm:py-28 bg-background">
+      <div className="max-w-3xl mx-auto px-5">
+        <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-center mb-12" style={{ lineHeight: "1.15" }}>
+          Perguntas que você provavelmente tem
+        </h2>
+        <div className="space-y-3">
+          {faqs.map((f, i) => {
+            const isOpen = open === i;
+            return (
+              <div key={i} className="rounded-2xl border border-border/60 bg-card overflow-hidden">
+                <button
+                  onClick={() => setOpen(isOpen ? null : i)}
+                  className="w-full flex items-center justify-between gap-4 text-left px-6 py-5 hover:bg-muted/30 transition-colors"
+                  aria-expanded={isOpen}
+                >
+                  <span className="font-medium text-foreground">{f.q}</span>
+                  <span className={`text-brand text-xl transition-transform flex-shrink-0 ${isOpen ? "rotate-45" : ""}`}>+</span>
+                </button>
+                {isOpen && (
+                  <div className="px-6 pb-6 text-muted-foreground leading-relaxed">
+                    {f.a}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -314,35 +544,22 @@ function Reviews() {
 /* ─── Final CTA ─── */
 function FinalCTA() {
   return (
-    <section className="relative overflow-hidden py-28" style={{ background: "#050d0a" }}>
-      {/* Reuse hero bg for visual cohesion */}
-      <img
-        src={heroBg}
-        alt=""
-        width={1920}
-        height={1080}
-        loading="lazy"
-        className="absolute inset-0 w-full h-full object-cover opacity-25 pointer-events-none select-none"
-        aria-hidden="true"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#050d0a] via-transparent to-[#050d0a] pointer-events-none" />
-
-      <div className="relative z-10 max-w-2xl mx-auto px-5 text-center">
-        <ScrollReveal>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white" style={{ lineHeight: "1.15" }}>
-            Ready to build better habits?
-          </h2>
-          <p className="mt-4 text-white max-w-md mx-auto" style={{ textWrap: "pretty" }}>
-            Join thousands of people using Continuum to build consistency, one day at a time.
+    <section className="py-24 sm:py-32 bg-brand text-brand-foreground relative overflow-hidden">
+      <div className="absolute -top-32 -right-32 w-[500px] h-[500px] rounded-full bg-white/10 blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-32 -left-32 w-[400px] h-[400px] rounded-full bg-black/10 blur-3xl pointer-events-none" />
+      <div className="relative max-w-3xl mx-auto px-5 text-center">
+        <h2 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium tracking-tight" style={{ lineHeight: "1.15" }}>
+          Se você continuar esperando se sentir pronta, vai continuar parada.
+        </h2>
+        <p className="mt-6 text-brand-foreground/85 max-w-xl mx-auto text-lg" style={{ textWrap: "pretty" }}>
+          4 encontros. Um método. Um relatório completo. E você no controle da sua presença digital.
+        </p>
+        <div className="mt-10 flex flex-col items-center gap-4">
+          <CTAButton size="lg" variant="ghost-light">{CTA_LABEL}</CTAButton>
+          <p className="text-xs text-brand-foreground/70">
+            Após clicar, você será direcionada para uma conversa no WhatsApp.
           </p>
-          <Link
-            to="/login"
-            className="mt-8 inline-flex items-center gap-2 rounded-xl bg-[#FDAA3E] text-[#1a1a1a] px-8 py-4 text-sm font-semibold hover:bg-[#fdb95e] transition-all duration-200 active:scale-[0.97] shadow-lg shadow-[#FDAA3E]/25"
-          >
-            Get started free
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </ScrollReveal>
+        </div>
       </div>
     </section>
   );
@@ -351,30 +568,16 @@ function FinalCTA() {
 /* ─── Footer ─── */
 function Footer() {
   return (
-    <footer className="border-t border-border/40 py-12">
-      <div className="max-w-5xl mx-auto px-5">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-2">
-            <InfinityIcon className="w-6 h-6 text-foreground" strokeWidth={2.5} />
-            <span className="font-semibold text-foreground text-sm">Continuum</span>
-          </div>
-
-          <div className="flex items-center gap-6 text-sm text-muted-foreground">
-            <a href="#features" className="hover:text-foreground transition-colors">Features</a>
-            <a href="#how-it-works" className="hover:text-foreground transition-colors">How it works</a>
-            <a href="#reviews" className="hover:text-foreground transition-colors">Reviews</a>
-            <Link to="/login" className="hover:text-foreground transition-colors">Sign in</Link>
-            <Link to="/login" className="hover:text-foreground transition-colors">Get started</Link>
-          </div>
-
-          <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} Continuum</p>
+    <footer className="border-t border-border/60 py-10 bg-background">
+      <div className="max-w-6xl mx-auto px-5 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <span className="font-display text-xl font-semibold tracking-tight">KWK</span>
+          <span className="text-xs text-muted-foreground">© {new Date().getFullYear()} Gabriela Kawikioni</span>
         </div>
+        <Link to="/login" className="text-xs text-muted-foreground hover:text-brand transition-colors">
+          Área de membros
+        </Link>
       </div>
     </footer>
   );
-}
-
-/* ─── Scroll reveal wrapper (animations removed) ─── */
-function ScrollReveal({ children }: { children: React.ReactNode; delay?: number }) {
-  return <>{children}</>;
 }
