@@ -675,16 +675,16 @@ function FitChecklist() {
   const rightItems = fits.slice(3, 6);
 
   return (
-    <section className="relative py-24 sm:py-28 overflow-hidden" style={{ backgroundColor: "#6b1133" }}>
-      {/* Burgundy KWK pattern background (tiled) */}
+    <section className="relative py-24 sm:py-28 bg-background overflow-hidden">
+      {/* Burgundy KWK pattern background — single stretched image, max 50% opacity */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0"
+        className="pointer-events-none absolute inset-0 opacity-50"
         style={{
           backgroundImage: `url(${kwkPatternBurgundy.url})`,
-          backgroundSize: "640px auto",
+          backgroundSize: "cover",
           backgroundPosition: "center",
-          backgroundRepeat: "repeat",
+          backgroundRepeat: "no-repeat",
         }}
       />
       {/* Soft top/bottom fade into surrounding background */}
