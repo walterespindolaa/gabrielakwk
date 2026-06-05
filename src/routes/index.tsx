@@ -204,14 +204,14 @@ function PainSection() {
         <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-center max-w-3xl mx-auto" style={{ lineHeight: "1.15" }}>
           Talvez você também já tenha <span className="italic text-brand">pensado nisso</span>:
         </h2>
-        <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-6 gap-5">
           {pains.map((p, i) => (
             <PainCard
               key={i}
               index={`0${i + 1}`}
               quote={p}
               variant={i % 2 === 0 ? "waves" : "crosses"}
-              className={i === 4 ? "sm:col-span-2 lg:col-span-1" : ""}
+              className={`lg:col-span-2 ${i === 3 ? "lg:col-start-2" : ""} ${i === 4 ? "sm:col-span-2 lg:col-span-2 lg:col-start-4" : ""}`}
             />
           ))}
         </div>
