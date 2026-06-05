@@ -143,6 +143,9 @@ function Hero() {
             alt="Gabi KWK — Estrategista Social Media"
             className="mx-auto lg:mx-0 w-[240px] sm:w-[320px] md:w-[380px] h-auto mb-7"
           />
+          <p className="text-sm sm:text-base uppercase tracking-[0.22em] text-foreground/70 font-medium mb-4">
+            Seu trabalho é excelente. <span className="text-brand">Seu Instagram ainda não sabe disso.</span>
+          </p>
           <h1
             className="font-display text-5xl sm:text-6xl md:text-7xl font-medium tracking-tight text-foreground"
             style={{ lineHeight: "1.02" }}
@@ -154,7 +157,7 @@ function Hero() {
             />
           </h1>
           <p className="mt-6 text-base sm:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0" style={{ textWrap: "pretty", lineHeight: "1.55" }}>
-            Seu trabalho é excelente — seu Instagram ainda não sabe disso. Um processo de 4 encontros para transformar quem você é em uma presença digital que atrai, conecta e gera resultado.
+            Um processo de 4 encontros para transformar quem você é em uma presença digital que atrai, conecta e gera resultado — seja você iniciante ou já presente no digital.
           </p>
           <div className="mt-9 flex justify-center lg:justify-start">
             <CTAButton size="lg">{CTA_LABEL}</CTAButton>
