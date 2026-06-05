@@ -190,44 +190,36 @@ function Hero() {
         </div>
 
         {/* Right full-bleed image */}
-        <div className="relative order-1 lg:order-2 min-h-[420px] lg:min-h-full">
+        <div className="relative order-1 lg:order-2 min-h-[460px] lg:min-h-full">
           <img
             src={heroPhoto.url}
             alt="Gabriela Kawikioni"
             className="absolute inset-0 w-full h-full object-cover"
           />
-          {/* Smoky brand gradient blending image into the left content */}
+          {/* Smoky brand gradient blending image into the left content (desktop) */}
           <div
             className="absolute inset-0 pointer-events-none hidden lg:block"
             style={{
               background:
-                "linear-gradient(to right, var(--background) 0%, color-mix(in oklab, var(--background) 85%, transparent) 18%, color-mix(in oklab, var(--background) 35%, transparent) 38%, transparent 62%)",
+                "linear-gradient(to right, var(--background) 0%, var(--background) 8%, color-mix(in oklab, var(--background) 88%, transparent) 24%, color-mix(in oklab, var(--background) 55%, transparent) 42%, color-mix(in oklab, var(--background) 20%, transparent) 60%, transparent 78%)",
             }}
             aria-hidden
           />
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                "linear-gradient(to top, var(--background) 0%, transparent 20%)",
-            }}
-            aria-hidden
-          />
-          {/* Mobile fade from top */}
+          {/* Mobile fade from top into content */}
           <div
             className="lg:hidden absolute inset-0 pointer-events-none"
             style={{
               background:
-                "linear-gradient(to bottom, var(--brand-soft) 0%, transparent 28%)",
+                "linear-gradient(to bottom, transparent 60%, var(--background) 100%)",
             }}
             aria-hidden
           />
-
         </div>
       </div>
     </section>
   );
 }
+
 
 
 /* ─── Pain section ─── */
