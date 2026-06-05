@@ -175,13 +175,13 @@ function Hero() {
       <div className="relative grid lg:grid-cols-2 items-stretch min-h-[560px] sm:min-h-[680px] lg:min-h-[820px]">
         {/* Left content */}
         <div className="relative z-20 flex items-center order-2 lg:order-1">
-          <div className="w-full max-w-xl ml-auto mr-auto lg:mr-0 lg:ml-auto px-5 lg:pl-10 lg:pr-16 pt-2 pb-12 lg:pt-32 lg:pb-20 text-center lg:text-left">
+          <div className="w-full max-w-xl ml-auto mr-auto lg:mr-0 lg:ml-auto px-5 lg:pl-10 lg:pr-16 pt-0 pb-12 lg:pt-32 lg:pb-20 text-center lg:text-left">
             <img
               src={wordmarkAsset.url}
               alt="Gabi KWK · Estrategista Social Media"
               className="hidden lg:block mx-auto lg:mx-0 w-[240px] sm:w-[420px] md:w-[480px] lg:w-[520px] h-auto mb-6 sm:mb-8"
             />
-            <p className="text-xs sm:text-base uppercase tracking-[0.2em] sm:tracking-[0.22em] text-foreground/70 font-medium mb-3 sm:mb-4">
+            <p className="hidden lg:block text-xs sm:text-base uppercase tracking-[0.2em] sm:tracking-[0.22em] text-foreground/70 font-medium mb-3 sm:mb-4">
               Seu trabalho é excelente. <span className="text-brand">Seu Instagram ainda não sabe disso.</span>
             </p>
             <h1
@@ -257,13 +257,16 @@ function Hero() {
             }}
             aria-hidden
           />
-          {/* Mobile wordmark overlay (centered on image) */}
-          <div className="lg:hidden absolute inset-x-0 bottom-3 z-10 flex justify-center pointer-events-none px-6">
+          {/* Mobile wordmark + tagline overlay (centered on image) */}
+          <div className="lg:hidden absolute inset-x-0 bottom-4 z-10 flex flex-col items-center pointer-events-none px-6">
             <img
               src={wordmarkAsset.url}
               alt="Gabi KWK · Estrategista Social Media"
               className="w-[78%] max-w-[340px] h-auto drop-shadow-sm"
             />
+            <p className="mt-3 text-[11px] uppercase tracking-[0.18em] text-foreground/75 font-medium text-center leading-snug">
+              Seu trabalho é excelente. <span className="text-brand">Seu Instagram ainda não sabe disso.</span>
+            </p>
           </div>
 
 
@@ -386,17 +389,19 @@ function Method() {
       <StickerCollage variant="method" />
       <div className="relative max-w-6xl mx-auto px-5">
         <div className="text-center mb-12">
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand mb-4">O método</p>
-          <div className="flex items-center justify-center gap-5 sm:gap-7">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-7">
             <img
               src={circleAsset.url}
               alt=""
               aria-hidden="true"
-              className="h-20 sm:h-28 md:h-32 w-auto"
+              className="h-16 sm:h-28 md:h-32 w-auto"
             />
-            <h2 className="font-display text-6xl sm:text-7xl md:text-8xl font-medium tracking-tight text-brand leading-none whitespace-nowrap">
-              CRIAR
-            </h2>
+            <div className="flex flex-col items-center sm:items-start">
+              <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand mb-1 sm:mb-2">O método</p>
+              <h2 className="font-display text-5xl sm:text-7xl md:text-8xl font-medium tracking-tight text-brand leading-none whitespace-nowrap">
+                CRIAR
+              </h2>
+            </div>
           </div>
           <h3 className="mt-8 font-display text-2xl sm:text-3xl md:text-4xl font-medium tracking-tight max-w-3xl mx-auto" style={{ lineHeight: "1.2" }}>
             Um sistema para transformar negócios confusos em marcas claras, organizadas e posicionadas.
