@@ -664,8 +664,9 @@ function FitChecklist() {
 /* ─── About ─── */
 function About() {
   return (
-    <section className="py-24 sm:py-28 bg-surface-alt">
-      <div className="max-w-5xl mx-auto px-5 grid md:grid-cols-[320px_1fr] gap-10 items-center">
+    <section className="relative overflow-hidden py-24 sm:py-28 bg-surface-alt">
+      <StickerCollage variant="about" />
+      <div className="relative z-10 max-w-5xl mx-auto px-5 grid md:grid-cols-[320px_1fr] gap-10 items-center">
         <div className="mx-auto md:mx-0 w-full max-w-[320px] aspect-[3/4] rounded-3xl overflow-hidden border border-border/40 shadow-xl shadow-brand/10">
           <img src={aboutPhoto.url} alt="Gabriela Kawikioni" className="w-full h-full object-cover" />
         </div>
