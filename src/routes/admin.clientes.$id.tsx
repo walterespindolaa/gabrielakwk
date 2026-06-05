@@ -55,7 +55,7 @@ function ClienteDetail() {
 
   async function load() {
     setLoading(true);
-    const [p, jp, mats, ass, resp] = await Promise.all([
+    const [p, jp, mats, ass, resp, fs, inv] = await Promise.all([
       supabase.from("profiles").select("id, full_name, role, created_at").eq("id", id).maybeSingle(),
       supabase.from("journey_progress").select("stage, status").eq("cliente_id", id),
       supabase.from("materials").select("id, title, stage, type").order("created_at", { ascending: false }),
@@ -65,6 +65,12 @@ function ClienteDetail() {
         .select("id, form_id, answers, submitted_at, forms:form_id(title)")
         .eq("cliente_id", id)
         .order("submitted_at", { ascending: false }),
+      supabase.from("forms").select("id, title").order("created_at", { ascending: false }),
+      supabase
+        .from("form_invites")
+        .select("token, form_id, submitted_at, created_at, forms:form_id(title)")
+        .eq("cliente_id", id)
+        .order("created_at", { ascending: false }),
     ]);
     const prof = p.data as Profile | null;
     setProfile(prof);
@@ -79,6 +85,8 @@ function ClienteDetail() {
     setMaterials((mats.data as Material[]) ?? []);
     setAssignments(new Set(((ass.data as Assignment[]) ?? []).map((a) => a.material_id)));
     setResponses(resp.data ?? []);
+    setForms((fs.data as any) ?? []);
+    setInvites(inv.data ?? []);
     setLoading(false);
   }
 
