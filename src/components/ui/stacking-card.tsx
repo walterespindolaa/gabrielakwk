@@ -39,16 +39,15 @@ function Card({
     <div
       ref={container}
       className="sticky top-0 h-screen flex items-center justify-center px-4"
-      style={{ paddingTop: `calc(${i * 28}px + 4rem)` }}
     >
       <motion.div
         style={{
           backgroundColor: bg,
           color: fg,
           scale,
-          top: `calc(-5vh + ${i * 28}px)`,
+          top: `${i * 24}px`,
         }}
-        className="relative w-full max-w-4xl h-[min(72vh,540px)] rounded-3xl overflow-hidden shadow-2xl border border-black/5 origin-top"
+        className="relative w-full max-w-4xl h-[min(78vh,600px)] rounded-3xl overflow-hidden shadow-2xl border border-black/5 origin-top"
       >
         <div className="grid md:grid-cols-[1fr_1.1fr] h-full">
           {/* Left: copy */}
