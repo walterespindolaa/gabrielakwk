@@ -133,26 +133,35 @@ function LandingPage() {
 function Nav() {
   return (
     <nav className="absolute top-0 inset-x-0 z-30">
-      <div className="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-3" aria-label="KWK · Consultoria CRIAR">
-          <img
-            src={monogramAsset.url}
-            alt="KWK"
-            className="h-16 sm:h-20 w-auto"
-          />
-        </Link>
-        <a
-          href={WHATSAPP_URL}
-          target="_blank"
-          rel="noopener noreferrer"
+      <div className="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between gap-4">
+        <div className="flex items-center gap-6">
+          <Link to="/" className="flex items-center gap-3" aria-label="KWK · Consultoria CRIAR">
+            <img
+              src={monogramAsset.url}
+              alt="KWK"
+              className="h-16 sm:h-20 w-auto"
+            />
+          </Link>
+          <a
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden sm:inline-flex items-center text-sm font-medium text-foreground/80 hover:text-brand transition-colors"
+          >
+            Consultoria
+          </a>
+        </div>
+        <Link
+          to="/login"
           className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-brand/30 bg-brand/5 text-brand px-4 py-2 text-sm font-medium hover:bg-brand/10 transition-colors"
         >
-          {CTA_LABEL}
-        </a>
+          Acesso à área de membros
+        </Link>
       </div>
     </nav>
   );
 }
+
 
 /* ─── Hero ─── */
 function Hero() {
