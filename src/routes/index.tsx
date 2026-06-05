@@ -135,7 +135,7 @@ function Nav() {
           <img
             src={monogramAsset.url}
             alt="KWK"
-            className="h-12 sm:h-14 w-auto"
+            className="h-16 sm:h-20 w-auto"
           />
         </Link>
         <a
