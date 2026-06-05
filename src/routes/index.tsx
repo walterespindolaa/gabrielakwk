@@ -261,7 +261,7 @@ function Hero() {
           {/* Mobile wordmark + tagline overlay (centered on image) */}
           <div className="lg:hidden absolute inset-x-0 bottom-4 z-10 flex flex-col items-center pointer-events-none px-6">
             <img
-              src={wordmarkAsset.url}
+              src={wordmarkMobileAsset.url}
               alt="Gabi KWK · Estrategista Social Media"
               className="w-[78%] max-w-[340px] h-auto drop-shadow-sm"
             />
