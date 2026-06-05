@@ -175,7 +175,7 @@ function Hero() {
       <div className="relative grid lg:grid-cols-2 items-stretch min-h-[560px] sm:min-h-[680px] lg:min-h-[820px]">
         {/* Left content */}
         <div className="relative z-20 flex items-center order-2 lg:order-1">
-          <div className="w-full max-w-xl ml-auto mr-auto lg:mr-0 lg:ml-auto px-5 lg:pl-10 lg:pr-16 pt-2 pb-12 lg:pt-32 lg:pb-20 text-center lg:text-left">
+          <div className="w-full max-w-xl ml-auto mr-auto lg:mr-0 lg:ml-auto px-5 lg:pl-10 lg:pr-16 pt-0 pb-12 lg:pt-32 lg:pb-20 text-center lg:text-left">
             <img
               src={wordmarkAsset.url}
               alt="Gabi KWK · Estrategista Social Media"
