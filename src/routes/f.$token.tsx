@@ -60,8 +60,9 @@ function PublicFormPage() {
     fetchForm({ data: { token } })
       .then((res) => {
         if (!active) return;
-        setPayload(res as FormPayload);
-        if ((res as FormPayload).invite.already_submitted) setDone(true);
+        const p = res as unknown as FormPayload;
+        setPayload(p);
+        if (p.invite.already_submitted) setDone(true);
       })
       .catch((err) => {
         if (!active) return;
