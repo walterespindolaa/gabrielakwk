@@ -11,6 +11,7 @@ import { PainCard } from "@/components/ui/animated-pain-cards";
 import { StickerCollage } from "@/components/ui/sticker-collage";
 import monogramAsset from "@/assets/kwk-monogram.png.asset.json";
 import wordmarkAsset from "@/assets/gabi-kwk-wordmark.png.asset.json";
+import wordmarkMobileAsset from "@/assets/gabi-wordmark-white.png.asset.json";
 import circleAsset from "@/assets/kwk-circle.png.asset.json";
 import heroPhoto from "@/assets/gabi-hero-cutout.png.asset.json";
 import aboutPhoto from "@/assets/gabi-about-v2.jpg.asset.json";
@@ -260,7 +261,7 @@ function Hero() {
           {/* Mobile wordmark + tagline overlay (centered on image) */}
           <div className="lg:hidden absolute inset-x-0 bottom-4 z-10 flex flex-col items-center pointer-events-none px-6">
             <img
-              src={wordmarkAsset.url}
+              src={wordmarkMobileAsset.url}
               alt="Gabi KWK · Estrategista Social Media"
               className="w-[78%] max-w-[340px] h-auto drop-shadow-sm"
             />
