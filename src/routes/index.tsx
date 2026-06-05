@@ -132,10 +132,10 @@ function Nav() {
 /* ─── Hero ─── */
 function Hero() {
   return (
-    <section className="relative pt-28 pb-16 sm:pt-36 sm:pb-24 bg-gradient-to-b from-brand-soft via-background to-background overflow-hidden">
+    <section className="relative pt-20 pb-10 sm:pt-24 sm:pb-14 bg-gradient-to-b from-brand-soft via-background to-background overflow-hidden">
       <div className="absolute top-20 -right-32 w-[500px] h-[500px] rounded-full bg-brand/10 blur-3xl pointer-events-none" />
       <div className="absolute top-40 -left-32 w-[400px] h-[400px] rounded-full bg-accent/40 blur-3xl pointer-events-none" />
-      <div className="relative max-w-6xl mx-auto px-5 grid lg:grid-cols-[1.05fr_1fr] gap-10 lg:gap-14 items-center">
+      <div className="relative max-w-6xl mx-auto px-5 grid lg:grid-cols-[1fr_1.1fr] gap-10 lg:gap-12 items-center">
         <div className="text-center lg:text-left order-2 lg:order-1">
           <img
             src={wordmarkAsset.url}
