@@ -3,6 +3,8 @@ import { LayoutDashboard, Users, FolderOpen, FileText, LogOut, Menu, X } from "l
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useRequireAuth } from "@/lib/auth-guard";
+import monogramAsset from "@/assets/kwk-monogram.png.asset.json";
+import { StickerCollage } from "@/components/ui/sticker-collage";
 
 const nav = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
@@ -35,20 +37,25 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
   const SidebarContent = (
     <>
-      <div className="px-5 py-6 border-b border-border/60">
+      <div className="px-5 py-6 border-b border-brand/15 relative">
         <Link to="/" className="flex items-center gap-3">
-          <span className="font-display text-xl font-semibold tracking-tight">KWK</span>
-          <span className="text-[10px] uppercase tracking-[0.2em] text-brand font-semibold">
-            Admin
-          </span>
+          <img src={monogramAsset.url} alt="KWK" className="h-12 w-auto" />
+          <div className="flex flex-col leading-tight">
+            <span className="font-display text-lg font-semibold tracking-tight text-brand">
+              KWK
+            </span>
+            <span className="text-[9px] uppercase tracking-[0.22em] text-muted-foreground font-semibold">
+              Consultoria · Admin
+            </span>
+          </div>
         </Link>
         {auth.fullName && (
-          <p className="mt-3 text-xs text-muted-foreground truncate">
+          <p className="mt-4 text-xs text-muted-foreground truncate">
             {auth.fullName} · <span className="capitalize">{auth.role}</span>
           </p>
         )}
       </div>
-      <nav className="flex-1 px-3 py-4 space-y-1">
+      <nav className="flex-1 px-3 py-4 space-y-1 relative">
         {nav.map((item) => {
           const Icon = item.icon;
           const active = isActive(item.to, item.exact);
@@ -57,10 +64,10 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
               key={item.to}
               to={item.to}
               onClick={() => setMobileOpen(false)}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-colors ${
                 active
-                  ? "bg-brand-soft text-brand font-semibold"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  ? "bg-brand text-brand-foreground font-semibold shadow-sm shadow-brand/20"
+                  : "text-foreground/70 hover:bg-brand-soft/60 hover:text-brand"
               }`}
             >
               <Icon className="w-4 h-4" />
@@ -69,10 +76,10 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
           );
         })}
       </nav>
-      <div className="p-3 border-t border-border/60">
+      <div className="p-3 border-t border-brand/15">
         <button
           onClick={handleSignOut}
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
         >
           <LogOut className="w-4 h-4" />
           Sair
@@ -84,15 +91,19 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-background flex">
       {/* Desktop sidebar */}
-      <aside className="hidden md:flex w-64 flex-col border-r border-border/60 bg-card sticky top-0 h-screen">
-        {SidebarContent}
+      <aside className="hidden md:flex w-64 flex-col border-r border-brand/15 bg-card sticky top-0 h-screen relative overflow-hidden">
+        <div aria-hidden className="absolute inset-0 opacity-[0.18] pointer-events-none">
+          <StickerCollage variant="about" />
+        </div>
+        <div className="relative flex-1 flex flex-col">{SidebarContent}</div>
       </aside>
 
       {/* Mobile header */}
-      <div className="md:hidden fixed top-0 inset-x-0 z-40 h-14 bg-card border-b border-border/60 flex items-center justify-between px-4">
+      <div className="md:hidden fixed top-0 inset-x-0 z-40 h-14 bg-card border-b border-brand/15 flex items-center justify-between px-4">
         <Link to="/" className="flex items-center gap-2">
-          <span className="font-display text-lg font-semibold">KWK</span>
-          <span className="text-[10px] uppercase tracking-[0.2em] text-brand font-semibold">
+          <img src={monogramAsset.url} alt="KWK" className="h-9 w-auto" />
+          <span className="font-display text-base font-semibold text-brand">KWK</span>
+          <span className="text-[9px] uppercase tracking-[0.22em] text-muted-foreground font-semibold">
             Admin
           </span>
         </Link>
@@ -112,15 +123,18 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
             className="absolute inset-0 bg-black/40"
             onClick={() => setMobileOpen(false)}
           />
-          <aside className="relative w-72 max-w-[85vw] bg-card flex flex-col">
+          <aside className="relative w-72 max-w-[85vw] bg-card flex flex-col overflow-hidden">
+            <div aria-hidden className="absolute inset-0 opacity-[0.18] pointer-events-none">
+              <StickerCollage variant="about" />
+            </div>
             <button
               onClick={() => setMobileOpen(false)}
-              className="absolute top-4 right-4 p-1 text-muted-foreground hover:text-foreground"
+              className="absolute top-4 right-4 p-1 text-muted-foreground hover:text-foreground z-10"
               aria-label="Fechar menu"
             >
               <X className="w-5 h-5" />
             </button>
-            {SidebarContent}
+            <div className="relative flex-1 flex flex-col">{SidebarContent}</div>
           </aside>
         </div>
       )}
