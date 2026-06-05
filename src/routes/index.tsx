@@ -390,8 +390,9 @@ const meetings: CardItem[] = [
 
 function Meetings() {
   return (
-    <section className="pt-4 pb-24 sm:pt-6 sm:pb-28 bg-background">
-      <div className="max-w-5xl mx-auto px-5">
+    <section className="relative overflow-hidden pt-4 pb-24 sm:pt-6 sm:pb-28 bg-background">
+      <StickerCollage variant="meetings" />
+      <div className="relative z-10 max-w-5xl mx-auto px-5">
         <div className="text-center mb-12">
           <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight" style={{ lineHeight: "1.15" }}>
             4 encontros. Um processo. Um resultado.
