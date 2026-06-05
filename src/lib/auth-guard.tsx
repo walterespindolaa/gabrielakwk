@@ -92,7 +92,7 @@ export function useRequireAuth(options: { requireStaff?: boolean } = {}) {
       return;
     }
     if (options.requireStaff && auth.role !== "admin" && auth.role !== "consultora") {
-      navigate({ to: "/area" });
+      navigate({ to: "/area" as any });
     }
   }, [auth.loading, auth.userId, auth.role, options.requireStaff, navigate]);
 
