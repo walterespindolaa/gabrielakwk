@@ -199,21 +199,19 @@ const pains = [
 function PainSection() {
   return (
     <section className="py-24 sm:py-28 bg-surface-alt">
-      <div className="max-w-5xl mx-auto px-5">
+      <div className="max-w-6xl mx-auto px-5">
         <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-center max-w-3xl mx-auto" style={{ lineHeight: "1.15" }}>
-          Talvez você também já tenha pensado nisso:
+          Talvez você também já tenha <span className="italic text-brand">pensado nisso</span>:
         </h2>
-        <div className="mt-14 grid sm:grid-cols-2 gap-4">
+        <div className="mt-14 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {pains.map((p, i) => (
-            <div
+            <PainCard
               key={i}
-              className={`rounded-2xl bg-card border border-border/60 p-6 text-foreground/80 leading-relaxed shadow-sm ${
-                i === 4 ? "sm:col-span-2 sm:max-w-2xl sm:mx-auto" : ""
-              }`}
-            >
-              <span className="text-brand text-2xl font-display leading-none">"</span>
-              <p className="mt-1 text-[15px]">{p}</p>
-            </div>
+              index={`0${i + 1}`}
+              quote={p}
+              variant={i % 2 === 0 ? "waves" : "crosses"}
+              className={i === 4 ? "sm:col-span-2 lg:col-span-1" : ""}
+            />
           ))}
         </div>
         <p className="mt-14 max-w-2xl mx-auto text-center text-lg text-foreground/90" style={{ textWrap: "pretty" }}>
