@@ -86,6 +86,7 @@ function Card({
 export function StackingCards({ items }: { items: StackingCardItem[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const lastIndex = items.length - 1;
 
   useEffect(() => {
@@ -93,16 +94,14 @@ export function StackingCards({ items }: { items: StackingCardItem[] }) {
     const compute = () => {
       raf = 0;
       const el = wrapperRef.current;
-      if (!el) return;
+      const panel = panelRef.current;
+      if (!el || !panel) return;
       const rect = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      // total scrollable distance inside the tall wrapper (height - 1 viewport for the sticky pin)
-      const scrollable = el.offsetHeight - vh;
+      const stickyTop = parseFloat(window.getComputedStyle(panel).top) || 0;
+      const scrollable = el.offsetHeight - panel.offsetHeight;
       if (scrollable <= 0) return;
-      // progress: 0 when wrapper top hits viewport top, 1 when wrapper bottom hits viewport bottom
-      const progressed = Math.min(Math.max(-rect.top, 0), scrollable);
+      const progressed = Math.min(Math.max(stickyTop - rect.top, 0), scrollable);
       const ratio = progressed / scrollable;
-      // map 0..1 → 0..lastIndex with a small bias so the last card lingers
       const idx = Math.round(ratio * lastIndex);
       setActiveIndex((prev) => (prev === idx ? prev : Math.min(lastIndex, Math.max(0, idx))));
     };
@@ -122,13 +121,15 @@ export function StackingCards({ items }: { items: StackingCardItem[] }) {
     };
   }, [lastIndex]);
 
-  // Sticky panel pins for 1 viewport; each additional step adds ~65vh of scroll distance.
-  const stepVh = 65;
-  const wrapperHeight = `calc(100vh + ${(items.length - 1) * stepVh}vh)`;
+  const stepVh = 55;
+  const wrapperHeight = `calc(min(76vh, 580px) + ${(items.length - 1) * stepVh}vh)`;
 
   return (
     <div ref={wrapperRef} style={{ height: wrapperHeight }} className="relative">
-      <div className="sticky top-0 h-screen flex items-center">
+      <div
+        ref={panelRef}
+        className="sticky top-[max(4rem,calc((100vh-580px)/2))]"
+      >
         <div className="relative mx-auto w-full max-w-4xl px-4 h-[min(76vh,580px)] min-h-[520px]">
           {items.map((item, i) => (
             <Card
