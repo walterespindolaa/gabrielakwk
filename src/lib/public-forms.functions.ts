@@ -101,7 +101,7 @@ const createLeadInviteSchema = z.object({
 
 export const createLeadInvite = createServerFn({ method: "POST" })
   .middleware([
-    (await import("@/integrations/supabase/auth-middleware")).requireSupabaseAuth,
+    requireSupabaseAuth,
   ])
   .inputValidator((d) => createLeadInviteSchema.parse(d))
   .handler(async ({ data, context }) => {
@@ -134,7 +134,7 @@ export const createLeadInvite = createServerFn({ method: "POST" })
 
 export const listLeads = createServerFn({ method: "GET" })
   .middleware([
-    (await import("@/integrations/supabase/auth-middleware")).requireSupabaseAuth,
+    requireSupabaseAuth,
   ])
   .handler(async () => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -153,7 +153,7 @@ const approveSchema = z.object({
 
 export const approveLeadInvite = createServerFn({ method: "POST" })
   .middleware([
-    (await import("@/integrations/supabase/auth-middleware")).requireSupabaseAuth,
+    requireSupabaseAuth,
   ])
   .inputValidator((d) => approveSchema.parse(d))
   .handler(async ({ data, context }) => {
