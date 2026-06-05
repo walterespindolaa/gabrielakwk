@@ -217,7 +217,7 @@ function Hero() {
           <img
             src={heroPhoto.url}
             alt="Gabriela Kawikioni"
-            className="relative w-full h-full object-contain object-bottom"
+            className="absolute inset-0 w-full h-full object-cover object-center"
           />
           {/* Horizontal smoky fade: blends the image's left edge into the content column (desktop) */}
           <div
@@ -665,26 +665,28 @@ function FitChecklist() {
   const rightItems = fits.slice(3, 6);
 
   return (
-    <section className="relative py-24 sm:py-28 bg-background overflow-hidden">
-      {/* Burgundy KWK pattern background */}
+    <section className="relative py-24 sm:py-28 overflow-hidden" style={{ backgroundColor: "#6b1133" }}>
+      {/* Burgundy KWK pattern background (tiled) */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-20"
+        className="pointer-events-none absolute inset-0"
         style={{
           backgroundImage: `url(${kwkPatternBurgundy.url})`,
-          backgroundSize: "cover",
+          backgroundSize: "640px auto",
           backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
+          backgroundRepeat: "repeat",
         }}
       />
+      {/* Soft top/bottom fade into surrounding background */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "linear-gradient(to bottom, var(--background) 0%, transparent 18%, transparent 82%, var(--background) 100%)",
+            "linear-gradient(to bottom, var(--background) 0%, transparent 14%, transparent 86%, var(--background) 100%)",
         }}
       />
+
       {/* Decorative background */}
       <div aria-hidden className="pointer-events-none absolute top-20 left-10 w-64 h-64 rounded-full bg-brand/5 blur-3xl" />
       <div aria-hidden className="pointer-events-none absolute bottom-20 right-10 w-72 h-72 rounded-full bg-brand/10 blur-3xl" />
