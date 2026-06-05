@@ -28,14 +28,14 @@ function Card({
   accent,
   progress,
 }: CardProps) {
-  const segment = total > 1 ? 1 / (total - 1) : 1;
-  const start = Math.max(0, (i - 1) * segment);
-  const center = i * segment;
+  const segment = total > 1 ? 1 / total : 1;
+  const start = i === 0 ? 0 : Math.max(0, (i - 1) * segment);
+  const center = i === 0 ? segment : i * segment;
   const end = Math.min(1, (i + 1) * segment);
-  const y = useTransform(progress, [start, center, end], i === 0 ? [0, 0, -68] : [72, 0, -68]);
-  const scale = useTransform(progress, [start, center, end], i === 0 ? [1, 1, 0.88] : [0.92, 1, 0.88]);
-  const rotate = useTransform(progress, [start, center, end], i === 0 ? [0, 0, -2] : [2, 0, -2]);
-  const opacity = useTransform(progress, [start, center, end], i === 0 ? [1, 1, 0.68] : [0.74, 1, 0.68]);
+  const y = useTransform(progress, [start, center, end], i === 0 ? [0, -24, -68] : [78, 0, -68]);
+  const scale = useTransform(progress, [start, center, end], i === 0 ? [1, 0.96, 0.88] : [0.92, 1, 0.88]);
+  const rotate = useTransform(progress, [start, center, end], i === 0 ? [0, -1, -2] : [2, 0, -2]);
+  const opacity = useTransform(progress, [start, center, end], i === 0 ? [1, 0.9, 0.68] : [0.74, 1, 0.68]);
 
   return (
     <motion.div
