@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowRight, CalendarDays, Compass, LayoutGrid, Megaphone, MessageCircle, PenLine, Sparkles, Target, UserCheck } from "lucide-react";
+import { ArrowRight, CalendarDays, Compass, LayoutGrid, Megaphone, MessageCircle, PenLine, Sparkles, Target, UserCheck, TrendingUp, Briefcase, Lightbulb, Zap, Heart } from "lucide-react";
+import { motion } from "framer-motion";
 import { FlipWords } from "@/components/ui/flip-words";
 import { StackingCards, type StackingCardItem } from "@/components/ui/stacking-card";
 import { ExpandingCards, type CardItem } from "@/components/ui/expanding-cards";
