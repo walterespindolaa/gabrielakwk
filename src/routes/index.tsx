@@ -172,21 +172,20 @@ function Hero() {
       <div className="hidden lg:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[760px] h-[760px] rounded-full bg-brand/20 blur-[120px] pointer-events-none z-10" />
       <div className="absolute top-40 left-10 w-[400px] h-[400px] rounded-full bg-accent/40 blur-3xl pointer-events-none" />
 
-      <div className="relative grid lg:grid-cols-2 items-stretch min-h-[680px] lg:min-h-[820px]">
+      <div className="relative grid lg:grid-cols-2 items-stretch min-h-[560px] sm:min-h-[680px] lg:min-h-[820px]">
         {/* Left content */}
         <div className="relative z-20 flex items-center order-2 lg:order-1">
-          <div className="w-full max-w-xl ml-auto mr-auto lg:mr-0 lg:ml-auto px-5 lg:pl-10 lg:pr-16 pt-12 pb-12 lg:pt-32 lg:pb-20 text-center lg:text-left">
+          <div className="w-full max-w-xl ml-auto mr-auto lg:mr-0 lg:ml-auto px-5 lg:pl-10 lg:pr-16 pt-8 pb-12 lg:pt-32 lg:pb-20 text-center lg:text-left">
             <img
               src={wordmarkAsset.url}
               alt="Gabi KWK · Estrategista Social Media"
-              className="mx-auto lg:mx-0 w-[320px] sm:w-[420px] md:w-[480px] lg:w-[520px] h-auto mb-8"
+              className="mx-auto lg:mx-0 w-[240px] sm:w-[420px] md:w-[480px] lg:w-[520px] h-auto mb-6 sm:mb-8"
             />
-            <p className="text-sm sm:text-base uppercase tracking-[0.22em] text-foreground/70 font-medium mb-4">
+            <p className="text-xs sm:text-base uppercase tracking-[0.2em] sm:tracking-[0.22em] text-foreground/70 font-medium mb-3 sm:mb-4">
               Seu trabalho é excelente. <span className="text-brand">Seu Instagram ainda não sabe disso.</span>
             </p>
             <h1
-              className="font-display text-5xl sm:text-6xl md:text-7xl font-medium tracking-tight text-foreground"
-              style={{ lineHeight: "1.02" }}
+              className="font-display text-[2.6rem] leading-[1.02] sm:text-6xl md:text-7xl font-medium tracking-tight text-foreground"
             >
               <span className="text-brand">Cria</span>
               <FlipWords
@@ -194,17 +193,17 @@ function Hero() {
                 className="italic text-brand px-0"
               />
             </h1>
-            <p className="mt-6 text-base sm:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0" style={{ textWrap: "pretty", lineHeight: "1.55" }}>
+            <p className="mt-5 sm:mt-6 text-sm sm:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0" style={{ textWrap: "pretty", lineHeight: "1.55" }}>
               Um processo de 4 encontros para transformar quem você é em uma presença digital que atrai, conecta e gera resultado. Seja você iniciante ou já presente no digital.
             </p>
-            <div className="mt-9 flex justify-center lg:justify-start">
+            <div className="mt-7 sm:mt-9 flex justify-center lg:justify-start">
               <CTAButton size="lg">{CTA_LABEL}</CTAButton>
             </div>
           </div>
         </div>
 
         {/* Right full-bleed image */}
-        <div className="relative order-1 lg:order-2 min-h-[460px] lg:min-h-full overflow-visible">
+        <div className="relative order-1 lg:order-2 min-h-[340px] sm:min-h-[460px] lg:min-h-full overflow-visible">
           {/* Seam shadow: soft dark vertical blur at the boundary between left cream column and right pink image, to dissolve the straight cut */}
           <div
             aria-hidden
