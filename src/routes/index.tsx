@@ -11,6 +11,7 @@ import { PainCard } from "@/components/ui/animated-pain-cards";
 import { StickerCollage } from "@/components/ui/sticker-collage";
 import monogramAsset from "@/assets/kwk-monogram.png.asset.json";
 import wordmarkAsset from "@/assets/gabi-kwk-wordmark.png.asset.json";
+import wordmarkMobileAsset from "@/assets/gabi-wordmark-white.png.asset.json";
 import circleAsset from "@/assets/kwk-circle.png.asset.json";
 import heroPhoto from "@/assets/gabi-hero-cutout.png.asset.json";
 import aboutPhoto from "@/assets/gabi-about-v2.jpg.asset.json";
