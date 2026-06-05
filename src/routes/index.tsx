@@ -203,7 +203,17 @@ function Hero() {
         </div>
 
         {/* Right full-bleed image */}
-        <div className="relative order-1 lg:order-2 min-h-[460px] lg:min-h-full overflow-hidden">
+        <div className="relative order-1 lg:order-2 min-h-[460px] lg:min-h-full overflow-visible">
+          {/* Seam shadow: soft dark vertical blur at the boundary between left cream column and right pink image, to dissolve the straight cut */}
+          <div
+            aria-hidden
+            className="hidden lg:block pointer-events-none absolute top-0 bottom-0 -left-24 w-48 z-20"
+            style={{
+              background:
+                "linear-gradient(to right, transparent 0%, color-mix(in oklab, var(--brand) 14%, transparent) 50%, transparent 100%)",
+              filter: "blur(28px)",
+            }}
+          />
           {/* Brand-soft pink backdrop matching hero header band */}
           <div
             aria-hidden
