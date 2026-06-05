@@ -1,6 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Check, ArrowRight, Sparkles } from "lucide-react";
+import monogramAsset from "@/assets/kwk-monogram.png.asset.json";
+import wordmarkAsset from "@/assets/gabi-kwk-wordmark.png.asset.json";
+import circleAsset from "@/assets/kwk-circle.png.asset.json";
 
 const WHATSAPP_URL = "https://wa.me/55SEUNUMERO";
 const CTA_LABEL = "Quero conhecer a consultoria";
@@ -104,13 +107,12 @@ function Nav() {
   return (
     <nav className="absolute top-0 inset-x-0 z-30">
       <div className="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2">
-          <span className="font-display text-2xl font-semibold tracking-tight text-foreground">
-            KWK
-          </span>
-          <span className="hidden sm:inline text-xs uppercase tracking-[0.2em] text-muted-foreground">
-            Consultoria CRIAR
-          </span>
+        <Link to="/" className="flex items-center gap-3" aria-label="KWK — Consultoria CRIAR">
+          <img
+            src={monogramAsset.url}
+            alt="KWK"
+            className="h-12 sm:h-14 w-auto"
+          />
         </Link>
         <a
           href={WHATSAPP_URL}
@@ -132,9 +134,11 @@ function Hero() {
       <div className="absolute top-20 -right-32 w-[500px] h-[500px] rounded-full bg-brand/10 blur-3xl pointer-events-none" />
       <div className="absolute top-40 -left-32 w-[400px] h-[400px] rounded-full bg-accent/40 blur-3xl pointer-events-none" />
       <div className="relative max-w-4xl mx-auto px-5 text-center">
-        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand mb-6">
-          Consultoria CRIAR — KWK
-        </p>
+        <img
+          src={wordmarkAsset.url}
+          alt="Gabi KWK — Estrategista Social Media"
+          className="mx-auto w-[280px] sm:w-[380px] md:w-[460px] lg:w-[540px] h-auto mb-8"
+        />
         <h1
           className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium tracking-tight text-foreground"
           style={{ lineHeight: "1.05" }}
@@ -222,9 +226,17 @@ function Method() {
       <div className="relative max-w-6xl mx-auto px-5">
         <div className="text-center mb-16">
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand mb-4">O método</p>
-          <h2 className="font-display text-7xl sm:text-8xl md:text-9xl font-medium tracking-tighter text-brand leading-none">
-            CRIAR
-          </h2>
+          <div className="flex items-center justify-center gap-5 sm:gap-7">
+            <img
+              src={circleAsset.url}
+              alt=""
+              aria-hidden="true"
+              className="h-20 sm:h-28 md:h-32 w-auto"
+            />
+            <h2 className="font-display text-6xl sm:text-7xl md:text-8xl font-medium tracking-tight text-brand leading-none whitespace-nowrap">
+              CRIAR
+            </h2>
+          </div>
           <h3 className="mt-8 font-display text-2xl sm:text-3xl md:text-4xl font-medium tracking-tight max-w-3xl mx-auto" style={{ lineHeight: "1.2" }}>
             Um sistema para transformar negócios confusos em marcas claras, organizadas e posicionadas.
           </h3>
