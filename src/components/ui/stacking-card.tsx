@@ -86,51 +86,107 @@ function Card({
 export function StackingCards({ items }: { items: StackingCardItem[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const panelRef = useRef<HTMLDivElement>(null);
+  const lastStepAtRef = useRef(0);
+  const touchStartYRef = useRef<number | null>(null);
   const lastIndex = items.length - 1;
 
   useEffect(() => {
-    let raf = 0;
-    const compute = () => {
-      raf = 0;
+    const isInStepZone = () => {
       const el = wrapperRef.current;
-      const panel = panelRef.current;
-      if (!el || !panel) return;
+      if (!el) return false;
       const rect = el.getBoundingClientRect();
-      const stickyTop = parseFloat(window.getComputedStyle(panel).top) || 0;
-      const scrollable = el.offsetHeight - panel.offsetHeight;
-      if (scrollable <= 0) return;
-      const progressed = Math.min(Math.max(stickyTop - rect.top, 0), scrollable);
-      const ratio = progressed / scrollable;
-      const idx = Math.round(ratio * lastIndex);
-      setActiveIndex((prev) => (prev === idx ? prev : Math.min(lastIndex, Math.max(0, idx))));
+      const center = window.innerHeight / 2;
+      return rect.top <= center + 90 && rect.bottom >= center - 90;
+    };
+
+    const centerCards = () => {
+      const el = wrapperRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const target = window.scrollY + rect.top - (window.innerHeight - rect.height) / 2;
+      window.scrollTo({ top: target, behavior: "smooth" });
+    };
+
+    const step = (direction: 1 | -1) => {
+      const now = window.performance.now();
+      if (now - lastStepAtRef.current < 620) return true;
+
+      let didStep = false;
+      setActiveIndex((prev) => {
+        const next = Math.min(lastIndex, Math.max(0, prev + direction));
+        didStep = next !== prev;
+        return next;
+      });
+
+      if (didStep) {
+        lastStepAtRef.current = now;
+        centerCards();
+      }
+
+      return didStep;
+    };
+
+    const onWheel = (event: WheelEvent) => {
+      if (!isInStepZone()) return;
+      const direction = event.deltaY > 0 ? 1 : -1;
+      const canStep = direction > 0 ? activeIndex < lastIndex : activeIndex > 0;
+      if (!canStep) return;
+
+      event.preventDefault();
+      step(direction);
+    };
+
+    const onTouchStart = (event: TouchEvent) => {
+      touchStartYRef.current = event.touches[0]?.clientY ?? null;
+    };
+
+    const onTouchMove = (event: TouchEvent) => {
+      if (!isInStepZone() || touchStartYRef.current === null) return;
+      const currentY = event.touches[0]?.clientY ?? touchStartYRef.current;
+      const delta = touchStartYRef.current - currentY;
+      if (Math.abs(delta) < 42) return;
+
+      const direction = delta > 0 ? 1 : -1;
+      const canStep = direction > 0 ? activeIndex < lastIndex : activeIndex > 0;
+      if (!canStep) return;
+
+      event.preventDefault();
+      if (step(direction)) touchStartYRef.current = currentY;
     };
 
     const onScroll = () => {
-      if (raf) return;
-      raf = requestAnimationFrame(compute);
+      const el = wrapperRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      if (rect.top > window.innerHeight * 0.72) setActiveIndex(0);
+      if (rect.bottom < window.innerHeight * 0.28) setActiveIndex(lastIndex);
     };
 
-    compute();
+    window.addEventListener("wheel", onWheel, { passive: false });
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
     return () => {
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
-      if (raf) cancelAnimationFrame(raf);
     };
-  }, [lastIndex]);
+  }, [activeIndex, lastIndex]);
 
-  const stepVh = 55;
-  const wrapperHeight = `calc(min(76vh, 580px) + ${(items.length - 1) * stepVh}vh)`;
+  const goBack = () => setActiveIndex((prev) => Math.max(0, prev - 1));
 
   return (
-    <div ref={wrapperRef} style={{ height: wrapperHeight }} className="relative">
-      <div
-        ref={panelRef}
-        className="sticky top-[max(4rem,calc((100vh-580px)/2))]"
-      >
-        <div className="relative mx-auto w-full max-w-4xl px-4 h-[min(76vh,580px)] min-h-[520px]">
+    <div ref={wrapperRef} className="relative py-4 sm:py-6">
+      <div className="relative mx-auto w-full max-w-4xl px-4 h-[min(76vh,580px)] min-h-[520px]">
+        <button
+          type="button"
+          aria-label="Voltar uma etapa"
+          onClick={goBack}
+          className="absolute inset-x-4 inset-y-0 z-[60] cursor-pointer rounded-3xl focus:outline-none"
+        >
+          <span className="sr-only">Voltar uma etapa</span>
+        </button>
           {items.map((item, i) => (
             <Card
               key={`${item.letter}-${i}`}
@@ -140,7 +196,6 @@ export function StackingCards({ items }: { items: StackingCardItem[] }) {
               {...item}
             />
           ))}
-        </div>
       </div>
     </div>
   );
