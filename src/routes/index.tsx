@@ -427,6 +427,25 @@ const meetings: CardItem[] = [
 function Meetings() {
   return (
     <section className="relative overflow-hidden pt-4 pb-24 sm:pt-6 sm:pb-28 bg-background">
+      {/* KWK monogram pattern background */}
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none opacity-20"
+        style={{
+          backgroundImage: `url(${kwkPattern.url})`,
+          backgroundRepeat: "repeat",
+          backgroundSize: "560px auto",
+        }}
+      />
+      {/* Soft top/bottom fades so the pattern blends into adjacent sections */}
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(to bottom, var(--background) 0%, transparent 12%, transparent 88%, var(--background) 100%)",
+        }}
+      />
       <StickerCollage variant="meetings" />
       <div className="relative z-10 max-w-5xl mx-auto px-5">
         <div className="text-center mb-12">
