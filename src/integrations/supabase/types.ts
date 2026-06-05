@@ -14,6 +14,95 @@ export type Database = {
   }
   public: {
     Tables: {
+      encontros: {
+        Row: {
+          cliente_id: string
+          completed_at: string | null
+          created_at: string
+          id: string
+          meet_url: string | null
+          next_steps: string | null
+          notes: string | null
+          numero: number
+          scheduled_at: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          cliente_id: string
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          meet_url?: string | null
+          next_steps?: string | null
+          notes?: string | null
+          numero: number
+          scheduled_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          cliente_id?: string
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          meet_url?: string | null
+          next_steps?: string | null
+          notes?: string | null
+          numero?: number
+          scheduled_at?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      exercise_submissions: {
+        Row: {
+          answers: Json | null
+          attachments: Json | null
+          cliente_id: string
+          created_at: string
+          form_id: string
+          id: string
+          notes: string | null
+          status: string
+          submitted_at: string | null
+          updated_at: string
+        }
+        Insert: {
+          answers?: Json | null
+          attachments?: Json | null
+          cliente_id: string
+          created_at?: string
+          form_id: string
+          id?: string
+          notes?: string | null
+          status?: string
+          submitted_at?: string | null
+          updated_at?: string
+        }
+        Update: {
+          answers?: Json | null
+          attachments?: Json | null
+          cliente_id?: string
+          created_at?: string
+          form_id?: string
+          id?: string
+          notes?: string | null
+          status?: string
+          submitted_at?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "exercise_submissions_form_id_fkey"
+            columns: ["form_id"]
+            isOneToOne: false
+            referencedRelation: "forms"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       form_invites: {
         Row: {
           answers: Json | null
@@ -117,7 +206,10 @@ export type Database = {
         Row: {
           created_at: string
           description: string | null
+          encontro: number | null
           id: string
+          kind: string
+          order_index: number
           schema: Json | null
           stage: string | null
           title: string
@@ -125,7 +217,10 @@ export type Database = {
         Insert: {
           created_at?: string
           description?: string | null
+          encontro?: number | null
           id?: string
+          kind?: string
+          order_index?: number
           schema?: Json | null
           stage?: string | null
           title: string
@@ -133,7 +228,10 @@ export type Database = {
         Update: {
           created_at?: string
           description?: string | null
+          encontro?: number | null
           id?: string
+          kind?: string
+          order_index?: number
           schema?: Json | null
           stage?: string | null
           title?: string

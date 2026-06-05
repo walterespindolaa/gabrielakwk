@@ -142,12 +142,10 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export const STAGES = [
-  { key: "conectar", label: "Conectar", short: "C" },
-  { key: "reconhecer", label: "Reconhecer", short: "R" },
-  { key: "identificar", label: "Identificar", short: "I" },
-  { key: "ativar", label: "Ativar", short: "A" },
-  { key: "reorganizar", label: "Reorganizar", short: "R" },
-] as const;
-
-export type StageKey = (typeof STAGES)[number]["key"];
+import { ENCONTROS } from "@/lib/method-criar";
+export const STAGES = ENCONTROS.map((e) => ({
+  key: e.key,
+  label: e.letterFull,
+  short: e.letter,
+}));
+export type { StageKey } from "@/lib/method-criar";
