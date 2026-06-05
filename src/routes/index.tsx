@@ -232,7 +232,7 @@ function Pullquote() {
 }
 
 /* ─── Method ─── */
-import { StackingCards, type StackingCardItem } from "@/components/ui/stacking-card";
+
 
 const methodSteps: StackingCardItem[] = [
   {
