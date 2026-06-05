@@ -285,8 +285,8 @@ const methodSteps: StackingCardItem[] = [
 
 function Method() {
   return (
-    <section className="py-24 sm:py-32 bg-surface-alt relative overflow-hidden">
-      <div className="absolute -top-20 right-0 w-[400px] h-[400px] rounded-full bg-brand/5 blur-3xl pointer-events-none" />
+    <section className="pt-24 sm:pt-32 bg-surface-alt relative">
+      <div className="absolute -top-20 right-0 w-[400px] h-[400px] rounded-full bg-brand/5 blur-3xl pointer-events-none -z-0" />
       <div className="relative max-w-6xl mx-auto px-5">
         <div className="text-center mb-12">
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand mb-4">O método</p>
