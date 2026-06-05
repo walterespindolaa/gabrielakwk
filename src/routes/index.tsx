@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowRight, CalendarDays, Compass, LayoutGrid, Megaphone, MessageCircle, PenLine, Sparkles, Target, UserCheck } from "lucide-react";
+import { ArrowRight, CalendarDays, Compass, LayoutGrid, Megaphone, MessageCircle, PenLine, Sparkles, Target, UserCheck, TrendingUp, Briefcase, Lightbulb, Zap, Heart } from "lucide-react";
+import { motion } from "framer-motion";
 import { FlipWords } from "@/components/ui/flip-words";
 import { StackingCards, type StackingCardItem } from "@/components/ui/stacking-card";
 import { ExpandingCards, type CardItem } from "@/components/ui/expanding-cards";
@@ -531,29 +532,114 @@ function Deliverables() {
 
 /* ─── Fit checklist ─── */
 const fits = [
-  "Quer começar no digital e não sabe por onde",
-  "Já posta, mas não vê resultado e não entende por quê",
-  "Tem um negócio ou expertise e quer mostrar isso com estratégia",
-  "Quer entender o processo — não só receber um feed bonito",
-  "Quer sair com autonomia para criar sem depender de terceiros",
-  "Quer atrair as pessoas certas — não só seguidores",
+  { icon: Compass, secondary: Sparkles, title: "Está começando", desc: "Quer começar no digital e não sabe por onde — precisa de clareza e um caminho." },
+  { icon: TrendingUp, secondary: Target, title: "Posta sem resultado", desc: "Já posta, mas não vê resultado e não entende por quê. Quer parar de tentar no escuro." },
+  { icon: Briefcase, secondary: Megaphone, title: "Tem expertise para mostrar", desc: "Tem um negócio ou expertise real e quer mostrar isso com estratégia, não no improviso." },
+  { icon: Lightbulb, secondary: PenLine, title: "Quer entender o processo", desc: "Quer entender o porquê de cada escolha — não só receber um feed bonito pronto." },
+  { icon: Zap, secondary: UserCheck, title: "Busca autonomia", desc: "Quer sair com autonomia para criar conteúdo sem depender de terceiros toda vez." },
+  { icon: Heart, secondary: Sparkles, title: "Quer atrair certo", desc: "Quer atrair as pessoas certas — clientes, oportunidades — não só seguidores." },
 ];
 
-function FitChecklist() {
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease: "easeOut" as const } },
+};
+
+type FitItemProps = {
+  icon: typeof Compass;
+  secondary: typeof Sparkles;
+  title: string;
+  desc: string;
+  direction: "left" | "right";
+};
+
+function FitItem({ icon: Icon, secondary: Secondary, title, desc, direction }: FitItemProps) {
   return (
-    <section className="py-24 sm:py-28 bg-background">
-      <div className="max-w-3xl mx-auto px-5">
-        <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-center mb-12" style={{ lineHeight: "1.15" }}>
-          Essa consultoria é para você que:
-        </h2>
-        <ul className="space-y-3">
-          {fits.map((f, i) => (
-            <li key={i} className="flex items-start gap-4 py-3 border-b border-border/50 last:border-0">
-              <span className="text-brand text-xl leading-none mt-0.5">✦</span>
-              <span className="text-foreground/85 leading-relaxed">{f}</span>
-            </li>
-          ))}
-        </ul>
+    <motion.div
+      variants={itemVariants}
+      whileHover={{ y: -4 }}
+      className={`group relative rounded-2xl border border-border/60 bg-card/80 backdrop-blur-sm p-6 shadow-sm hover:shadow-lg hover:border-brand/40 transition-all ${direction === "left" ? "md:text-right" : "md:text-left"}`}
+    >
+      <div className={`flex items-center gap-3 mb-3 ${direction === "left" ? "md:flex-row-reverse" : "md:flex-row"}`}>
+        <div className="relative flex-shrink-0">
+          <div className="w-11 h-11 rounded-xl bg-brand/10 flex items-center justify-center text-brand group-hover:bg-brand group-hover:text-brand-foreground transition-colors">
+            <Icon className="w-5 h-5" strokeWidth={1.75} />
+          </div>
+          <Secondary className="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 text-brand/60" strokeWidth={2} />
+        </div>
+        <h3 className="font-display text-lg font-medium tracking-tight text-foreground">{title}</h3>
+      </div>
+      <p className="text-sm text-foreground/70 leading-relaxed">{desc}</p>
+    </motion.div>
+  );
+}
+
+function FitChecklist() {
+  const leftItems = fits.slice(0, 3);
+  const rightItems = fits.slice(3, 6);
+
+  return (
+    <section className="relative py-24 sm:py-28 bg-background overflow-hidden">
+      {/* Decorative background */}
+      <div aria-hidden className="pointer-events-none absolute top-20 left-10 w-64 h-64 rounded-full bg-brand/5 blur-3xl" />
+      <div aria-hidden className="pointer-events-none absolute bottom-20 right-10 w-72 h-72 rounded-full bg-brand/10 blur-3xl" />
+
+      <div className="relative max-w-6xl mx-auto px-5">
+        <div className="text-center max-w-2xl mx-auto mb-14">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.6 }}
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand/10 text-brand text-xs font-medium tracking-wider uppercase mb-5"
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            Para quem é
+          </motion.div>
+          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight" style={{ lineHeight: "1.15" }}>
+            Essa consultoria é <span className="italic text-brand">para você</span> que:
+          </h2>
+        </div>
+
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.15 }}
+          className="grid md:grid-cols-[1fr_auto_1fr] gap-6 md:gap-8 items-center"
+        >
+          {/* Left column */}
+          <div className="flex flex-col gap-5">
+            {leftItems.map((f, i) => (
+              <FitItem key={i} {...f} direction="left" />
+            ))}
+          </div>
+
+          {/* Center image */}
+          <motion.div
+            variants={itemVariants}
+            className="relative order-first md:order-none mx-auto w-full max-w-[280px] md:w-[280px]"
+          >
+            <div className="relative aspect-[3/4] rounded-3xl overflow-hidden border border-border/40 shadow-2xl shadow-brand/15">
+              <img src={aboutPhoto.url} alt="Gabriela Kawikioni" className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-brand/30 via-transparent to-transparent" />
+            </div>
+            <div aria-hidden className="absolute -top-3 -right-3 w-16 h-16 rounded-2xl bg-brand/15 -z-10" />
+            <div aria-hidden className="absolute -bottom-4 -left-4 w-20 h-20 rounded-full bg-brand/10 -z-10" />
+          </motion.div>
+
+          {/* Right column */}
+          <div className="flex flex-col gap-5">
+            {rightItems.map((f, i) => (
+              <FitItem key={i} {...f} direction="right" />
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );
