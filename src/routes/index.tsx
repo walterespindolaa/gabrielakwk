@@ -498,9 +498,9 @@ function FitChecklist() {
 function About() {
   return (
     <section className="py-24 sm:py-28 bg-surface-alt">
-      <div className="max-w-5xl mx-auto px-5 grid md:grid-cols-[280px_1fr] gap-10 items-start">
-        <div className="mx-auto md:mx-0 w-56 h-72 rounded-3xl bg-gradient-to-br from-brand/25 via-accent to-brand-soft border border-brand/10 flex items-center justify-center text-brand font-display text-5xl">
-          GK
+      <div className="max-w-5xl mx-auto px-5 grid md:grid-cols-[320px_1fr] gap-10 items-center">
+        <div className="mx-auto md:mx-0 w-full max-w-[320px] aspect-[3/4] rounded-3xl overflow-hidden border border-border/40 shadow-xl shadow-brand/10">
+          <img src={aboutPhoto.url} alt="Gabriela Kawikioni" className="w-full h-full object-cover" />
         </div>
         <div>
           <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight mb-6" style={{ lineHeight: "1.15" }}>
