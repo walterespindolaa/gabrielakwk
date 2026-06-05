@@ -703,8 +703,9 @@ const faqs = [
 function FAQ() {
   const [open, setOpen] = useState<number | null>(0);
   return (
-    <section className="py-24 sm:py-28 bg-background">
-      <div className="max-w-3xl mx-auto px-5">
+    <section className="relative overflow-hidden py-24 sm:py-28 bg-background">
+      <StickerCollage variant="faq" />
+      <div className="relative z-10 max-w-3xl mx-auto px-5">
         <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-center mb-12" style={{ lineHeight: "1.15" }}>
           Perguntas que você provavelmente tem
         </h2>
