@@ -210,8 +210,9 @@ const pains = [
 
 function PainSection() {
   return (
-    <section className="py-24 sm:py-28 bg-surface-alt">
-      <div className="max-w-6xl mx-auto px-5">
+    <section className="relative overflow-hidden py-24 sm:py-28 bg-surface-alt">
+      <StickerCollage variant="pain" />
+      <div className="relative z-10 max-w-6xl mx-auto px-5">
         <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-center max-w-3xl mx-auto" style={{ lineHeight: "1.15" }}>
           Talvez você também já tenha <span className="italic text-brand">pensado nisso</span>:
         </h2>
