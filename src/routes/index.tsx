@@ -4,6 +4,8 @@ import { Check, ArrowRight, Sparkles } from "lucide-react";
 import monogramAsset from "@/assets/kwk-monogram.png.asset.json";
 import wordmarkAsset from "@/assets/gabi-kwk-wordmark.png.asset.json";
 import circleAsset from "@/assets/kwk-circle.png.asset.json";
+import heroPhoto from "@/assets/gabi-hero.jpg.asset.json";
+import aboutPhoto from "@/assets/gabi-about.jpg.asset.json";
 
 const WHATSAPP_URL = "https://wa.me/55SEUNUMERO";
 const CTA_LABEL = "Quero conhecer a consultoria";
@@ -75,7 +77,7 @@ function LandingPage() {
       <MidCTA />
       <Meetings />
       <Outcomes />
-      <SocialProof />
+      {/* SocialProof removida */}
       <Deliverables />
       <FitChecklist />
       <About />
@@ -130,27 +132,39 @@ function Nav() {
 /* ─── Hero ─── */
 function Hero() {
   return (
-    <section className="relative pt-32 pb-20 sm:pt-40 sm:pb-28 bg-gradient-to-b from-brand-soft via-background to-background">
+    <section className="relative pt-28 pb-16 sm:pt-36 sm:pb-24 bg-gradient-to-b from-brand-soft via-background to-background overflow-hidden">
       <div className="absolute top-20 -right-32 w-[500px] h-[500px] rounded-full bg-brand/10 blur-3xl pointer-events-none" />
       <div className="absolute top-40 -left-32 w-[400px] h-[400px] rounded-full bg-accent/40 blur-3xl pointer-events-none" />
-      <div className="relative max-w-4xl mx-auto px-5 text-center">
-        <img
-          src={wordmarkAsset.url}
-          alt="Gabi KWK — Estrategista Social Media"
-          className="mx-auto w-[280px] sm:w-[380px] md:w-[460px] lg:w-[540px] h-auto mb-8"
-        />
-        <h1
-          className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-medium tracking-tight text-foreground"
-          style={{ lineHeight: "1.05" }}
-        >
-          Seu trabalho é excelente.<br />
-          <span className="italic text-brand">Seu Instagram</span> ainda não sabe disso.
-        </h1>
-        <p className="mt-7 text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto" style={{ textWrap: "pretty", lineHeight: "1.55" }}>
-          Um processo de 4 encontros para transformar quem você é em uma presença digital que atrai, conecta e gera resultado — seja você iniciante ou já presente no digital.
-        </p>
-        <div className="mt-10 flex justify-center">
-          <CTAButton size="lg">{CTA_LABEL}</CTAButton>
+      <div className="relative max-w-6xl mx-auto px-5 grid lg:grid-cols-[1.05fr_1fr] gap-10 lg:gap-14 items-center">
+        <div className="text-center lg:text-left order-2 lg:order-1">
+          <img
+            src={wordmarkAsset.url}
+            alt="Gabi KWK — Estrategista Social Media"
+            className="mx-auto lg:mx-0 w-[240px] sm:w-[320px] md:w-[380px] h-auto mb-7"
+          />
+          <h1
+            className="font-display text-4xl sm:text-5xl md:text-6xl font-medium tracking-tight text-foreground"
+            style={{ lineHeight: "1.05" }}
+          >
+            Seu trabalho é excelente.<br />
+            <span className="italic text-brand">Seu Instagram</span> ainda não sabe disso.
+          </h1>
+          <p className="mt-6 text-base sm:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0" style={{ textWrap: "pretty", lineHeight: "1.55" }}>
+            Um processo de 4 encontros para transformar quem você é em uma presença digital que atrai, conecta e gera resultado — seja você iniciante ou já presente no digital.
+          </p>
+          <div className="mt-9 flex justify-center lg:justify-start">
+            <CTAButton size="lg">{CTA_LABEL}</CTAButton>
+          </div>
+        </div>
+        <div className="order-1 lg:order-2 relative">
+          <div className="absolute -inset-6 bg-gradient-to-br from-accent/40 via-brand/10 to-transparent blur-2xl pointer-events-none" />
+          <div className="relative aspect-[3/4] w-full max-w-md mx-auto overflow-hidden rounded-3xl border border-border/40 shadow-2xl shadow-brand/15">
+            <img
+              src={heroPhoto.url}
+              alt="Gabriela Kawikioni"
+              className="w-full h-full object-cover"
+            />
+          </div>
         </div>
       </div>
     </section>
@@ -484,9 +498,9 @@ function FitChecklist() {
 function About() {
   return (
     <section className="py-24 sm:py-28 bg-surface-alt">
-      <div className="max-w-5xl mx-auto px-5 grid md:grid-cols-[280px_1fr] gap-10 items-start">
-        <div className="mx-auto md:mx-0 w-56 h-72 rounded-3xl bg-gradient-to-br from-brand/25 via-accent to-brand-soft border border-brand/10 flex items-center justify-center text-brand font-display text-5xl">
-          GK
+      <div className="max-w-5xl mx-auto px-5 grid md:grid-cols-[320px_1fr] gap-10 items-center">
+        <div className="mx-auto md:mx-0 w-full max-w-[320px] aspect-[3/4] rounded-3xl overflow-hidden border border-border/40 shadow-xl shadow-brand/10">
+          <img src={aboutPhoto.url} alt="Gabriela Kawikioni" className="w-full h-full object-cover" />
         </div>
         <div>
           <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight mb-6" style={{ lineHeight: "1.15" }}>
