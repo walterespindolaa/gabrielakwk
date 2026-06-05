@@ -1,9 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Check, ArrowRight, Sparkles, MessageCircle, PenLine, LayoutGrid, Target } from "lucide-react";
+import { ArrowRight, CalendarDays, Compass, LayoutGrid, Megaphone, MessageCircle, PenLine, Sparkles, Target, UserCheck } from "lucide-react";
 import { FlipWords } from "@/components/ui/flip-words";
 import { StackingCards, type StackingCardItem } from "@/components/ui/stacking-card";
 import { ExpandingCards, type CardItem } from "@/components/ui/expanding-cards";
+import { BouncyCardsFeatures, type BouncyFeatureItem } from "@/components/ui/bouncy-cards-features";
+import { MaterialsCarousel, type MaterialCarouselItem } from "@/components/ui/materials-carousel";
 import monogramAsset from "@/assets/kwk-monogram.png.asset.json";
 import wordmarkAsset from "@/assets/gabi-kwk-wordmark.png.asset.json";
 import circleAsset from "@/assets/kwk-circle.png.asset.json";
@@ -391,32 +393,53 @@ function Meetings() {
 }
 
 /* ─── Outcomes ─── */
-const outcomes = [
-  "Clareza sobre quem você é no digital — nada mais de perfil confuso.",
-  "Posicionamento definido — você vai saber exatamente o que diz, para quem e por quê.",
-  "Conteúdo com propósito — sem postar por postar. Cada publicação com intenção.",
-  "Consistência sem sobrecarga — uma rotina que cabe na sua vida.",
-  "Um perfil que trabalha por você — mesmo quando você não está postando.",
-  "Autonomia para continuar — você sai criando, não dependendo de terceiros.",
+const outcomes: BouncyFeatureItem[] = [
+  {
+    id: "clareza",
+    title: "Clareza digital",
+    description: "Você entende quem é no digital — nada mais de perfil confuso ou mensagem solta.",
+    icon: <Compass className="h-5 w-5" />,
+  },
+  {
+    id: "posicionamento",
+    title: "Posicionamento definido",
+    description: "Você sabe exatamente o que diz, para quem fala e por que aquilo importa.",
+    icon: <Target className="h-5 w-5" />,
+  },
+  {
+    id: "conteudo",
+    title: "Conteúdo com propósito",
+    description: "Cada publicação passa a ter intenção, conexão e direção — sem postar por postar.",
+    icon: <Megaphone className="h-5 w-5" />,
+  },
+  {
+    id: "consistencia",
+    title: "Consistência possível",
+    description: "Uma rotina de criação que cabe na sua vida, sem sobrecarga e sem travar tudo.",
+    icon: <CalendarDays className="h-5 w-5" />,
+  },
+  {
+    id: "perfil",
+    title: "Perfil que trabalha por você",
+    description: "Sua presença começa a explicar seu valor mesmo quando você não está postando.",
+    icon: <LayoutGrid className="h-5 w-5" />,
+  },
+  {
+    id: "autonomia",
+    title: "Autonomia para continuar",
+    description: "Você sai criando com segurança, sem depender de terceiros para cada próximo passo.",
+    icon: <UserCheck className="h-5 w-5" />,
+  },
 ];
 
 function Outcomes() {
   return (
     <section className="py-24 sm:py-28 bg-surface-alt">
-      <div className="max-w-4xl mx-auto px-5">
+      <div className="max-w-6xl mx-auto px-5">
         <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-center mb-14" style={{ lineHeight: "1.15" }}>
           O que muda depois da consultoria.
         </h2>
-        <ul className="space-y-4">
-          {outcomes.map((o, i) => (
-            <li key={i} className="flex items-start gap-4 rounded-xl bg-card border border-border/50 p-5">
-              <div className="flex-shrink-0 w-7 h-7 rounded-full bg-success/15 flex items-center justify-center mt-0.5">
-                <Check className="w-4 h-4 text-success" strokeWidth={3} />
-              </div>
-              <p className="text-foreground/85 leading-relaxed">{o}</p>
-            </li>
-          ))}
-        </ul>
+        <BouncyCardsFeatures items={outcomes} />
       </div>
     </section>
   );
@@ -471,13 +494,13 @@ function SocialProof() {
 }
 
 /* ─── Deliverables ─── */
-const deliverables = [
-  { n: "01", title: "Relatório mestre", desc: "Posicionamento, persona, comunicação e plano de 90 dias em um documento completo." },
-  { n: "02", title: "Guia de equipamentos", desc: "Como gravar bem com o que você tem agora." },
-  { n: "03", title: "Rotina de criação", desc: "Calendário flexível para criar com antecedência e consistência." },
-  { n: "04", title: "Banco de carrosséis", desc: "20 estruturas prontas para personalizar + 20 prompts de IA." },
-  { n: "05", title: "Combinações de fontes", desc: "5 pares tipográficos para identidade visual consistente." },
-  { n: "06", title: "Mini dicionário", desc: "35 termos do marketing digital explicados sem tecnicismo." },
+const deliverables: MaterialCarouselItem[] = [
+  { n: "01", title: "Relatório mestre", desc: "Posicionamento, persona, comunicação e plano de 90 dias em um documento completo.", image: meetingOnePhoto.url },
+  { n: "02", title: "Guia de equipamentos", desc: "Como gravar bem com o que você tem agora.", image: heroPhoto.url },
+  { n: "03", title: "Rotina de criação", desc: "Calendário flexível para criar com antecedência e consistência.", image: meetingTwoPhoto.url },
+  { n: "04", title: "Banco de carrosséis", desc: "20 estruturas prontas para personalizar + 20 prompts de IA.", image: meetingThreePhoto.url },
+  { n: "05", title: "Combinações de fontes", desc: "5 pares tipográficos para identidade visual consistente.", image: aboutPhoto.url },
+  { n: "06", title: "Mini dicionário", desc: "35 termos do marketing digital explicados sem tecnicismo.", image: meetingFourPhoto.url },
 ];
 
 function Deliverables() {
@@ -487,17 +510,7 @@ function Deliverables() {
         <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-center mb-14" style={{ lineHeight: "1.15" }}>
           Materiais para você continuar depois.
         </h2>
-        <div className="grid sm:grid-cols-2 gap-4">
-          {deliverables.map((d) => (
-            <div key={d.n} className="rounded-2xl border border-border/60 bg-card p-6 hover:border-brand/30 transition-all">
-              <div className="flex items-baseline gap-3 mb-2">
-                <span className="font-display text-2xl font-medium text-brand">{d.n}</span>
-                <h3 className="font-semibold text-foreground">{d.title}</h3>
-              </div>
-              <p className="text-sm text-muted-foreground leading-relaxed">{d.desc}</p>
-            </div>
-          ))}
-        </div>
+        <MaterialsCarousel items={deliverables} />
 
         <div className="mt-10 rounded-3xl bg-brand text-brand-foreground p-8 sm:p-10 relative overflow-hidden">
           <Sparkles className="absolute top-6 right-6 w-6 h-6 opacity-50" />

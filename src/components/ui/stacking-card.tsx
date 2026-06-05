@@ -102,8 +102,7 @@ export function StackingCards({ items }: { items: StackingCardItem[] }) {
     if (!rect) return false;
 
     const viewportHeight = window.innerHeight;
-    const cardCenter = rect.top + rect.height / 2;
-    return cardCenter > viewportHeight * 0.28 && cardCenter < viewportHeight * 0.72;
+    return rect.top < viewportHeight * 0.78 && rect.bottom > viewportHeight * 0.22;
   }, []);
 
   const handleStep = useCallback((direction: 1 | -1) => {
@@ -114,6 +113,7 @@ export function StackingCards({ items }: { items: StackingCardItem[] }) {
     if (now < lockUntil.current) return true;
 
     lockUntil.current = now + 640;
+    containerRef.current?.scrollIntoView({ block: "center", behavior: "auto" });
     move(direction);
     return true;
   }, [activeIndex, isInScrollZone, lastIndex, move]);
@@ -149,7 +149,7 @@ export function StackingCards({ items }: { items: StackingCardItem[] }) {
     const direction = start - current > 0 ? 1 : -1;
     const canMove = direction > 0 ? activeIndex < lastIndex : activeIndex > 0;
 
-    if (canMove && Math.abs(start - current) > 8) event.preventDefault();
+    if (canMove && isInScrollZone() && Math.abs(start - current) > 8) event.preventDefault();
   };
 
   const handleTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
@@ -161,8 +161,7 @@ export function StackingCards({ items }: { items: StackingCardItem[] }) {
     const delta = start - end;
     if (Math.abs(delta) < 42) return;
     const direction = delta > 0 ? 1 : -1;
-    const canMove = direction > 0 ? activeIndex < lastIndex : activeIndex > 0;
-    if (canMove) move(direction);
+    handleStep(direction);
   };
 
   return (
