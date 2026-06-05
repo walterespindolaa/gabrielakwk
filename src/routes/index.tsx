@@ -389,17 +389,19 @@ function Method() {
       <StickerCollage variant="method" />
       <div className="relative max-w-6xl mx-auto px-5">
         <div className="text-center mb-12">
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand mb-4">O método</p>
-          <div className="flex items-center justify-center gap-5 sm:gap-7">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-7">
             <img
               src={circleAsset.url}
               alt=""
               aria-hidden="true"
-              className="h-20 sm:h-28 md:h-32 w-auto"
+              className="h-16 sm:h-28 md:h-32 w-auto"
             />
-            <h2 className="font-display text-6xl sm:text-7xl md:text-8xl font-medium tracking-tight text-brand leading-none whitespace-nowrap">
-              CRIAR
-            </h2>
+            <div className="flex flex-col items-center sm:items-start">
+              <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand mb-1 sm:mb-2">O método</p>
+              <h2 className="font-display text-5xl sm:text-7xl md:text-8xl font-medium tracking-tight text-brand leading-none whitespace-nowrap">
+                CRIAR
+              </h2>
+            </div>
           </div>
           <h3 className="mt-8 font-display text-2xl sm:text-3xl md:text-4xl font-medium tracking-tight max-w-3xl mx-auto" style={{ lineHeight: "1.2" }}>
             Um sistema para transformar negócios confusos em marcas claras, organizadas e posicionadas.
