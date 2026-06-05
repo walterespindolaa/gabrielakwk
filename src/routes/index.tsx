@@ -678,7 +678,7 @@ function FitChecklist() {
             className="relative order-first md:order-none mx-auto w-full max-w-[280px] md:w-[280px]"
           >
             <div className="relative aspect-[3/4] rounded-3xl overflow-hidden border border-border/40 shadow-2xl shadow-brand/15">
-              <img src={aboutPhoto.url} alt="Gabriela Kawikioni" className="w-full h-full object-cover" />
+              <img src={fitPhoto.url} alt="Gabriela Kawikioni" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-brand/30 via-transparent to-transparent" />
             </div>
             <div aria-hidden className="absolute -top-3 -right-3 w-16 h-16 rounded-2xl bg-brand/15 -z-10" />
