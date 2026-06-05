@@ -17,6 +17,16 @@ import meetingOnePhoto from "@/assets/meeting-1.jpg.asset.json";
 import meetingTwoPhoto from "@/assets/meeting-2.jpg.asset.json";
 import meetingThreePhoto from "@/assets/meeting-3.jpg.asset.json";
 import meetingFourPhoto from "@/assets/meeting-4.jpg.asset.json";
+import sticker6 from "@/assets/stickers/sticker-6.png.asset.json";
+import sticker9 from "@/assets/stickers/sticker-9.png.asset.json";
+import sticker10 from "@/assets/stickers/sticker-10.png.asset.json";
+import sticker12 from "@/assets/stickers/sticker-12.png.asset.json";
+import sticker14 from "@/assets/stickers/sticker-14.png.asset.json";
+import sticker16 from "@/assets/stickers/sticker-16.png.asset.json";
+import sticker17 from "@/assets/stickers/sticker-17.png.asset.json";
+import sticker18 from "@/assets/stickers/sticker-18.png.asset.json";
+import sticker19 from "@/assets/stickers/sticker-19.png.asset.json";
+import sticker21 from "@/assets/stickers/sticker-21.png.asset.json";
 
 const WHATSAPP_URL = "https://wa.me/5547988537412";
 const CTA_LABEL = "Quero conhecer a consultoria";
