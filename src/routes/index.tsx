@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Check, ArrowRight, Sparkles } from "lucide-react";
 import { FlipWords } from "@/components/ui/flip-words";
+import { StackingCards, type StackingCardItem } from "@/components/ui/stacking-card";
 import monogramAsset from "@/assets/kwk-monogram.png.asset.json";
 import wordmarkAsset from "@/assets/gabi-kwk-wordmark.png.asset.json";
 import circleAsset from "@/assets/kwk-circle.png.asset.json";
