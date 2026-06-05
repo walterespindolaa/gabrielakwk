@@ -62,16 +62,25 @@ export function StickerCollage({ variant }: { variant: keyof typeof presets }) {
   const items = presets[variant] ?? [];
   return (
     <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-      {items.map((s, i) => (
-        <img
-          key={i}
-          src={s.src}
-          alt=""
-          loading="lazy"
-          style={{ width: s.size, height: s.size, transform: `rotate(${s.rotate}deg)` }}
-          className={`absolute object-contain select-none ${s.className}`}
-        />
-      ))}
+      {items.map((s, i) => {
+        // Mobile gets ~45% size + extra transparency so text reads cleanly.
+        const mobile = Math.round(s.size * 0.45);
+        const w = `clamp(${mobile}px, ${Math.round(s.size * 0.18)}px + 8vw, ${s.size}px)`;
+        return (
+          <img
+            key={i}
+            src={s.src}
+            alt=""
+            loading="lazy"
+            style={{
+              width: w,
+              height: w,
+              transform: `rotate(${s.rotate}deg)`,
+            }}
+            className={`absolute object-contain select-none opacity-40 sm:opacity-70 ${s.className}`}
+          />
+        );
+      })}
     </div>
   );
 }

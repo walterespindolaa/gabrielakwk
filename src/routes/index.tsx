@@ -133,30 +133,31 @@ function LandingPage() {
 function Nav() {
   return (
     <nav className="absolute top-0 inset-x-0 z-30">
-      <div className="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between gap-4">
-        <div className="flex items-center gap-6">
-          <Link to="/" className="flex items-center gap-3" aria-label="KWK · Consultoria CRIAR">
-            <img
-              src={monogramAsset.url}
-              alt="KWK"
-              className="h-16 sm:h-20 w-auto"
-            />
-          </Link>
+      <div className="max-w-6xl mx-auto px-4 sm:px-5 h-16 flex items-center justify-between gap-3">
+        <Link to="/" className="flex items-center gap-3 shrink-0" aria-label="KWK · Consultoria CRIAR">
+          <img
+            src={monogramAsset.url}
+            alt="KWK"
+            className="h-12 sm:h-20 w-auto"
+          />
+        </Link>
+        <div className="flex items-center gap-2 sm:gap-3">
           <a
             href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-brand text-brand-foreground px-4 py-2 text-sm font-semibold shadow-sm shadow-brand/20 hover:bg-brand/90 transition-colors"
+            className="inline-flex items-center gap-1.5 rounded-full bg-brand text-brand-foreground px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold shadow-sm shadow-brand/20 hover:bg-brand/90 transition-colors"
           >
             Consultoria
           </a>
+          <Link
+            to="/login"
+            className="inline-flex items-center gap-1.5 rounded-full border border-brand/30 bg-brand/5 text-brand px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium hover:bg-brand/10 transition-colors"
+          >
+            <span className="sm:hidden">Entrar</span>
+            <span className="hidden sm:inline">Acesso à área de membros</span>
+          </Link>
         </div>
-        <Link
-          to="/login"
-          className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-brand/30 bg-brand/5 text-brand px-4 py-2 text-sm font-medium hover:bg-brand/10 transition-colors"
-        >
-          Acesso à área de membros
-        </Link>
       </div>
     </nav>
   );
@@ -171,21 +172,20 @@ function Hero() {
       <div className="hidden lg:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[760px] h-[760px] rounded-full bg-brand/20 blur-[120px] pointer-events-none z-10" />
       <div className="absolute top-40 left-10 w-[400px] h-[400px] rounded-full bg-accent/40 blur-3xl pointer-events-none" />
 
-      <div className="relative grid lg:grid-cols-2 items-stretch min-h-[680px] lg:min-h-[820px]">
+      <div className="relative grid lg:grid-cols-2 items-stretch min-h-[560px] sm:min-h-[680px] lg:min-h-[820px]">
         {/* Left content */}
         <div className="relative z-20 flex items-center order-2 lg:order-1">
-          <div className="w-full max-w-xl ml-auto mr-auto lg:mr-0 lg:ml-auto px-5 lg:pl-10 lg:pr-16 pt-12 pb-12 lg:pt-32 lg:pb-20 text-center lg:text-left">
+          <div className="w-full max-w-xl ml-auto mr-auto lg:mr-0 lg:ml-auto px-5 lg:pl-10 lg:pr-16 pt-8 pb-12 lg:pt-32 lg:pb-20 text-center lg:text-left">
             <img
               src={wordmarkAsset.url}
               alt="Gabi KWK · Estrategista Social Media"
-              className="mx-auto lg:mx-0 w-[320px] sm:w-[420px] md:w-[480px] lg:w-[520px] h-auto mb-8"
+              className="mx-auto lg:mx-0 w-[240px] sm:w-[420px] md:w-[480px] lg:w-[520px] h-auto mb-6 sm:mb-8"
             />
-            <p className="text-sm sm:text-base uppercase tracking-[0.22em] text-foreground/70 font-medium mb-4">
+            <p className="text-xs sm:text-base uppercase tracking-[0.2em] sm:tracking-[0.22em] text-foreground/70 font-medium mb-3 sm:mb-4">
               Seu trabalho é excelente. <span className="text-brand">Seu Instagram ainda não sabe disso.</span>
             </p>
             <h1
-              className="font-display text-5xl sm:text-6xl md:text-7xl font-medium tracking-tight text-foreground"
-              style={{ lineHeight: "1.02" }}
+              className="font-display text-[2.6rem] leading-[1.02] sm:text-6xl md:text-7xl font-medium tracking-tight text-foreground"
             >
               <span className="text-brand">Cria</span>
               <FlipWords
@@ -193,17 +193,17 @@ function Hero() {
                 className="italic text-brand px-0"
               />
             </h1>
-            <p className="mt-6 text-base sm:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0" style={{ textWrap: "pretty", lineHeight: "1.55" }}>
+            <p className="mt-5 sm:mt-6 text-sm sm:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0" style={{ textWrap: "pretty", lineHeight: "1.55" }}>
               Um processo de 4 encontros para transformar quem você é em uma presença digital que atrai, conecta e gera resultado. Seja você iniciante ou já presente no digital.
             </p>
-            <div className="mt-9 flex justify-center lg:justify-start">
+            <div className="mt-7 sm:mt-9 flex justify-center lg:justify-start">
               <CTAButton size="lg">{CTA_LABEL}</CTAButton>
             </div>
           </div>
         </div>
 
         {/* Right full-bleed image */}
-        <div className="relative order-1 lg:order-2 min-h-[460px] lg:min-h-full overflow-visible">
+        <div className="relative order-1 lg:order-2 min-h-[340px] sm:min-h-[460px] lg:min-h-full overflow-visible">
           {/* Seam shadow: soft dark vertical blur at the boundary between left cream column and right pink image, to dissolve the straight cut */}
           <div
             aria-hidden
@@ -642,13 +642,13 @@ const fits = [
 ];
 
 const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.12, delayChildren: 0.1 } },
+  hidden: { opacity: 0.001 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
 };
 
 const itemVariants = {
-  hidden: { y: 20, opacity: 0 },
-  visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease: "easeOut" as const } },
+  hidden: { y: 12, opacity: 0.001 },
+  visible: { y: 0, opacity: 1, transition: { duration: 0.4, ease: "easeOut" as const } },
 };
 
 type FitItemProps = {
@@ -713,19 +713,19 @@ function FitChecklist() {
       <StickerCollage variant="fits" />
 
       <div className="relative max-w-6xl mx-auto px-5">
-        <div className="text-center max-w-2xl mx-auto mb-14">
+        <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-14">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.6 }}
-            transition={{ duration: 0.5 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.4 }}
             className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-alt border border-brand/20 text-brand text-xs font-medium tracking-wider uppercase mb-5 shadow-sm"
           >
             <Sparkles className="w-3.5 h-3.5" />
             Para quem é
           </motion.div>
-          <div className="inline-block bg-surface-alt/95 border border-brand/15 rounded-3xl px-8 py-6 shadow-md">
-            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight" style={{ lineHeight: "1.15" }}>
+          <div className="inline-block bg-surface-alt/95 border border-brand/15 rounded-3xl px-5 sm:px-8 py-5 sm:py-6 shadow-md">
+            <h2 className="font-display text-2xl sm:text-4xl md:text-5xl font-medium tracking-tight" style={{ lineHeight: "1.15" }}>
               Essa consultoria é <span className="italic text-brand">para você</span> que:
             </h2>
           </div>
@@ -735,8 +735,8 @@ function FitChecklist() {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.15 }}
-          className="grid md:grid-cols-[1fr_auto_1fr] gap-6 md:gap-8 items-center"
+          viewport={{ once: true, amount: 0.02 }}
+          className="grid md:grid-cols-[1fr_auto_1fr] gap-5 md:gap-8 items-center"
         >
           {/* Left column */}
           <div className="flex flex-col gap-5">
