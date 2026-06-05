@@ -154,14 +154,14 @@ function Nav() {
 /* ─── Hero ─── */
 function Hero() {
   return (
-    <section className="relative pt-20 sm:pt-24 bg-gradient-to-b from-brand-soft via-background to-background overflow-hidden">
+    <section className="relative bg-gradient-to-b from-brand-soft via-background to-background overflow-hidden">
       <div className="absolute top-20 -left-32 w-[500px] h-[500px] rounded-full bg-brand/10 blur-3xl pointer-events-none" />
       <div className="absolute top-40 left-1/3 w-[400px] h-[400px] rounded-full bg-accent/40 blur-3xl pointer-events-none" />
 
-      <div className="relative grid lg:grid-cols-2 items-stretch min-h-[640px] lg:min-h-[760px]">
+      <div className="relative grid lg:grid-cols-2 items-stretch min-h-[680px] lg:min-h-[820px]">
         {/* Left content */}
         <div className="relative z-20 flex items-center order-2 lg:order-1">
-          <div className="w-full max-w-xl ml-auto mr-auto lg:mr-0 lg:ml-auto px-5 lg:pl-10 lg:pr-16 py-12 lg:py-20 text-center lg:text-left">
+          <div className="w-full max-w-xl ml-auto mr-auto lg:mr-0 lg:ml-auto px-5 lg:pl-10 lg:pr-16 pt-12 pb-12 lg:pt-32 lg:pb-20 text-center lg:text-left">
             <img
               src={wordmarkAsset.url}
               alt="Gabi KWK — Estrategista Social Media"
