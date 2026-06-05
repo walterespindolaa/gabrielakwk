@@ -50,7 +50,11 @@
   --color-surface-alt: var(--surface-alt);
   --color-success: var(--success);
   --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-display: 'Fraunces', Georgia, serif;
   --font-mono: 'Geist Mono', ui-monospace, monospace;
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-brand-soft: var(--brand-soft);
 }
 
 :root {
