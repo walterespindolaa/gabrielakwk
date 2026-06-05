@@ -154,14 +154,14 @@ function Nav() {
 /* ─── Hero ─── */
 function Hero() {
   return (
-    <section className="relative pt-20 sm:pt-24 bg-gradient-to-b from-brand-soft via-background to-background overflow-hidden">
+    <section className="relative bg-gradient-to-b from-brand-soft via-background to-background overflow-hidden">
       <div className="absolute top-20 -left-32 w-[500px] h-[500px] rounded-full bg-brand/10 blur-3xl pointer-events-none" />
       <div className="absolute top-40 left-1/3 w-[400px] h-[400px] rounded-full bg-accent/40 blur-3xl pointer-events-none" />
 
-      <div className="relative grid lg:grid-cols-2 items-stretch min-h-[640px] lg:min-h-[760px]">
+      <div className="relative grid lg:grid-cols-2 items-stretch min-h-[680px] lg:min-h-[820px]">
         {/* Left content */}
         <div className="relative z-20 flex items-center order-2 lg:order-1">
-          <div className="w-full max-w-xl ml-auto mr-auto lg:mr-0 lg:ml-auto px-5 lg:pl-10 lg:pr-16 py-12 lg:py-20 text-center lg:text-left">
+          <div className="w-full max-w-xl ml-auto mr-auto lg:mr-0 lg:ml-auto px-5 lg:pl-10 lg:pr-16 pt-12 pb-12 lg:pt-32 lg:pb-20 text-center lg:text-left">
             <img
               src={wordmarkAsset.url}
               alt="Gabi KWK — Estrategista Social Media"
@@ -190,44 +190,36 @@ function Hero() {
         </div>
 
         {/* Right full-bleed image */}
-        <div className="relative order-1 lg:order-2 min-h-[420px] lg:min-h-full">
+        <div className="relative order-1 lg:order-2 min-h-[460px] lg:min-h-full">
           <img
             src={heroPhoto.url}
             alt="Gabriela Kawikioni"
             className="absolute inset-0 w-full h-full object-cover"
           />
-          {/* Smoky brand gradient blending image into the left content */}
+          {/* Smoky brand gradient blending image into the left content (desktop) */}
           <div
             className="absolute inset-0 pointer-events-none hidden lg:block"
             style={{
               background:
-                "linear-gradient(to right, var(--background) 0%, color-mix(in oklab, var(--background) 85%, transparent) 18%, color-mix(in oklab, var(--background) 35%, transparent) 38%, transparent 62%)",
+                "linear-gradient(to right, var(--background) 0%, var(--background) 8%, color-mix(in oklab, var(--background) 88%, transparent) 24%, color-mix(in oklab, var(--background) 55%, transparent) 42%, color-mix(in oklab, var(--background) 20%, transparent) 60%, transparent 78%)",
             }}
             aria-hidden
           />
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                "linear-gradient(to top, var(--background) 0%, transparent 20%)",
-            }}
-            aria-hidden
-          />
-          {/* Mobile fade from top */}
+          {/* Mobile fade from top into content */}
           <div
             className="lg:hidden absolute inset-0 pointer-events-none"
             style={{
               background:
-                "linear-gradient(to bottom, var(--brand-soft) 0%, transparent 28%)",
+                "linear-gradient(to bottom, transparent 60%, var(--background) 100%)",
             }}
             aria-hidden
           />
-
         </div>
       </div>
     </section>
   );
 }
+
 
 
 /* ─── Pain section ─── */
