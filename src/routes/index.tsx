@@ -203,7 +203,17 @@ function Hero() {
         </div>
 
         {/* Right full-bleed image */}
-        <div className="relative order-1 lg:order-2 min-h-[460px] lg:min-h-full overflow-hidden">
+        <div className="relative order-1 lg:order-2 min-h-[460px] lg:min-h-full overflow-visible">
+          {/* Seam shadow: soft dark vertical blur at the boundary between left cream column and right pink image, to dissolve the straight cut */}
+          <div
+            aria-hidden
+            className="hidden lg:block pointer-events-none absolute top-0 bottom-0 -left-24 w-48 z-20"
+            style={{
+              background:
+                "linear-gradient(to right, transparent 0%, color-mix(in oklab, var(--brand) 14%, transparent) 50%, transparent 100%)",
+              filter: "blur(28px)",
+            }}
+          />
           {/* Brand-soft pink backdrop matching hero header band */}
           <div
             aria-hidden
@@ -654,18 +664,18 @@ function FitItem({ icon: Icon, secondary: Secondary, title, desc, direction }: F
     <motion.div
       variants={itemVariants}
       whileHover={{ y: -4 }}
-      className={`group relative rounded-2xl border border-border/60 bg-card/80 backdrop-blur-sm p-6 shadow-sm hover:shadow-lg hover:border-brand/40 transition-all ${direction === "left" ? "md:text-right" : "md:text-left"}`}
+      className={`group relative rounded-2xl border border-brand/15 bg-surface-alt p-6 shadow-md hover:shadow-xl hover:border-brand/40 transition-all ${direction === "left" ? "md:text-right" : "md:text-left"}`}
     >
       <div className={`flex items-center gap-3 mb-3 ${direction === "left" ? "md:flex-row-reverse" : "md:flex-row"}`}>
         <div className="relative flex-shrink-0">
-          <div className="w-11 h-11 rounded-xl bg-brand/10 flex items-center justify-center text-brand group-hover:bg-brand group-hover:text-brand-foreground transition-colors">
+          <div className="w-11 h-11 rounded-xl bg-brand/15 flex items-center justify-center text-brand group-hover:bg-brand group-hover:text-brand-foreground transition-colors">
             <Icon className="w-5 h-5" strokeWidth={1.75} />
           </div>
-          <Secondary className="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 text-brand/60" strokeWidth={2} />
+          <Secondary className="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 text-brand/70" strokeWidth={2} />
         </div>
         <h3 className="font-display text-lg font-medium tracking-tight text-foreground">{title}</h3>
       </div>
-      <p className="text-sm text-foreground/70 leading-relaxed">{desc}</p>
+      <p className="text-sm text-foreground/80 leading-relaxed">{desc}</p>
     </motion.div>
   );
 }
@@ -709,14 +719,16 @@ function FitChecklist() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand/10 text-brand text-xs font-medium tracking-wider uppercase mb-5"
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-alt border border-brand/20 text-brand text-xs font-medium tracking-wider uppercase mb-5 shadow-sm"
           >
             <Sparkles className="w-3.5 h-3.5" />
             Para quem é
           </motion.div>
-          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight" style={{ lineHeight: "1.15" }}>
-            Essa consultoria é <span className="italic text-brand">para você</span> que:
-          </h2>
+          <div className="inline-block bg-surface-alt/95 border border-brand/15 rounded-3xl px-8 py-6 shadow-md">
+            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight" style={{ lineHeight: "1.15" }}>
+              Essa consultoria é <span className="italic text-brand">para você</span> que:
+            </h2>
+          </div>
         </div>
 
         <motion.div
@@ -738,12 +750,19 @@ function FitChecklist() {
             variants={itemVariants}
             className="relative order-first md:order-none mx-auto w-full max-w-[280px] md:w-[280px]"
           >
-            <div className="relative aspect-[3/4] rounded-3xl overflow-hidden border border-border/40 shadow-2xl shadow-brand/15">
-              <img src={fitPhoto.url} alt="Gabriela Kawikioni" className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-brand/30 via-transparent to-transparent" />
+            <div className="relative aspect-[3/4]">
+              <img
+                src={fitPhoto.url}
+                alt="Gabriela Kawikioni"
+                className="w-full h-full object-cover"
+                style={{
+                  WebkitMaskImage:
+                    "radial-gradient(ellipse 70% 75% at 50% 50%, #000 55%, transparent 100%)",
+                  maskImage:
+                    "radial-gradient(ellipse 70% 75% at 50% 50%, #000 55%, transparent 100%)",
+                }}
+              />
             </div>
-            <div aria-hidden className="absolute -top-3 -right-3 w-16 h-16 rounded-2xl bg-brand/15 -z-10" />
-            <div aria-hidden className="absolute -bottom-4 -left-4 w-20 h-20 rounded-full bg-brand/10 -z-10" />
           </motion.div>
 
           {/* Right column */}
