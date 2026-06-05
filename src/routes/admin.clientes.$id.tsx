@@ -48,6 +48,8 @@ function ClienteDetail() {
   const [materials, setMaterials] = useState<Material[]>([]);
   const [assignments, setAssignments] = useState<Set<string>>(new Set());
   const [responses, setResponses] = useState<any[]>([]);
+  const [forms, setForms] = useState<{ id: string; title: string }[]>([]);
+  const [invites, setInvites] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
