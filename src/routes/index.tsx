@@ -77,7 +77,7 @@ function LandingPage() {
       <MidCTA />
       <Meetings />
       <Outcomes />
-      <SocialProof />
+      {/* SocialProof removida */}
       <Deliverables />
       <FitChecklist />
       <About />
