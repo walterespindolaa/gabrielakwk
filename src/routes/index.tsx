@@ -198,6 +198,12 @@ function Hero() {
             src={heroPhoto.url}
             alt="Gabriela Kawikioni"
             className="absolute inset-0 w-full h-full object-cover"
+            style={{
+              WebkitMaskImage:
+                "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.2) 8%, rgba(0,0,0,0.6) 18%, #000 32%)",
+              maskImage:
+                "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.2) 8%, rgba(0,0,0,0.6) 18%, #000 32%)",
+            }}
           />
           {/* Horizontal smoky fade: blends the image's left edge into the content column (desktop) */}
           <div
