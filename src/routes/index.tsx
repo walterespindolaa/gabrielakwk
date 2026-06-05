@@ -709,14 +709,16 @@ function FitChecklist() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ duration: 0.5 }}
-            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand/10 text-brand text-xs font-medium tracking-wider uppercase mb-5"
+            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-alt border border-brand/20 text-brand text-xs font-medium tracking-wider uppercase mb-5 shadow-sm"
           >
             <Sparkles className="w-3.5 h-3.5" />
             Para quem é
           </motion.div>
-          <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight" style={{ lineHeight: "1.15" }}>
-            Essa consultoria é <span className="italic text-brand">para você</span> que:
-          </h2>
+          <div className="inline-block bg-surface-alt/95 border border-brand/15 rounded-3xl px-8 py-6 shadow-md">
+            <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight" style={{ lineHeight: "1.15" }}>
+              Essa consultoria é <span className="italic text-brand">para você</span> que:
+            </h2>
+          </div>
         </div>
 
         <motion.div
