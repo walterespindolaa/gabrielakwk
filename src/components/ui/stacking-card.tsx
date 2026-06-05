@@ -122,8 +122,9 @@ export function StackingCards({ items }: { items: StackingCardItem[] }) {
     };
   }, [lastIndex]);
 
-  // Tall wrapper gives natural scroll distance: one viewport per step.
-  const wrapperHeight = `${(items.length) * 100}vh`;
+  // Sticky panel pins for 1 viewport; each additional step adds ~65vh of scroll distance.
+  const stepVh = 65;
+  const wrapperHeight = `calc(100vh + ${(items.length - 1) * stepVh}vh)`;
 
   return (
     <div ref={wrapperRef} style={{ height: wrapperHeight }} className="relative">
