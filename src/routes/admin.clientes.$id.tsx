@@ -4,6 +4,7 @@ import { ArrowLeft, Trash2, Send, Copy, Check } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { STAGES, type StageKey } from "@/components/admin/AdminLayout";
+import { JornadaCRIARAdmin } from "@/components/admin/JornadaCRIARAdmin";
 import { toast } from "sonner";
 import { useCurrentUser } from "@/lib/auth-guard";
 import { updateUserRole, deleteUser } from "@/lib/admin.functions";
