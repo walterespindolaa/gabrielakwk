@@ -740,13 +740,19 @@ function FitChecklist() {
             variants={itemVariants}
             className="relative order-first md:order-none mx-auto w-full max-w-[280px] md:w-[280px]"
           >
-            <div className="relative aspect-[3/4] rounded-3xl overflow-hidden border border-border/40 shadow-2xl shadow-brand/15">
-              <img src={fitPhoto.url} alt="Gabriela Kawikioni" className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-brand/30 via-transparent to-transparent" />
+            <div className="relative aspect-[3/4]">
+              <img
+                src={fitPhoto.url}
+                alt="Gabriela Kawikioni"
+                className="w-full h-full object-cover"
+                style={{
+                  WebkitMaskImage:
+                    "radial-gradient(ellipse 70% 75% at 50% 50%, #000 55%, transparent 100%)",
+                  maskImage:
+                    "radial-gradient(ellipse 70% 75% at 50% 50%, #000 55%, transparent 100%)",
+                }}
+              />
             </div>
-            <div aria-hidden className="absolute -top-3 -right-3 w-16 h-16 rounded-2xl bg-brand/15 -z-10" />
-            <div aria-hidden className="absolute -bottom-4 -left-4 w-20 h-20 rounded-full bg-brand/10 -z-10" />
-          </motion.div>
 
           {/* Right column */}
           <div className="flex flex-col gap-5">
