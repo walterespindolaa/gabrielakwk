@@ -520,8 +520,9 @@ const deliverables: MaterialCarouselItem[] = [
 
 function Deliverables() {
   return (
-    <section className="py-24 sm:py-28 bg-surface-alt">
-      <div className="max-w-5xl mx-auto px-5">
+    <section className="relative overflow-hidden py-24 sm:py-28 bg-surface-alt">
+      <StickerCollage variant="deliverables" />
+      <div className="relative z-10 max-w-5xl mx-auto px-5">
         <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-center mb-14" style={{ lineHeight: "1.15" }}>
           Materiais para você continuar depois.
         </h2>
