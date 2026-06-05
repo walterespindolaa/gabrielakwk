@@ -155,8 +155,9 @@ function Nav() {
 function Hero() {
   return (
     <section className="relative bg-gradient-to-b from-brand-soft via-background to-background overflow-hidden">
-      <div className="absolute top-20 -left-32 w-[500px] h-[500px] rounded-full bg-brand/10 blur-3xl pointer-events-none" />
-      <div className="absolute top-40 left-1/3 w-[400px] h-[400px] rounded-full bg-accent/40 blur-3xl pointer-events-none" />
+      {/* Pink seam-blob: sits on top of the image's left edge to dissolve the straight cut */}
+      <div className="hidden lg:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[760px] h-[760px] rounded-full bg-brand/20 blur-[120px] pointer-events-none z-10" />
+      <div className="absolute top-40 left-10 w-[400px] h-[400px] rounded-full bg-accent/40 blur-3xl pointer-events-none" />
 
       <div className="relative grid lg:grid-cols-2 items-stretch min-h-[680px] lg:min-h-[820px]">
         {/* Left content */}
