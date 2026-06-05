@@ -654,18 +654,18 @@ function FitItem({ icon: Icon, secondary: Secondary, title, desc, direction }: F
     <motion.div
       variants={itemVariants}
       whileHover={{ y: -4 }}
-      className={`group relative rounded-2xl border border-border/60 bg-card/80 backdrop-blur-sm p-6 shadow-sm hover:shadow-lg hover:border-brand/40 transition-all ${direction === "left" ? "md:text-right" : "md:text-left"}`}
+      className={`group relative rounded-2xl border border-brand/15 bg-surface-alt p-6 shadow-md hover:shadow-xl hover:border-brand/40 transition-all ${direction === "left" ? "md:text-right" : "md:text-left"}`}
     >
       <div className={`flex items-center gap-3 mb-3 ${direction === "left" ? "md:flex-row-reverse" : "md:flex-row"}`}>
         <div className="relative flex-shrink-0">
-          <div className="w-11 h-11 rounded-xl bg-brand/10 flex items-center justify-center text-brand group-hover:bg-brand group-hover:text-brand-foreground transition-colors">
+          <div className="w-11 h-11 rounded-xl bg-brand/15 flex items-center justify-center text-brand group-hover:bg-brand group-hover:text-brand-foreground transition-colors">
             <Icon className="w-5 h-5" strokeWidth={1.75} />
           </div>
-          <Secondary className="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 text-brand/60" strokeWidth={2} />
+          <Secondary className="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 text-brand/70" strokeWidth={2} />
         </div>
         <h3 className="font-display text-lg font-medium tracking-tight text-foreground">{title}</h3>
       </div>
-      <p className="text-sm text-foreground/70 leading-relaxed">{desc}</p>
+      <p className="text-sm text-foreground/80 leading-relaxed">{desc}</p>
     </motion.div>
   );
 }
