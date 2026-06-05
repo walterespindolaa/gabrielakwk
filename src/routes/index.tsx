@@ -146,7 +146,7 @@ function Nav() {
             href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden sm:inline-flex items-center text-sm font-medium text-foreground/80 hover:text-brand transition-colors"
+            className="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-brand text-brand-foreground px-4 py-2 text-sm font-semibold shadow-sm shadow-brand/20 hover:bg-brand/90 transition-colors"
           >
             Consultoria
           </a>
