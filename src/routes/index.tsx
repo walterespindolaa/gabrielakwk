@@ -7,6 +7,7 @@ import { StackingCards, type StackingCardItem } from "@/components/ui/stacking-c
 import { ExpandingCards, type CardItem } from "@/components/ui/expanding-cards";
 import { BouncyCardsFeatures, type BouncyFeatureItem } from "@/components/ui/bouncy-cards-features";
 import { MaterialsCarousel, type MaterialCarouselItem } from "@/components/ui/materials-carousel";
+import { PainCard } from "@/components/ui/animated-pain-cards";
 import monogramAsset from "@/assets/kwk-monogram.png.asset.json";
 import wordmarkAsset from "@/assets/gabi-kwk-wordmark.png.asset.json";
 import circleAsset from "@/assets/kwk-circle.png.asset.json";
