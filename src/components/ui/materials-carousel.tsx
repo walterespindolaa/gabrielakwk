@@ -76,15 +76,14 @@ export function MaterialsCarousel({ items }: { items: MaterialCarouselItem[] }) 
           {items.map((item) => (
             <CarouselItem key={item.n} className="basis-[86%] pl-4 sm:basis-[56%] lg:basis-[36%]">
               <article className="group h-full overflow-hidden rounded-3xl border border-border/60 bg-card shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-brand/30">
-                <div className="relative aspect-[4/3] overflow-hidden bg-brand-soft">
+                <div className="relative aspect-[4/3] overflow-hidden bg-brand-soft flex items-center justify-center">
                   <img
                     src={item.image}
                     alt=""
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    className="h-[78%] w-[78%] object-contain transition-transform duration-700 group-hover:scale-110 group-hover:rotate-2"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-foreground/20" />
-                  <span className="absolute left-5 top-5 rounded-full border border-background/45 bg-background/20 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-background">
+                  <span className="absolute left-5 top-5 rounded-full border border-brand/30 bg-background/80 backdrop-blur-sm px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-brand">
                     {item.n}
                   </span>
                 </div>

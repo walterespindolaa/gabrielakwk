@@ -8,6 +8,7 @@ import { ExpandingCards, type CardItem } from "@/components/ui/expanding-cards";
 import { BouncyCardsFeatures, type BouncyFeatureItem } from "@/components/ui/bouncy-cards-features";
 import { MaterialsCarousel, type MaterialCarouselItem } from "@/components/ui/materials-carousel";
 import { PainCard } from "@/components/ui/animated-pain-cards";
+import { StickerCollage } from "@/components/ui/sticker-collage";
 import monogramAsset from "@/assets/kwk-monogram.png.asset.json";
 import wordmarkAsset from "@/assets/gabi-kwk-wordmark.png.asset.json";
 import circleAsset from "@/assets/kwk-circle.png.asset.json";
@@ -17,6 +18,16 @@ import meetingOnePhoto from "@/assets/meeting-1.jpg.asset.json";
 import meetingTwoPhoto from "@/assets/meeting-2.jpg.asset.json";
 import meetingThreePhoto from "@/assets/meeting-3.jpg.asset.json";
 import meetingFourPhoto from "@/assets/meeting-4.jpg.asset.json";
+import sticker6 from "@/assets/stickers/sticker-6.png.asset.json";
+import sticker9 from "@/assets/stickers/sticker-9.png.asset.json";
+import sticker10 from "@/assets/stickers/sticker-10.png.asset.json";
+import sticker12 from "@/assets/stickers/sticker-12.png.asset.json";
+import sticker14 from "@/assets/stickers/sticker-14.png.asset.json";
+import sticker16 from "@/assets/stickers/sticker-16.png.asset.json";
+import sticker17 from "@/assets/stickers/sticker-17.png.asset.json";
+import sticker18 from "@/assets/stickers/sticker-18.png.asset.json";
+import sticker19 from "@/assets/stickers/sticker-19.png.asset.json";
+import sticker21 from "@/assets/stickers/sticker-21.png.asset.json";
 
 const WHATSAPP_URL = "https://wa.me/5547988537412";
 const CTA_LABEL = "Quero conhecer a consultoria";
@@ -199,8 +210,9 @@ const pains = [
 
 function PainSection() {
   return (
-    <section className="py-24 sm:py-28 bg-surface-alt">
-      <div className="max-w-6xl mx-auto px-5">
+    <section className="relative overflow-hidden py-24 sm:py-28 bg-surface-alt">
+      <StickerCollage variant="pain" />
+      <div className="relative z-10 max-w-6xl mx-auto px-5">
         <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-center max-w-3xl mx-auto" style={{ lineHeight: "1.15" }}>
           Talvez você também já tenha <span className="italic text-brand">pensado nisso</span>:
         </h2>
@@ -226,8 +238,9 @@ function PainSection() {
 /* ─── Pullquote ─── */
 function Pullquote() {
   return (
-    <section className="py-24 sm:py-32 bg-background">
-      <div className="max-w-4xl mx-auto px-5 text-center">
+    <section className="relative overflow-hidden py-24 sm:py-32 bg-background">
+      <StickerCollage variant="pullquote" />
+      <div className="relative z-10 max-w-4xl mx-auto px-5 text-center">
         <p className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium italic text-foreground" style={{ lineHeight: "1.2" }}>
           "Eu crio com você para você criar sozinha."
         </p>
@@ -292,8 +305,9 @@ const methodSteps: StackingCardItem[] = [
 
 function Method() {
   return (
-    <section className="pt-24 sm:pt-32 bg-surface-alt relative">
+    <section className="pt-24 sm:pt-32 bg-surface-alt relative overflow-hidden">
       <div className="absolute -top-20 right-0 w-[400px] h-[400px] rounded-full bg-brand/5 blur-3xl pointer-events-none -z-0" />
+      <StickerCollage variant="method" />
       <div className="relative max-w-6xl mx-auto px-5">
         <div className="text-center mb-12">
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand mb-4">O método</p>
@@ -376,8 +390,9 @@ const meetings: CardItem[] = [
 
 function Meetings() {
   return (
-    <section className="pt-4 pb-24 sm:pt-6 sm:pb-28 bg-background">
-      <div className="max-w-5xl mx-auto px-5">
+    <section className="relative overflow-hidden pt-4 pb-24 sm:pt-6 sm:pb-28 bg-background">
+      <StickerCollage variant="meetings" />
+      <div className="relative z-10 max-w-5xl mx-auto px-5">
         <div className="text-center mb-12">
           <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight" style={{ lineHeight: "1.15" }}>
             4 encontros. Um processo. Um resultado.
@@ -495,18 +510,19 @@ function SocialProof() {
 
 /* ─── Deliverables ─── */
 const deliverables: MaterialCarouselItem[] = [
-  { n: "01", title: "Relatório mestre", desc: "Posicionamento, persona, comunicação e plano de 90 dias em um documento completo.", image: meetingOnePhoto.url },
-  { n: "02", title: "Guia de equipamentos", desc: "Como gravar bem com o que você tem agora.", image: heroPhoto.url },
-  { n: "03", title: "Rotina de criação", desc: "Calendário flexível para criar com antecedência e consistência.", image: meetingTwoPhoto.url },
-  { n: "04", title: "Banco de carrosséis", desc: "20 estruturas prontas para personalizar + 20 prompts de IA.", image: meetingThreePhoto.url },
-  { n: "05", title: "Combinações de fontes", desc: "5 pares tipográficos para identidade visual consistente.", image: aboutPhoto.url },
-  { n: "06", title: "Mini dicionário", desc: "35 termos do marketing digital explicados sem tecnicismo.", image: meetingFourPhoto.url },
+  { n: "01", title: "Relatório mestre", desc: "Posicionamento, persona, comunicação e plano de 90 dias em um documento completo.", image: sticker21.url },
+  { n: "02", title: "Guia de equipamentos", desc: "Como gravar bem com o que você tem agora.", image: sticker10.url },
+  { n: "03", title: "Rotina de criação", desc: "Calendário flexível para criar com antecedência e consistência.", image: sticker9.url },
+  { n: "04", title: "Banco de carrosséis", desc: "20 estruturas prontas para personalizar + 20 prompts de IA.", image: sticker12.url },
+  { n: "05", title: "Combinações de fontes", desc: "5 pares tipográficos para identidade visual consistente.", image: sticker17.url },
+  { n: "06", title: "Mini dicionário", desc: "35 termos do marketing digital explicados sem tecnicismo.", image: sticker14.url },
 ];
 
 function Deliverables() {
   return (
-    <section className="py-24 sm:py-28 bg-surface-alt">
-      <div className="max-w-5xl mx-auto px-5">
+    <section className="relative overflow-hidden py-24 sm:py-28 bg-surface-alt">
+      <StickerCollage variant="deliverables" />
+      <div className="relative z-10 max-w-5xl mx-auto px-5">
         <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-center mb-14" style={{ lineHeight: "1.15" }}>
           Materiais para você continuar depois.
         </h2>
@@ -587,6 +603,7 @@ function FitChecklist() {
       {/* Decorative background */}
       <div aria-hidden className="pointer-events-none absolute top-20 left-10 w-64 h-64 rounded-full bg-brand/5 blur-3xl" />
       <div aria-hidden className="pointer-events-none absolute bottom-20 right-10 w-72 h-72 rounded-full bg-brand/10 blur-3xl" />
+      <StickerCollage variant="fits" />
 
       <div className="relative max-w-6xl mx-auto px-5">
         <div className="text-center max-w-2xl mx-auto mb-14">
@@ -647,8 +664,9 @@ function FitChecklist() {
 /* ─── About ─── */
 function About() {
   return (
-    <section className="py-24 sm:py-28 bg-surface-alt">
-      <div className="max-w-5xl mx-auto px-5 grid md:grid-cols-[320px_1fr] gap-10 items-center">
+    <section className="relative overflow-hidden py-24 sm:py-28 bg-surface-alt">
+      <StickerCollage variant="about" />
+      <div className="relative z-10 max-w-5xl mx-auto px-5 grid md:grid-cols-[320px_1fr] gap-10 items-center">
         <div className="mx-auto md:mx-0 w-full max-w-[320px] aspect-[3/4] rounded-3xl overflow-hidden border border-border/40 shadow-xl shadow-brand/10">
           <img src={aboutPhoto.url} alt="Gabriela Kawikioni" className="w-full h-full object-cover" />
         </div>
@@ -685,8 +703,9 @@ const faqs = [
 function FAQ() {
   const [open, setOpen] = useState<number | null>(0);
   return (
-    <section className="py-24 sm:py-28 bg-background">
-      <div className="max-w-3xl mx-auto px-5">
+    <section className="relative overflow-hidden py-24 sm:py-28 bg-background">
+      <StickerCollage variant="faq" />
+      <div className="relative z-10 max-w-3xl mx-auto px-5">
         <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight text-center mb-12" style={{ lineHeight: "1.15" }}>
           Perguntas que você provavelmente tem
         </h2>
