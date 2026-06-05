@@ -9,7 +9,7 @@ import { toast } from "sonner";
 import { STAGES } from "@/components/admin/AdminLayout";
 import { useCurrentUser } from "@/lib/auth-guard";
 
-export const Route = createFileRoute("/admin/clientes")({
+export const Route = createFileRoute("/admin/clientes/")({
   component: ClientesPage,
 });
 

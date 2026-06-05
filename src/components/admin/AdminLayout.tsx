@@ -1,5 +1,5 @@
 import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
-import { LayoutDashboard, Users, FolderOpen, FileText, LogOut, Menu, X } from "lucide-react";
+import { LayoutDashboard, Users, FolderOpen, FileText, LogOut, Menu, X, Inbox } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useRequireAuth } from "@/lib/auth-guard";
@@ -8,6 +8,7 @@ import { StickerCollage } from "@/components/ui/sticker-collage";
 
 const nav = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
+  { to: "/admin/leads", label: "Leads", icon: Inbox },
   { to: "/admin/clientes", label: "Clientes", icon: Users },
   { to: "/admin/materiais", label: "Materiais", icon: FolderOpen },
   { to: "/admin/formularios", label: "Formulários", icon: FileText },

@@ -16,26 +16,44 @@ export type Database = {
     Tables: {
       form_invites: {
         Row: {
-          cliente_id: string
+          answers: Json | null
+          approved_at: string | null
+          approved_cliente_id: string | null
+          cliente_id: string | null
           created_at: string
           created_by: string | null
           form_id: string
+          lead_email: string | null
+          lead_name: string | null
+          lead_whatsapp: string | null
           submitted_at: string | null
           token: string
         }
         Insert: {
-          cliente_id: string
+          answers?: Json | null
+          approved_at?: string | null
+          approved_cliente_id?: string | null
+          cliente_id?: string | null
           created_at?: string
           created_by?: string | null
           form_id: string
+          lead_email?: string | null
+          lead_name?: string | null
+          lead_whatsapp?: string | null
           submitted_at?: string | null
           token?: string
         }
         Update: {
-          cliente_id?: string
+          answers?: Json | null
+          approved_at?: string | null
+          approved_cliente_id?: string | null
+          cliente_id?: string | null
           created_at?: string
           created_by?: string | null
           form_id?: string
+          lead_email?: string | null
+          lead_name?: string | null
+          lead_whatsapp?: string | null
           submitted_at?: string | null
           token?: string
         }
