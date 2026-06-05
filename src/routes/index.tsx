@@ -324,7 +324,7 @@ function Method() {
 /* ─── Mid CTA ─── */
 function MidCTA() {
   return (
-    <section className="py-16 bg-background">
+    <section className="pt-14 pb-6 bg-background">
       <div className="max-w-3xl mx-auto px-5 text-center">
         <CTAButton size="lg">{CTA_LABEL}</CTAButton>
       </div>
@@ -374,9 +374,9 @@ const meetings: CardItem[] = [
 
 function Meetings() {
   return (
-    <section className="py-24 sm:py-28 bg-background">
+    <section className="pt-8 pb-24 sm:pt-10 sm:pb-28 bg-background">
       <div className="max-w-5xl mx-auto px-5">
-        <div className="text-center mb-14">
+        <div className="text-center mb-12">
           <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight" style={{ lineHeight: "1.15" }}>
             4 encontros. Um processo. Um resultado.
           </h2>
