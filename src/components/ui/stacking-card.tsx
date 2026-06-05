@@ -83,12 +83,41 @@ function Card({
   );
 }
 
+function MobileCard({ i, total, letter, title, description, bg, fg, accent }: CardProps) {
+  return (
+    <div
+      style={{ backgroundColor: bg, color: fg }}
+      className="rounded-3xl overflow-hidden shadow-lg border border-foreground/10"
+    >
+      <div className="p-6 sm:p-7">
+        <div className="text-[10px] uppercase tracking-[0.25em] opacity-70">
+          Etapa {i + 1} / {total}
+        </div>
+        <h3 className="mt-3 font-display text-2xl sm:text-3xl font-medium tracking-tight" style={{ lineHeight: "1.1" }}>
+          {title}
+        </h3>
+        <p className="mt-3 text-sm leading-relaxed opacity-85">{description}</p>
+      </div>
+      <div
+        className="relative flex items-center justify-center overflow-hidden h-32"
+        style={{ backgroundColor: accent }}
+      >
+        <span
+          className="font-display font-medium select-none"
+          style={{ color: fg, fontSize: "120px", lineHeight: 1 }}
+        >
+          {letter}
+        </span>
+      </div>
+    </div>
+  );
+}
+
 export function StackingCards({ items }: { items: StackingCardItem[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const activeIndexRef = useRef(0);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const lastStepAtRef = useRef(0);
-  const touchStartYRef = useRef<number | null>(null);
   const lastIndex = items.length - 1;
 
   useEffect(() => {
@@ -96,6 +125,11 @@ export function StackingCards({ items }: { items: StackingCardItem[] }) {
   }, [activeIndex]);
 
   useEffect(() => {
+    // Only run scroll-hijack stacking on desktop (md+).
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(min-width: 768px)");
+    if (!mq.matches) return;
+
     const isInStepZone = () => {
       const el = wrapperRef.current;
       if (!el) return false;
@@ -143,25 +177,6 @@ export function StackingCards({ items }: { items: StackingCardItem[] }) {
       step(direction);
     };
 
-    const onTouchStart = (event: TouchEvent) => {
-      touchStartYRef.current = event.touches[0]?.clientY ?? null;
-    };
-
-    const onTouchMove = (event: TouchEvent) => {
-      if (!isInStepZone() || touchStartYRef.current === null) return;
-      const currentY = event.touches[0]?.clientY ?? touchStartYRef.current;
-      const delta = touchStartYRef.current - currentY;
-      if (Math.abs(delta) < 42) return;
-
-      const direction = delta > 0 ? 1 : -1;
-      const current = activeIndexRef.current;
-      const canStep = direction > 0 ? current < lastIndex : current > 0;
-      if (!canStep) return;
-
-      event.preventDefault();
-      if (step(direction)) touchStartYRef.current = currentY;
-    };
-
     const onScroll = () => {
       const el = wrapperRef.current;
       if (!el) return;
@@ -171,13 +186,9 @@ export function StackingCards({ items }: { items: StackingCardItem[] }) {
     };
 
     window.addEventListener("wheel", onWheel, { passive: false });
-    window.addEventListener("touchstart", onTouchStart, { passive: true });
-    window.addEventListener("touchmove", onTouchMove, { passive: false });
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
       window.removeEventListener("wheel", onWheel);
-      window.removeEventListener("touchstart", onTouchStart);
-      window.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("scroll", onScroll);
     };
   }, [lastIndex]);
@@ -186,7 +197,21 @@ export function StackingCards({ items }: { items: StackingCardItem[] }) {
 
   return (
     <div ref={wrapperRef} className="relative py-4 sm:py-6">
-      <div className="relative mx-auto w-full max-w-4xl px-4 h-[min(76vh,580px)] min-h-[520px]">
+      {/* Mobile: simple vertical stack */}
+      <div className="md:hidden px-4 space-y-4">
+        {items.map((item, i) => (
+          <MobileCard
+            key={`m-${item.letter}-${i}`}
+            i={i}
+            total={items.length}
+            activeIndex={0}
+            {...item}
+          />
+        ))}
+      </div>
+
+      {/* Desktop: animated stacking */}
+      <div className="hidden md:block relative mx-auto w-full max-w-4xl px-4 h-[min(76vh,580px)] min-h-[520px]">
         <button
           type="button"
           aria-label="Voltar uma etapa"
@@ -195,15 +220,15 @@ export function StackingCards({ items }: { items: StackingCardItem[] }) {
         >
           <span className="sr-only">Voltar uma etapa</span>
         </button>
-          {items.map((item, i) => (
-            <Card
-              key={`${item.letter}-${i}`}
-              i={i}
-              total={items.length}
-              activeIndex={activeIndex}
-              {...item}
-            />
-          ))}
+        {items.map((item, i) => (
+          <Card
+            key={`${item.letter}-${i}`}
+            i={i}
+            total={items.length}
+            activeIndex={activeIndex}
+            {...item}
+          />
+        ))}
       </div>
     </div>
   );
