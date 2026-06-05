@@ -143,14 +143,17 @@ function Hero() {
             className="mx-auto lg:mx-0 w-[240px] sm:w-[320px] md:w-[380px] h-auto mb-7"
           />
           <h1
-            className="font-display text-4xl sm:text-5xl md:text-6xl font-medium tracking-tight text-foreground"
-            style={{ lineHeight: "1.05" }}
+            className="font-display text-5xl sm:text-6xl md:text-7xl font-medium tracking-tight text-foreground"
+            style={{ lineHeight: "1.02" }}
           >
-            Seu trabalho é excelente.<br />
-            <span className="italic text-brand">Seu Instagram</span> ainda não sabe disso.
+            <span className="text-brand">Cria</span>
+            <FlipWords
+              words={["tividade.", "ção.", "dores.", "r você."]}
+              className="italic text-brand px-0"
+            />
           </h1>
           <p className="mt-6 text-base sm:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0" style={{ textWrap: "pretty", lineHeight: "1.55" }}>
-            Um processo de 4 encontros para transformar quem você é em uma presença digital que atrai, conecta e gera resultado — seja você iniciante ou já presente no digital.
+            Seu trabalho é excelente — seu Instagram ainda não sabe disso. Um processo de 4 encontros para transformar quem você é em uma presença digital que atrai, conecta e gera resultado.
           </p>
           <div className="mt-9 flex justify-center lg:justify-start">
             <CTAButton size="lg">{CTA_LABEL}</CTAButton>
