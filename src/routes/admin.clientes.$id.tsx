@@ -317,6 +317,14 @@ function ClienteDetail() {
         )}
       </section>
 
+      {/* Convites de formulário */}
+      <FormInvitesSection
+        clienteId={id}
+        forms={forms}
+        invites={invites}
+        onChange={load}
+      />
+
       {/* Respostas */}
       <section className="mt-6 mb-10 bg-card border border-border/60 rounded-xl p-6">
         <h2 className="font-semibold mb-4">Respostas de formulários</h2>
@@ -341,5 +349,173 @@ function ClienteDetail() {
         )}
       </section>
     </div>
+  );
+}
+
+function FormInvitesSection({
+  clienteId,
+  forms,
+  invites,
+  onChange,
+}: {
+  clienteId: string;
+  forms: { id: string; title: string }[];
+  invites: any[];
+  onChange: () => void;
+}) {
+  const [selected, setSelected] = useState<string>(forms[0]?.id ?? "");
+  const [busy, setBusy] = useState(false);
+  const [copiedToken, setCopiedToken] = useState<string | null>(null);
+
+  // sync default selection when forms list changes
+  useEffect(() => {
+    if (!selected && forms.length) setSelected(forms[0].id);
+  }, [forms, selected]);
+
+  const origin =
+    typeof window !== "undefined" ? window.location.origin : "https://gabrielakwk.com.br";
+
+  async function generate() {
+    if (!selected) return;
+    setBusy(true);
+    try {
+      const { data, error } = await supabase
+        .from("form_invites")
+        .insert({ form_id: selected, cliente_id: clienteId })
+        .select("token")
+        .single();
+      if (error) throw error;
+      const url = `${origin}/f/${data.token}`;
+      await navigator.clipboard.writeText(url).catch(() => {});
+      toast.success("Link gerado e copiado para a área de transferência.");
+      onChange();
+    } catch (err: any) {
+      toast.error(err?.message ?? "Erro ao gerar convite.");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function copyUrl(token: string) {
+    const url = `${origin}/f/${token}`;
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopiedToken(token);
+      toast.success("Link copiado.");
+      setTimeout(() => setCopiedToken(null), 1500);
+    } catch {
+      toast.error("Não foi possível copiar.");
+    }
+  }
+
+  async function remove(token: string) {
+    if (!confirm("Remover este convite? O link deixará de funcionar.")) return;
+    const { error } = await supabase.from("form_invites").delete().eq("token", token);
+    if (error) toast.error(error.message);
+    else {
+      toast.success("Convite removido.");
+      onChange();
+    }
+  }
+
+  return (
+    <section className="mt-6 bg-card border border-border/60 rounded-xl p-6">
+      <div className="flex items-start justify-between flex-wrap gap-3 mb-4">
+        <div>
+          <h2 className="font-semibold">Enviar formulário</h2>
+          <p className="text-xs text-muted-foreground mt-1">
+            Gere um link público para a cliente preencher sem precisar fazer login.
+          </p>
+        </div>
+      </div>
+
+      {forms.length === 0 ? (
+        <p className="text-sm text-muted-foreground">
+          Nenhum formulário cadastrado.{" "}
+          <Link to="/admin/formularios" className="text-brand hover:underline">
+            Criar formulário
+          </Link>
+        </p>
+      ) : (
+        <div className="flex gap-2 flex-wrap items-stretch">
+          <select
+            value={selected}
+            onChange={(e) => setSelected(e.target.value)}
+            className="flex-1 min-w-[200px] bg-background border border-border/60 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand"
+          >
+            {forms.map((f) => (
+              <option key={f.id} value={f.id}>
+                {f.title}
+              </option>
+            ))}
+          </select>
+          <button
+            onClick={generate}
+            disabled={busy || !selected}
+            className="inline-flex items-center gap-2 bg-brand text-brand-foreground px-4 py-2 rounded-lg font-semibold text-sm hover:opacity-90 disabled:opacity-50"
+          >
+            <Send className="w-4 h-4" />
+            {busy ? "Gerando..." : "Gerar link"}
+          </button>
+        </div>
+      )}
+
+      {invites.length > 0 && (
+        <div className="mt-5">
+          <h3 className="text-xs uppercase tracking-wider text-muted-foreground mb-2">
+            Links enviados
+          </h3>
+          <ul className="space-y-2">
+            {invites.map((inv: any) => {
+              const url = `${origin}/f/${inv.token}`;
+              return (
+                <li
+                  key={inv.token}
+                  className="flex items-center gap-3 p-3 rounded-lg bg-muted/30 flex-wrap"
+                >
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-medium truncate">
+                      {inv.forms?.title ?? "Formulário"}
+                    </div>
+                    <div className="text-xs text-muted-foreground truncate font-mono">
+                      {url}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    {inv.submitted_at ? (
+                      <span className="inline-flex items-center gap-1 text-xs font-semibold text-brand bg-brand-soft px-2.5 py-1 rounded-full">
+                        <Check className="w-3 h-3" /> Respondido
+                      </span>
+                    ) : (
+                      <span className="text-xs text-muted-foreground">
+                        {new Date(inv.created_at).toLocaleDateString("pt-BR")}
+                      </span>
+                    )}
+                    <button
+                      onClick={() => copyUrl(inv.token)}
+                      className="p-1.5 text-muted-foreground hover:text-brand"
+                      aria-label="Copiar"
+                    >
+                      {copiedToken === inv.token ? (
+                        <Check className="w-4 h-4" />
+                      ) : (
+                        <Copy className="w-4 h-4" />
+                      )}
+                    </button>
+                    <button
+                      onClick={() => remove(inv.token)}
+                      className="p-1.5 text-muted-foreground hover:text-destructive"
+                      aria-label="Remover"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      )}
+    </section>
   );
 }
