@@ -13,6 +13,7 @@ import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as InsightsRouteImport } from './routes/insights'
+import { Route as AreaRouteImport } from './routes/area'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as IndexRouteImport } from './routes/index'
 
@@ -36,6 +37,11 @@ const InsightsRoute = InsightsRouteImport.update({
   path: '/insights',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AreaRoute = AreaRouteImport.update({
+  id: '/area',
+  path: '/area',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppRoute = AppRouteImport.update({
   id: '/app',
   path: '/app',
@@ -50,6 +56,7 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRoute
+  '/area': typeof AreaRoute
   '/insights': typeof InsightsRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -58,6 +65,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/app': typeof AppRoute
+  '/area': typeof AreaRoute
   '/insights': typeof InsightsRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -67,6 +75,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/app': typeof AppRoute
+  '/area': typeof AreaRoute
   '/insights': typeof InsightsRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -77,16 +86,25 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/app'
+    | '/area'
     | '/insights'
     | '/login'
     | '/reset-password'
     | '/settings'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/app' | '/insights' | '/login' | '/reset-password' | '/settings'
+  to:
+    | '/'
+    | '/app'
+    | '/area'
+    | '/insights'
+    | '/login'
+    | '/reset-password'
+    | '/settings'
   id:
     | '__root__'
     | '/'
     | '/app'
+    | '/area'
     | '/insights'
     | '/login'
     | '/reset-password'
@@ -96,6 +114,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AppRoute: typeof AppRoute
+  AreaRoute: typeof AreaRoute
   InsightsRoute: typeof InsightsRoute
   LoginRoute: typeof LoginRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
@@ -132,6 +151,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InsightsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/area': {
+      id: '/area'
+      path: '/area'
+      fullPath: '/area'
+      preLoaderRoute: typeof AreaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/app': {
       id: '/app'
       path: '/app'
@@ -152,6 +178,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AppRoute: AppRoute,
+  AreaRoute: AreaRoute,
   InsightsRoute: InsightsRoute,
   LoginRoute: LoginRoute,
   ResetPasswordRoute: ResetPasswordRoute,
