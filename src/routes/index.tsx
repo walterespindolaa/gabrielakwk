@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Check, ArrowRight, Sparkles } from "lucide-react";
 import { FlipWords } from "@/components/ui/flip-words";
+import { StackingCards, type StackingCardItem } from "@/components/ui/stacking-card";
 import monogramAsset from "@/assets/kwk-monogram.png.asset.json";
 import wordmarkAsset from "@/assets/gabi-kwk-wordmark.png.asset.json";
 import circleAsset from "@/assets/kwk-circle.png.asset.json";
@@ -152,7 +153,7 @@ function Hero() {
           >
             <span className="text-brand">Cria</span>
             <FlipWords
-              words={["tividade.", "ção.", "dores.", "r você."]}
+              words={["tividade.", "ção.", "dores.", "tivos."]}
               className="italic text-brand px-0"
             />
           </h1>
@@ -232,12 +233,54 @@ function Pullquote() {
 }
 
 /* ─── Method ─── */
-const methodSteps = [
-  { letter: "C", name: "Compreender", desc: "Sua história, seus valores, seu diferencial — tudo que te torna única antes de falar em conteúdo." },
-  { letter: "R", name: "Reconhecer", desc: "Seu público com profundidade real — quem ele é, o que sente e como você pode falar com ele de verdade." },
-  { letter: "I", name: "Identificar", desc: "A identidade da sua marca — tom de voz, mensagem, pilares e como ela aparece no digital." },
-  { letter: "A", name: "Ativar", desc: "Tudo em plano de ação — o que postar, quando postar e com qual objetivo." },
-  { letter: "R", name: "Reorganizar", desc: "O perfil digital para que ele reflita, de verdade, quem você é e o que você entrega.", complementary: true },
+
+
+const methodSteps: StackingCardItem[] = [
+  {
+    letter: "C",
+    title: "Compreender",
+    description:
+      "Sua história, seus valores, seu diferencial — tudo que te torna única antes de falar em conteúdo.",
+    bg: "#F4ECDF",
+    fg: "#3A1320",
+    accent: "#E8DCC7",
+  },
+  {
+    letter: "R",
+    title: "Reconhecer",
+    description:
+      "Seu público com profundidade real — quem ele é, o que sente e como você pode falar com ele de verdade.",
+    bg: "#F6DCDC",
+    fg: "#3A1320",
+    accent: "#EBC4C4",
+  },
+  {
+    letter: "I",
+    title: "Identificar",
+    description:
+      "A identidade da sua marca — tom de voz, mensagem, pilares e como ela aparece no digital.",
+    bg: "#D9DFEC",
+    fg: "#3A1320",
+    accent: "#C3CCDF",
+  },
+  {
+    letter: "A",
+    title: "Ativar",
+    description:
+      "Tudo em plano de ação — o que postar, quando postar e com qual objetivo.",
+    bg: "#3A1320",
+    fg: "#F4ECDF",
+    accent: "#581B2E",
+  },
+  {
+    letter: "R",
+    title: "Reorganizar",
+    description:
+      "O perfil digital para que ele reflita, de verdade, quem você é e o que você entrega.",
+    bg: "#EFD9C2",
+    fg: "#3A1320",
+    accent: "#E2C2A2",
+  },
 ];
 
 function Method() {
@@ -245,7 +288,7 @@ function Method() {
     <section className="py-24 sm:py-32 bg-surface-alt relative overflow-hidden">
       <div className="absolute -top-20 right-0 w-[400px] h-[400px] rounded-full bg-brand/5 blur-3xl pointer-events-none" />
       <div className="relative max-w-6xl mx-auto px-5">
-        <div className="text-center mb-16">
+        <div className="text-center mb-12">
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-brand mb-4">O método</p>
           <div className="flex items-center justify-center gap-5 sm:gap-7">
             <img
@@ -265,33 +308,13 @@ function Method() {
             Cada letra é uma etapa. Cada etapa tem uma entrega. E tudo é construído em cima de quem você é — não de fórmulas prontas.
           </p>
         </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {methodSteps.slice(0, 4).map((s) => (
-            <MethodCard key={s.name} {...s} />
-          ))}
-        </div>
-        <div className="mt-4 flex justify-center">
-          <div className="w-full md:w-1/2 lg:w-1/3">
-            <MethodCard {...methodSteps[4]} />
-          </div>
-        </div>
       </div>
+
+      <StackingCards items={methodSteps} />
     </section>
   );
 }
 
-function MethodCard({ letter, name, desc, complementary }: { letter: string; name: string; desc: string; complementary?: boolean }) {
-  return (
-    <div className={`rounded-2xl bg-card border border-border/60 p-6 transition-all hover:border-brand/30 hover:shadow-lg ${complementary ? "opacity-90" : ""}`}>
-      <div className="flex items-baseline gap-3 mb-3">
-        <span className="font-display text-5xl font-medium text-brand leading-none">{letter}</span>
-        <span className="font-semibold text-foreground">{name}</span>
-      </div>
-      <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
-    </div>
-  );
-}
 
 /* ─── Mid CTA ─── */
 function MidCTA() {
