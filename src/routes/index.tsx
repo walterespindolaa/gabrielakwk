@@ -217,7 +217,7 @@ function Hero() {
           <img
             src={heroPhoto.url}
             alt="Gabriela Kawikioni"
-            className="relative w-full h-full object-contain object-bottom"
+            className="absolute inset-0 w-full h-full object-cover object-center"
           />
           {/* Horizontal smoky fade: blends the image's left edge into the content column (desktop) */}
           <div
