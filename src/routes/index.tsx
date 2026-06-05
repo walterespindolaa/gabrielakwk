@@ -7,7 +7,7 @@ import circleAsset from "@/assets/kwk-circle.png.asset.json";
 import heroPhoto from "@/assets/gabi-hero.jpg.asset.json";
 import aboutPhoto from "@/assets/gabi-about.jpg.asset.json";
 
-const WHATSAPP_URL = "https://wa.me/55SEUNUMERO";
+const WHATSAPP_URL = "https://wa.me/5547988537412";
 const CTA_LABEL = "Quero conhecer a consultoria";
 
 export const Route = createFileRoute("/")({
