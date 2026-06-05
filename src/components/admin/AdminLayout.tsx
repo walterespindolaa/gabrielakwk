@@ -38,20 +38,12 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
 
   const SidebarContent = (
     <>
-      <div className="px-5 py-6 border-b border-brand/15 relative">
-        <Link to="/" className="flex items-center gap-3">
-          <img src={monogramAsset.url} alt="KWK" className="h-12 w-auto" />
-          <div className="flex flex-col leading-tight">
-            <span className="font-display text-lg font-semibold tracking-tight text-brand">
-              KWK
-            </span>
-            <span className="text-[9px] uppercase tracking-[0.22em] text-muted-foreground font-semibold">
-              Consultoria · Admin
-            </span>
-          </div>
+      <div className="px-5 py-8 border-b border-brand/15 relative flex flex-col items-center">
+        <Link to="/" className="flex items-center justify-center">
+          <img src={monogramAsset.url} alt="KWK" className="h-24 w-auto" />
         </Link>
         {auth.fullName && (
-          <p className="mt-4 text-xs text-muted-foreground truncate">
+          <p className="mt-4 text-xs text-muted-foreground truncate text-center">
             {auth.fullName} · <span className="capitalize">{auth.role}</span>
           </p>
         )}
