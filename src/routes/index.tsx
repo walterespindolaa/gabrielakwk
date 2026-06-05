@@ -14,6 +14,8 @@ import wordmarkAsset from "@/assets/gabi-kwk-wordmark.png.asset.json";
 import circleAsset from "@/assets/kwk-circle.png.asset.json";
 import heroPhoto from "@/assets/gabi-hero.jpg.asset.json";
 import aboutPhoto from "@/assets/gabi-about-v2.jpg.asset.json";
+import fitPhoto from "@/assets/gabi-about.jpg.asset.json";
+import kwkPattern from "@/assets/kwk-pattern.jpg.asset.json";
 import meetingOnePhoto from "@/assets/meeting-1.jpg.asset.json";
 import meetingTwoPhoto from "@/assets/meeting-2.jpg.asset.json";
 import meetingThreePhoto from "@/assets/meeting-3.jpg.asset.json";
@@ -196,6 +198,12 @@ function Hero() {
             src={heroPhoto.url}
             alt="Gabriela Kawikioni"
             className="absolute inset-0 w-full h-full object-cover"
+            style={{
+              WebkitMaskImage:
+                "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.2) 8%, rgba(0,0,0,0.6) 18%, #000 32%)",
+              maskImage:
+                "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.2) 8%, rgba(0,0,0,0.6) 18%, #000 32%)",
+            }}
           />
           {/* Horizontal smoky fade: blends the image's left edge into the content column (desktop) */}
           <div
@@ -425,6 +433,25 @@ const meetings: CardItem[] = [
 function Meetings() {
   return (
     <section className="relative overflow-hidden pt-4 pb-24 sm:pt-6 sm:pb-28 bg-background">
+      {/* KWK monogram pattern background */}
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none opacity-20"
+        style={{
+          backgroundImage: `url(${kwkPattern.url})`,
+          backgroundRepeat: "repeat",
+          backgroundSize: "560px auto",
+        }}
+      />
+      {/* Soft top/bottom fades so the pattern blends into adjacent sections */}
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(to bottom, var(--background) 0%, transparent 12%, transparent 88%, var(--background) 100%)",
+        }}
+      />
       <StickerCollage variant="meetings" />
       <div className="relative z-10 max-w-5xl mx-auto px-5">
         <div className="text-center mb-12">
@@ -676,7 +703,7 @@ function FitChecklist() {
             className="relative order-first md:order-none mx-auto w-full max-w-[280px] md:w-[280px]"
           >
             <div className="relative aspect-[3/4] rounded-3xl overflow-hidden border border-border/40 shadow-2xl shadow-brand/15">
-              <img src={aboutPhoto.url} alt="Gabriela Kawikioni" className="w-full h-full object-cover" />
+              <img src={fitPhoto.url} alt="Gabriela Kawikioni" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-brand/30 via-transparent to-transparent" />
             </div>
             <div aria-hidden className="absolute -top-3 -right-3 w-16 h-16 rounded-2xl bg-brand/15 -z-10" />
