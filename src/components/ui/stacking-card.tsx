@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "motion/react";
-import { useCallback, useRef, useState, type TouchEvent, type WheelEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type TouchEvent, type WheelEvent } from "react";
 
 export interface StackingCardItem {
   letter: string;
@@ -88,6 +88,7 @@ function Card({
 
 export function StackingCards({ items }: { items: StackingCardItem[] }) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
   const lockUntil = useRef(0);
   const touchStartY = useRef<number | null>(null);
   const lastIndex = items.length - 1;
@@ -96,18 +97,45 @@ export function StackingCards({ items }: { items: StackingCardItem[] }) {
     setActiveIndex((current) => Math.min(lastIndex, Math.max(0, current + direction)));
   }, [lastIndex]);
 
-  const handleWheel = (event: WheelEvent<HTMLDivElement>) => {
-    const direction = event.deltaY > 0 ? 1 : -1;
+  const isInScrollZone = useCallback(() => {
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (!rect) return false;
+
+    const viewportHeight = window.innerHeight;
+    const cardCenter = rect.top + rect.height / 2;
+    return cardCenter > viewportHeight * 0.28 && cardCenter < viewportHeight * 0.72;
+  }, []);
+
+  const handleStep = useCallback((direction: 1 | -1) => {
     const canMove = direction > 0 ? activeIndex < lastIndex : activeIndex > 0;
+    if (!canMove || !isInScrollZone()) return false;
 
-    if (!canMove || Math.abs(event.deltaY) < 10) return;
-
-    event.preventDefault();
     const now = Date.now();
-    if (now < lockUntil.current) return;
+    if (now < lockUntil.current) return true;
 
     lockUntil.current = now + 640;
     move(direction);
+    return true;
+  }, [activeIndex, isInScrollZone, lastIndex, move]);
+
+  useEffect(() => {
+    const onWindowWheel = (event: globalThis.WheelEvent) => {
+      if (Math.abs(event.deltaY) < 10) return;
+      const direction = event.deltaY > 0 ? 1 : -1;
+
+      if (handleStep(direction)) {
+        event.preventDefault();
+      }
+    };
+
+    window.addEventListener("wheel", onWindowWheel, { passive: false });
+    return () => window.removeEventListener("wheel", onWindowWheel);
+  }, [handleStep]);
+
+  const handleWheel = (event: WheelEvent<HTMLDivElement>) => {
+    const direction = event.deltaY > 0 ? 1 : -1;
+    if (Math.abs(event.deltaY) < 10) return;
+    if (handleStep(direction)) event.preventDefault();
   };
 
   const handleTouchStart = (event: TouchEvent<HTMLDivElement>) => {
@@ -139,6 +167,7 @@ export function StackingCards({ items }: { items: StackingCardItem[] }) {
 
   return (
     <div
+      ref={containerRef}
       onWheel={handleWheel}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
