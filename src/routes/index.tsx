@@ -16,6 +16,7 @@ import heroPhoto from "@/assets/gabi-hero.jpg.asset.json";
 import aboutPhoto from "@/assets/gabi-about-v2.jpg.asset.json";
 import fitPhoto from "@/assets/gabi-about.jpg.asset.json";
 import kwkPattern from "@/assets/kwk-pattern.jpg.asset.json";
+import kwkPatternBurgundy from "@/assets/kwk-pattern-burgundy.jpg.asset.json";
 import meetingOnePhoto from "@/assets/meeting-1.jpg.asset.json";
 import meetingTwoPhoto from "@/assets/meeting-2.jpg.asset.json";
 import meetingThreePhoto from "@/assets/meeting-3.jpg.asset.json";
@@ -661,6 +662,25 @@ function FitChecklist() {
 
   return (
     <section className="relative py-24 sm:py-28 bg-background overflow-hidden">
+      {/* Burgundy KWK pattern background */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-20"
+        style={{
+          backgroundImage: `url(${kwkPatternBurgundy.url})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(to bottom, var(--background) 0%, transparent 18%, transparent 82%, var(--background) 100%)",
+        }}
+      />
       {/* Decorative background */}
       <div aria-hidden className="pointer-events-none absolute top-20 left-10 w-64 h-64 rounded-full bg-brand/5 blur-3xl" />
       <div aria-hidden className="pointer-events-none absolute bottom-20 right-10 w-72 h-72 rounded-full bg-brand/10 blur-3xl" />
