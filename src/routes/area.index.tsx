@@ -22,7 +22,7 @@ function JornadaPage() {
       const { data } = await supabase
         .from("journey_progress")
         .select("stage, status")
-        .eq("cliente_id", auth.userId);
+        .eq("cliente_id", auth.userId!);
       const map: Record<string, Status> = {};
       STAGES.forEach((s) => (map[s.key] = "pendente"));
       (data ?? []).forEach((row: any) => (map[row.stage] = row.status));

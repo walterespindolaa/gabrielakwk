@@ -27,7 +27,7 @@ function PerfilPage() {
         supabase
           .from("profiles")
           .select("full_name, avatar_url")
-          .eq("id", auth.userId)
+          .eq("id", auth.userId!)
           .maybeSingle(),
         supabase.auth.getUser(),
       ]);
