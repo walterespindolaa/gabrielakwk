@@ -1,6 +1,6 @@
 "use client";
-import { useTransform, motion, useScroll, type MotionValue } from "motion/react";
-import { useRef } from "react";
+import { motion } from "motion/react";
+import { useCallback, useRef, useState, type TouchEvent, type WheelEvent } from "react";
 
 export interface StackingCardItem {
   letter: string;
@@ -14,7 +14,8 @@ export interface StackingCardItem {
 interface CardProps extends StackingCardItem {
   i: number;
   total: number;
-  progress: MotionValue<number>;
+  activeIndex: number;
+  onBack: () => void;
 }
 
 function Card({
@@ -26,35 +27,28 @@ function Card({
   bg,
   fg,
   accent,
-  progress,
+  activeIndex,
+  onBack,
 }: CardProps) {
-  const segment = total > 1 ? 1 / total : 1;
-  const previous = Math.max(0, (i - 1) * segment);
-  const current = i * segment;
-  const next = Math.min(1, (i + 1) * segment);
-  const isFirst = i === 0;
-  const isLast = i === total - 1;
-  const input = isFirst ? [0, next] : isLast ? [previous, current, 1] : [previous, current, next];
-  const y = useTransform(progress, input, isFirst ? [0, -72] : isLast ? [78, 0, 0] : [78, 0, -72]);
-  const scale = useTransform(progress, input, isFirst ? [1, 0.88] : isLast ? [0.92, 1, 1] : [0.92, 1, 0.88]);
-  const rotate = useTransform(progress, input, isFirst ? [0, -2] : isLast ? [2, 0, 0] : [2, 0, -2]);
-  const opacity = useTransform(progress, input, isFirst ? [1, 0.64] : isLast ? [0.72, 1, 1] : [0.72, 1, 0.64]);
-  const zIndex = useTransform(progress, input, isFirst ? [total, 0] : isLast ? [i, total + i, total + i] : [i, total + i, i]);
+  const distance = i - activeIndex;
+  const isActive = distance === 0;
+  const isBehind = distance < 0;
+  const depth = Math.min(Math.abs(distance), 4);
+  const y = isActive ? 0 : isBehind ? -28 * depth : 24 * depth;
+  const scale = isActive ? 1 : isBehind ? 1 - depth * 0.045 : 0.97 - depth * 0.025;
+  const rotate = isActive ? 0 : isBehind ? -2.2 * depth : 1.8 * depth;
+  const opacity = isActive ? 1 : isBehind ? Math.max(0.42, 0.82 - depth * 0.12) : Math.max(0.34, 0.76 - depth * 0.16);
+  const zIndex = isActive ? total + 5 : isBehind ? total - depth : total - depth - 1;
 
   return (
     <motion.div
-      style={{
-        backgroundColor: bg,
-        color: fg,
-        y,
-        scale,
-        rotate,
-        opacity,
-        zIndex,
-      }}
-      className="absolute inset-x-4 mx-auto w-[calc(100%-2rem)] max-w-4xl h-[min(76vh,580px)] rounded-3xl overflow-hidden shadow-2xl border border-foreground/10 origin-top"
+      animate={{ y, scale, rotate, opacity }}
+      transition={{ type: "spring", stiffness: 170, damping: 24, mass: 0.9 }}
+      style={{ backgroundColor: bg, color: fg, zIndex }}
+      onClick={isActive ? onBack : undefined}
+      className="absolute inset-0 rounded-3xl overflow-hidden shadow-2xl border border-foreground/10 origin-top cursor-pointer"
     >
-      <div className="grid md:grid-cols-[1fr_1.1fr] h-full">
+      <div className="grid h-full grid-rows-[1fr_0.85fr] md:grid-cols-[1fr_1.1fr] md:grid-rows-1">
         <div className="p-8 sm:p-12 flex flex-col justify-between">
           <div className="flex items-center gap-3 text-xs uppercase tracking-[0.25em] opacity-70">
             <span>Etapa {i + 1} / {total}</span>
@@ -93,25 +87,74 @@ function Card({
 }
 
 export function StackingCards({ items }: { items: StackingCardItem[] }) {
-  const container = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: container,
-    offset: ["start start", "end end"],
-  });
+  const [activeIndex, setActiveIndex] = useState(0);
+  const lockUntil = useRef(0);
+  const touchStartY = useRef<number | null>(null);
+  const lastIndex = items.length - 1;
+
+  const move = useCallback((direction: 1 | -1) => {
+    setActiveIndex((current) => Math.min(lastIndex, Math.max(0, current + direction)));
+  }, [lastIndex]);
+
+  const handleWheel = (event: WheelEvent<HTMLDivElement>) => {
+    const direction = event.deltaY > 0 ? 1 : -1;
+    const canMove = direction > 0 ? activeIndex < lastIndex : activeIndex > 0;
+
+    if (!canMove || Math.abs(event.deltaY) < 10) return;
+
+    event.preventDefault();
+    const now = Date.now();
+    if (now < lockUntil.current) return;
+
+    lockUntil.current = now + 640;
+    move(direction);
+  };
+
+  const handleTouchStart = (event: TouchEvent<HTMLDivElement>) => {
+    touchStartY.current = event.touches[0]?.clientY ?? null;
+  };
+
+  const handleTouchMove = (event: TouchEvent<HTMLDivElement>) => {
+    const start = touchStartY.current;
+    if (start === null) return;
+    const current = event.touches[0]?.clientY ?? start;
+    const direction = start - current > 0 ? 1 : -1;
+    const canMove = direction > 0 ? activeIndex < lastIndex : activeIndex > 0;
+
+    if (canMove && Math.abs(start - current) > 8) event.preventDefault();
+  };
+
+  const handleTouchEnd = (event: TouchEvent<HTMLDivElement>) => {
+    const start = touchStartY.current;
+    const end = event.changedTouches[0]?.clientY;
+    touchStartY.current = null;
+    if (start === null || end === undefined) return;
+
+    const delta = start - end;
+    if (Math.abs(delta) < 42) return;
+    const direction = delta > 0 ? 1 : -1;
+    const canMove = direction > 0 ? activeIndex < lastIndex : activeIndex > 0;
+    if (canMove) move(direction);
+  };
 
   return (
-    <div ref={container} className="relative h-[260vh] sm:h-[280vh]">
-      <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
-        {items.map((item, i) => (
-          <Card
-            key={`${item.letter}-${i}`}
-            i={i}
-            total={items.length}
-            progress={scrollYProgress}
-            {...item}
-          />
-        ))}
-      </div>
+    <div
+      onWheel={handleWheel}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+      className="relative mx-auto h-[min(76vh,580px)] min-h-[520px] max-w-4xl px-4"
+    >
+      {items.map((item, i) => (
+        <Card
+          key={`${item.letter}-${i}`}
+          i={i}
+          total={items.length}
+          activeIndex={activeIndex}
+          onBack={() => move(-1)}
+          {...item}
+        />
+      ))}
     </div>
   );
 }
