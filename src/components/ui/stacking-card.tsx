@@ -113,7 +113,7 @@ export function StackingCards({ items }: { items: StackingCardItem[] }) {
     if (now < lockUntil.current) return true;
 
     lockUntil.current = now + 640;
-    containerRef.current?.scrollIntoView({ block: "center", behavior: "instant" });
+    containerRef.current?.scrollIntoView({ block: "center", behavior: "auto" });
     move(direction);
     return true;
   }, [activeIndex, isInScrollZone, lastIndex, move]);
