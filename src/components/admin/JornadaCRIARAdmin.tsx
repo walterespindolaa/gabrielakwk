@@ -187,7 +187,7 @@ export function JornadaCRIARAdmin({ clienteId }: Props) {
             enc={enc}
             onGenerate={generateInvite}
             onCopy={copyInvite}
-            onSaveEncontro={(patch) => upsertEncontro(e.numero, patch)}
+            onSaveEncontro={(patch: Partial<EncontroRow>) => upsertEncontro(e.numero, patch)}
             formTitle={formTitle}
             expanded={expanded === e.numero}
             onToggle={() => setExpanded(expanded === e.numero ? null : e.numero)}
