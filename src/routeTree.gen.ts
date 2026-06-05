@@ -17,6 +17,11 @@ import { Route as AreaRouteImport } from './routes/area'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminMateriaisRouteImport } from './routes/admin.materiais'
+import { Route as AdminFormulariosRouteImport } from './routes/admin.formularios'
+import { Route as AdminClientesRouteImport } from './routes/admin.clientes'
+import { Route as AdminClientesIdRouteImport } from './routes/admin.clientes.$id'
 
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
@@ -58,37 +63,76 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminMateriaisRoute = AdminMateriaisRouteImport.update({
+  id: '/materiais',
+  path: '/materiais',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminFormulariosRoute = AdminFormulariosRouteImport.update({
+  id: '/formularios',
+  path: '/formularios',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminClientesRoute = AdminClientesRouteImport.update({
+  id: '/clientes',
+  path: '/clientes',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminClientesIdRoute = AdminClientesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AdminClientesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/app': typeof AppRoute
   '/area': typeof AreaRoute
   '/insights': typeof InsightsRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/settings': typeof SettingsRoute
+  '/admin/clientes': typeof AdminClientesRouteWithChildren
+  '/admin/formularios': typeof AdminFormulariosRoute
+  '/admin/materiais': typeof AdminMateriaisRoute
+  '/admin/': typeof AdminIndexRoute
+  '/admin/clientes/$id': typeof AdminClientesIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
   '/app': typeof AppRoute
   '/area': typeof AreaRoute
   '/insights': typeof InsightsRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/settings': typeof SettingsRoute
+  '/admin/clientes': typeof AdminClientesRouteWithChildren
+  '/admin/formularios': typeof AdminFormulariosRoute
+  '/admin/materiais': typeof AdminMateriaisRoute
+  '/admin': typeof AdminIndexRoute
+  '/admin/clientes/$id': typeof AdminClientesIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
+  '/admin': typeof AdminRouteWithChildren
   '/app': typeof AppRoute
   '/area': typeof AreaRoute
   '/insights': typeof InsightsRoute
   '/login': typeof LoginRoute
   '/reset-password': typeof ResetPasswordRoute
   '/settings': typeof SettingsRoute
+  '/admin/clientes': typeof AdminClientesRouteWithChildren
+  '/admin/formularios': typeof AdminFormulariosRoute
+  '/admin/materiais': typeof AdminMateriaisRoute
+  '/admin/': typeof AdminIndexRoute
+  '/admin/clientes/$id': typeof AdminClientesIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -101,16 +145,25 @@ export interface FileRouteTypes {
     | '/login'
     | '/reset-password'
     | '/settings'
+    | '/admin/clientes'
+    | '/admin/formularios'
+    | '/admin/materiais'
+    | '/admin/'
+    | '/admin/clientes/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/admin'
     | '/app'
     | '/area'
     | '/insights'
     | '/login'
     | '/reset-password'
     | '/settings'
+    | '/admin/clientes'
+    | '/admin/formularios'
+    | '/admin/materiais'
+    | '/admin'
+    | '/admin/clientes/$id'
   id:
     | '__root__'
     | '/'
@@ -121,11 +174,16 @@ export interface FileRouteTypes {
     | '/login'
     | '/reset-password'
     | '/settings'
+    | '/admin/clientes'
+    | '/admin/formularios'
+    | '/admin/materiais'
+    | '/admin/'
+    | '/admin/clientes/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRoute: typeof AdminRoute
+  AdminRoute: typeof AdminRouteWithChildren
   AppRoute: typeof AppRoute
   AreaRoute: typeof AreaRoute
   InsightsRoute: typeof InsightsRoute
@@ -192,12 +250,75 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/materiais': {
+      id: '/admin/materiais'
+      path: '/materiais'
+      fullPath: '/admin/materiais'
+      preLoaderRoute: typeof AdminMateriaisRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/formularios': {
+      id: '/admin/formularios'
+      path: '/formularios'
+      fullPath: '/admin/formularios'
+      preLoaderRoute: typeof AdminFormulariosRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/clientes': {
+      id: '/admin/clientes'
+      path: '/clientes'
+      fullPath: '/admin/clientes'
+      preLoaderRoute: typeof AdminClientesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/clientes/$id': {
+      id: '/admin/clientes/$id'
+      path: '/$id'
+      fullPath: '/admin/clientes/$id'
+      preLoaderRoute: typeof AdminClientesIdRouteImport
+      parentRoute: typeof AdminClientesRoute
+    }
   }
 }
 
+interface AdminClientesRouteChildren {
+  AdminClientesIdRoute: typeof AdminClientesIdRoute
+}
+
+const AdminClientesRouteChildren: AdminClientesRouteChildren = {
+  AdminClientesIdRoute: AdminClientesIdRoute,
+}
+
+const AdminClientesRouteWithChildren = AdminClientesRoute._addFileChildren(
+  AdminClientesRouteChildren,
+)
+
+interface AdminRouteChildren {
+  AdminClientesRoute: typeof AdminClientesRouteWithChildren
+  AdminFormulariosRoute: typeof AdminFormulariosRoute
+  AdminMateriaisRoute: typeof AdminMateriaisRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminClientesRoute: AdminClientesRouteWithChildren,
+  AdminFormulariosRoute: AdminFormulariosRoute,
+  AdminMateriaisRoute: AdminMateriaisRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRoute: AdminRoute,
+  AdminRoute: AdminRouteWithChildren,
   AppRoute: AppRoute,
   AreaRoute: AreaRoute,
   InsightsRoute: InsightsRoute,

@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Plus, X } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
+// (kept for future server fn usage in modal)
 import { supabase } from "@/integrations/supabase/client";
 import { createClientUser } from "@/lib/admin.functions";
 import { toast } from "sonner";
@@ -22,7 +23,6 @@ interface ProfileRow {
 function ClientesPage() {
   const me = useCurrentUser();
   const [rows, setRows] = useState<ProfileRow[]>([]);
-  const [emails, setEmails] = useState<Record<string, string>>({});
   const [progress, setProgress] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
