@@ -15,6 +15,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as InsightsRouteImport } from './routes/insights'
 import { Route as AreaRouteImport } from './routes/area'
 import { Route as AppRouteImport } from './routes/app'
+import { Route as AplicarRouteImport } from './routes/aplicar'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AreaIndexRouteImport } from './routes/area.index'
@@ -57,6 +58,11 @@ const AreaRoute = AreaRouteImport.update({
 const AppRoute = AppRouteImport.update({
   id: '/app',
   path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AplicarRoute = AplicarRouteImport.update({
+  id: '/aplicar',
+  path: '/aplicar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -128,6 +134,7 @@ const AdminClientesIdRoute = AdminClientesIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/aplicar': typeof AplicarRoute
   '/app': typeof AppRoute
   '/area': typeof AreaRouteWithChildren
   '/insights': typeof InsightsRoute
@@ -148,6 +155,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/aplicar': typeof AplicarRoute
   '/app': typeof AppRoute
   '/insights': typeof InsightsRoute
   '/login': typeof LoginRoute
@@ -169,6 +177,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/aplicar': typeof AplicarRoute
   '/app': typeof AppRoute
   '/area': typeof AreaRouteWithChildren
   '/insights': typeof InsightsRoute
@@ -192,6 +201,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
+    | '/aplicar'
     | '/app'
     | '/area'
     | '/insights'
@@ -212,6 +222,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/aplicar'
     | '/app'
     | '/insights'
     | '/login'
@@ -232,6 +243,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/admin'
+    | '/aplicar'
     | '/app'
     | '/area'
     | '/insights'
@@ -254,6 +266,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
+  AplicarRoute: typeof AplicarRoute
   AppRoute: typeof AppRoute
   AreaRoute: typeof AreaRouteWithChildren
   InsightsRoute: typeof InsightsRoute
@@ -305,6 +318,13 @@ declare module '@tanstack/react-router' {
       path: '/app'
       fullPath: '/app'
       preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/aplicar': {
+      id: '/aplicar'
+      path: '/aplicar'
+      fullPath: '/aplicar'
+      preLoaderRoute: typeof AplicarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin': {
@@ -440,6 +460,7 @@ const AreaRouteWithChildren = AreaRoute._addFileChildren(AreaRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
+  AplicarRoute: AplicarRoute,
   AppRoute: AppRoute,
   AreaRoute: AreaRouteWithChildren,
   InsightsRoute: InsightsRoute,

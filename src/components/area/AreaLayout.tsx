@@ -2,6 +2,7 @@ import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
 import { Map, FolderOpen, FileText, User, LogOut } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useRequireAuth } from "@/lib/auth-guard";
+import { KwkLoader } from "@/components/KwkLoader";
 
 const nav = [
   { to: "/area", label: "Jornada", icon: Map, exact: true },
@@ -29,11 +30,7 @@ export function AreaLayout({ children }: { children: React.ReactNode }) {
   }
 
   if (auth.loading || !auth.userId) {
-    return (
-      <div className="min-h-screen flex items-center justify-center text-muted-foreground">
-        Carregando...
-      </div>
-    );
+    return <KwkLoader />;
   }
 
   const isActive = (to: string, exact?: boolean) =>

@@ -1,6 +1,12 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import {
+  LEAD_FORM_ID,
+  LEAD_FORM_TITLE,
+  LEAD_FORM_DESCRIPTION,
+  LEAD_FORM_SCHEMA,
+} from "@/lib/lead-form";
 
 
 const tokenSchema = z.object({ token: z.string().uuid() });
@@ -217,4 +223,57 @@ export const approveLeadInvite = createServerFn({ method: "POST" })
       .eq("token", invite.token);
 
     return { ok: true, cliente_id: newId, email: leadEmail };
+  });
+
+// ----- Público: candidatura de lead pelo site (sem login, sem convite prévio) -----
+
+const publicLeadSchema = z.object({
+  answers: z.record(z.string(), z.union([z.string(), z.array(z.string())])),
+  // Honeypot anti-spam: deve vir vazio (bots costumam preencher).
+  website: z.string().max(0).optional().or(z.literal("")),
+});
+
+function answerToString(v: unknown): string | null {
+  if (Array.isArray(v)) return v.join(", ");
+  if (typeof v === "string") return v.trim() || null;
+  return null;
+}
+
+export const submitPublicLead = createServerFn({ method: "POST" })
+  .inputValidator((d) => publicLeadSchema.parse(d))
+  .handler(async ({ data }) => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    const nome = answerToString(data.answers["nome"]);
+    const email = answerToString(data.answers["email"]);
+    const whatsapp = answerToString(data.answers["whatsapp"]);
+    if (!nome) throw new Error("Informe seu nome.");
+
+    // Garante que o formulário de captação exista no banco (idempotente).
+    const { error: formErr } = await supabaseAdmin
+      .from("forms")
+      .upsert(
+        {
+          id: LEAD_FORM_ID,
+          title: LEAD_FORM_TITLE,
+          description: LEAD_FORM_DESCRIPTION,
+          stage: "geral",
+          schema: LEAD_FORM_SCHEMA as any,
+        } as any,
+        { onConflict: "id" },
+      );
+    if (formErr) throw new Error(formErr.message);
+
+    // Cria o lead em form_invites (já marcado como respondido).
+    const { error: insErr } = await supabaseAdmin.from("form_invites").insert({
+      form_id: LEAD_FORM_ID,
+      lead_name: nome,
+      lead_email: email,
+      lead_whatsapp: whatsapp,
+      answers: data.answers as any,
+      submitted_at: new Date().toISOString(),
+    } as any);
+    if (insErr) throw new Error(insErr.message);
+
+    return { ok: true };
   });

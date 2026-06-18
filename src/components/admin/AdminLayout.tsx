@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useRequireAuth } from "@/lib/auth-guard";
 import monogramAsset from "@/assets/kwk-monogram.png.asset.json";
 import { StickerCollage } from "@/components/ui/sticker-collage";
+import { KwkLoader } from "@/components/KwkLoader";
 
 const nav = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
@@ -26,11 +27,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
   }
 
   if (auth.loading || !auth.userId || (auth.role !== "admin" && auth.role !== "consultora")) {
-    return (
-      <div className="min-h-screen flex items-center justify-center text-muted-foreground">
-        Carregando...
-      </div>
-    );
+    return <KwkLoader />;
   }
 
   const isActive = (to: string, exact?: boolean) =>

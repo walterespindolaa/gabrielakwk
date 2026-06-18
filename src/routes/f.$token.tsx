@@ -5,6 +5,7 @@ import { Check, ArrowRight, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { StickerCollage } from "@/components/ui/sticker-collage";
 import monogramAsset from "@/assets/kwk-monogram.png.asset.json";
+import { KwkLoader } from "@/components/KwkLoader";
 import { getInviteForm, submitInviteForm } from "@/lib/public-forms.functions";
 
 export const Route = createFileRoute("/f/$token")({
@@ -109,11 +110,7 @@ function PublicFormPage() {
   }
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center text-muted-foreground">
-        Carregando convite...
-      </div>
-    );
+    return <KwkLoader label="Carregando convite" />;
   }
   if (error || !payload) {
     return (

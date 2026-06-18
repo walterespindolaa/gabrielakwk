@@ -6,7 +6,12 @@ export const getRouter = () => {
     routeTree,
     context: {},
     scrollRestoration: true,
+    // Preload route code/data on hover or touch-start so navigation feels instant.
+    defaultPreload: "intent",
     defaultPreloadStaleTime: 0,
+    // Keep showing the previous screen during async transitions instead of flashing.
+    defaultPendingMs: 250,
+    defaultPendingMinMs: 300,
   });
 
   return router;

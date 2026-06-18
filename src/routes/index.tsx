@@ -73,15 +73,13 @@ function CTAButton({
       ? "bg-brand text-brand-foreground hover:bg-brand/90 shadow-lg shadow-brand/20"
       : "bg-white text-brand hover:bg-white/90";
   return (
-    <a
-      href={WHATSAPP_URL}
-      target="_blank"
-      rel="noopener noreferrer"
+    <Link
+      to="/aplicar"
       className={`inline-flex items-center justify-center gap-2 rounded-full font-semibold transition-all duration-200 active:scale-[0.97] ${sizes} ${variants} ${className}`}
     >
       {children}
       <ArrowRight className="w-4 h-4" />
-    </a>
+    </Link>
   );
 }
 
@@ -116,15 +114,13 @@ function LandingPage() {
           showSticky ? "translate-y-0 opacity-100" : "translate-y-24 opacity-0 pointer-events-none"
         }`}
       >
-        <a
-          href={WHATSAPP_URL}
-          target="_blank"
-          rel="noopener noreferrer"
+        <Link
+          to="/aplicar"
           className="flex items-center justify-center gap-2 w-full rounded-full bg-brand text-brand-foreground px-6 py-3.5 text-sm font-semibold shadow-2xl shadow-brand/30"
         >
           {CTA_LABEL}
           <ArrowRight className="w-4 h-4" />
-        </a>
+        </Link>
       </div>
     </div>
   );

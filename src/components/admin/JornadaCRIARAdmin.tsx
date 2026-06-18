@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { ENCONTROS, PRE_CONSULTORIA } from "@/lib/method-criar";
+import { KwkLoader } from "@/components/KwkLoader";
 import {
   Calendar,
   CheckCircle2,
@@ -150,7 +151,7 @@ export function JornadaCRIARAdmin({ clienteId }: Props) {
   }
 
   if (loading) {
-    return <p className="text-sm text-muted-foreground p-4">Carregando jornada...</p>;
+    return <KwkLoader fullScreen={false} label="Carregando jornada" />;
   }
 
   // Resolve form for invite

@@ -9,6 +9,7 @@ import type { Habit, HabitLog } from "@/lib/habits";
 import { HabitCard } from "@/components/HabitCard";
 import { ProgressRing } from "@/components/ProgressRing";
 import { BottomNav } from "@/components/BottomNav";
+import { KwkLoader } from "@/components/KwkLoader";
 import { AddHabitSheet } from "@/components/AddHabitSheet";
 import { EditHabitSheet } from "@/components/EditHabitSheet";
 import { OnboardingFlow, isOnboarded } from "@/components/OnboardingFlow";
@@ -235,7 +236,7 @@ function TodayPage() {
   const completedCount = scheduledToday.filter((h) => isCompletedToday(h.id, logs)).length;
   const allDone = scheduledToday.length > 0 && completedCount === scheduledToday.length;
 
-  if (!mounted || authLoading) return null;
+  if (!mounted || authLoading) return <KwkLoader />;
 
   if (showOnboarding) {
     return <OnboardingFlow onComplete={handleOnboardingComplete} />;

@@ -9,6 +9,7 @@ import { BottomNav } from "@/components/BottomNav";
 import { AddHabitSheet } from "@/components/AddHabitSheet";
 import { Flame, Trophy, TrendingUp, BarChart3, Leaf } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
+import { KwkLoader } from "@/components/KwkLoader";
 import { fetchHabitsFromCloud, fetchLogsFromCloud, saveHabitToCloud } from "@/lib/habits-cloud";
 
 export const Route = createFileRoute("/insights")({
@@ -88,7 +89,7 @@ function InsightsPage() {
     }
   };
 
-  if (!mounted || authLoading) return null;
+  if (!mounted || authLoading) return <KwkLoader />;
 
   const totalHabits = habits.length;
   const todayCompleted = habits.filter((h) => isCompletedToday(h.id, logs)).length;
