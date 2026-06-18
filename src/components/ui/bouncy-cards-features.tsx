@@ -16,12 +16,12 @@ interface BouncyCardsFeaturesProps {
 }
 
 const cardLayouts = [
-  "md:col-span-3 md:min-h-[300px] bg-brand text-brand-foreground",
-  "md:col-span-3 md:min-h-[300px] bg-card text-card-foreground",
+  "md:col-span-2 md:min-h-[260px] bg-brand text-brand-foreground",
+  "md:col-span-2 md:min-h-[260px] bg-card text-card-foreground",
   "md:col-span-2 md:min-h-[260px] bg-surface-alt text-foreground",
   "md:col-span-2 md:min-h-[260px] bg-card text-card-foreground",
   "md:col-span-2 md:min-h-[260px] bg-brand-soft text-foreground",
-  "md:col-span-6 md:min-h-[220px] bg-foreground text-background",
+  "md:col-span-2 md:min-h-[260px] bg-foreground text-background",
 ];
 
 export function BouncyCardsFeatures({ items }: BouncyCardsFeaturesProps) {

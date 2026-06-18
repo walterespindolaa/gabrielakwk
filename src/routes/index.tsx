@@ -308,7 +308,7 @@ function PainSection() {
           ))}
         </div>
         <p className="mt-14 max-w-2xl mx-auto text-center text-lg text-foreground/90" style={{ textWrap: "pretty" }}>
-          O problema não é você. É a falta de um caminho claro, e alguém que entenda quem você é antes de sugerir o que você deve postar.
+          O problema não é você. O problema é tentar criar conteúdo sem um caminho claro e sem alguém que entenda quem você é antes de dizer o que você deve postar.
         </p>
       </div>
     </section>
@@ -376,10 +376,10 @@ const methodSteps: StackingCardItem[] = [
     letter: "R",
     title: "Reorganizar",
     description:
-      "O perfil digital para que ele reflita, de verdade, quem você é e o que você entrega.",
+      "O seu instagram é a sua vitrine. Então precisamos deixar ele estratégico para que ele reflita de verdade quem você é e o que você entrega.",
     bg: "#EFD9C2",
     fg: "#3A1320",
-    accent: "#E2C2A2",
+    accent: "#EFD9C2",
   },
 ];
 
@@ -446,7 +446,7 @@ const meetings: CardItem[] = [
     title: "Para quem você fala?",
     description:
       "Mapeamos público, dores, desejos, linguagem e jornada para criar uma comunicação que conecta sem parecer fórmula pronta.",
-    imgSrc: meetingTwoPhoto.url,
+    imgSrc: meetingFourPhoto.url,
     icon: <Target className="h-5 w-5" />,
     linkHref: "#",
   },
@@ -463,8 +463,8 @@ const meetings: CardItem[] = [
     id: "Encontro 4",
     title: "Como transformar isso em resultado?",
     description:
-      "Fechamos com funil, linha editorial, ideias de posts e um plano prático para os próximos 90 dias. Você sai com tudo nas mãos.",
-    imgSrc: meetingFourPhoto.url,
+      "Fechamos com funil, linha editorial, ideias de posts e um plano prático para os próximos 60 dias. Você sai com tudo nas mãos.",
+    imgSrc: meetingTwoPhoto.url,
     icon: <PenLine className="h-5 w-5" />,
     linkHref: "#",
   },
@@ -611,9 +611,9 @@ function SocialProof() {
 
 /* ─── Deliverables ─── */
 const deliverables: MaterialCarouselItem[] = [
-  { n: "01", title: "Relatório mestre", desc: "Posicionamento, persona, comunicação e plano de 90 dias em um documento completo.", image: sticker21.url },
-  { n: "02", title: "Guia de equipamentos", desc: "Como gravar bem com o que você tem agora.", image: sticker10.url },
-  { n: "03", title: "Rotina de criação", desc: "Calendário flexível para criar com antecedência e consistência.", image: sticker9.url },
+  { n: "01", title: "Relatório mestre", desc: "Posicionamento, persona, comunicação e plano de 60 dias em um documento completo.", image: sticker21.url },
+  { n: "02", title: "Guia de equipamentos", desc: "Dicas de equipamentos que você pode adquirir ao longo do tempo.", image: sticker10.url },
+  { n: "03", title: "Rotina de criação", desc: "Uma sugestão de rotina para criar com consistência e compromisso.", image: sticker9.url },
   { n: "04", title: "Banco de carrosséis", desc: "20 estruturas prontas para personalizar + 20 prompts de IA.", image: sticker12.url },
   { n: "05", title: "Combinações de fontes", desc: "5 pares tipográficos para identidade visual consistente.", image: sticker17.url },
   { n: "06", title: "Mini dicionário", desc: "35 termos do marketing digital explicados sem tecnicismo.", image: sticker14.url },
