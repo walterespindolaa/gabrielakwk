@@ -1,12 +1,17 @@
 // Single source of truth for the Método CRIAR structure.
 // Mirrors the document "Método CRIAR" sent by the client.
 
-export type StageKey = "compreender" | "reconhecer" | "identificar" | "ativar";
+export type StageKey =
+  | "compreender"
+  | "reconhecer"
+  | "identificar"
+  | "ativar"
+  | "reorganizar";
 
 export interface Encontro {
-  numero: 1 | 2 | 3 | 4;
+  numero: 1 | 2 | 3 | 4 | 5;
   key: StageKey;
-  letter: string; // C / R / I / A
+  letter: string; // C / R / I / A / R
   letterFull: string; // Compreender / Reconhecer / ...
   title: string;
   pergunta: string;
@@ -53,9 +58,20 @@ export const ENCONTROS: Encontro[] = [
     key: "ativar",
     letter: "A",
     letterFull: "Ativar",
-    title: "Entrega final",
+    title: "Coloque a estratégia no ar",
     pergunta:
-      "Funil de conteúdo, linha editorial e plano de execução dos próximos 60 dias.",
+      "Funil de conteúdo, linha editorial e o plano de execução dos próximos 90 dias.",
+    cor: "from-brand to-brand/70",
+    licaoCasa: "Revisão da casa digital",
+  },
+  {
+    numero: 5,
+    key: "reorganizar",
+    letter: "R",
+    letterFull: "Reorganizar",
+    title: "Reorganizando a casa",
+    pergunta:
+      "Organize a estrutura digital, a rotina e os processos para sustentar tudo com autonomia e constância.",
     cor: "from-brand to-brand/70",
   },
 ];
