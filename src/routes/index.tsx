@@ -195,10 +195,10 @@ function Hero() {
         }}
       />
 
-      <div className="relative grid lg:grid-cols-2 items-stretch min-h-[560px] sm:min-h-[680px] lg:min-h-[820px]">
+      <div className="relative grid lg:grid-cols-2 items-stretch min-h-[460px] sm:min-h-[540px] lg:min-h-[620px]">
         {/* Left content */}
         <div className="relative z-20 flex items-center order-2 lg:order-1">
-          <div className="w-full max-w-xl ml-auto mr-auto lg:mr-0 lg:ml-auto px-5 lg:pl-10 lg:pr-16 pt-0 pb-12 lg:pt-32 lg:pb-20 text-center lg:text-left">
+          <div className="w-full max-w-xl ml-auto mr-auto lg:mr-0 lg:ml-auto px-5 lg:pl-10 lg:pr-16 pt-0 pb-10 lg:pt-20 lg:pb-14 text-center lg:text-left">
             <img
               src={wordmarkAsset.url}
               alt="Gabi KWK · Estrategista Social Media"
@@ -226,7 +226,7 @@ function Hero() {
         </div>
 
         {/* Right full-bleed image — sits directly on the unified gradient (no column bg) */}
-        <div className="relative order-1 lg:order-2 min-h-[340px] sm:min-h-[460px] lg:min-h-full overflow-visible">
+        <div className="relative order-1 lg:order-2 min-h-[300px] sm:min-h-[400px] lg:min-h-full overflow-hidden">
           {/* Soft glow behind subject to ground her on the gradient */}
           <div
             aria-hidden
@@ -240,7 +240,8 @@ function Hero() {
           <img
             src={heroPhoto.url}
             alt="Gabriela Kawikioni"
-            className="absolute inset-0 w-full h-full object-cover object-center"
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ objectPosition: "center 18%" }}
           />
           {/* Mobile fade from bottom for legibility of the overlaid wordmark */}
           <div
