@@ -805,17 +805,20 @@ function About() {
         </div>
         <div>
           <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight mb-6" style={{ lineHeight: "1.15" }}>
-            Prazer, <span className="italic text-brand">Gabriela Kawikioni</span>.
+            Prazer, sou <span className="italic text-brand">Gabriela Kawikioni</span>.
           </h2>
           <p className="text-foreground/85 leading-relaxed mb-4">
-            Sou Social Media Estrategista com background em saúde, compliance e mercado financeiro. Comecei no marketing sem grandes cursos. Só com coragem, curiosidade e vontade real de aprender.
+            Sou estrategista de conteúdo e posicionamento, e ajudo profissionais e empresas a transformarem negócios confusos em marcas claras, organizadas e posicionadas.
+          </p>
+          <p className="text-foreground/85 leading-relaxed mb-4">
+            Ao longo da minha trajetória, atuei em áreas como comercial, compliance e mercado financeiro, experiências que me ensinaram que crescimento não acontece sem estrutura, clareza e estratégia.
           </p>
           <p className="text-foreground/85 leading-relaxed mb-6">
-            Sei o que é começar do zero, sentir medo de aparecer e duvidar do próprio trabalho. Por isso me conecto de verdade com quem está nesse momento.
+            Hoje, aplico essa mesma lógica na comunicação: antes de pensar em posts, penso em posicionamento.
           </p>
           <div className="border-l-2 border-brand pl-5 py-2">
             <p className="font-display text-lg italic text-foreground" style={{ lineHeight: "1.5" }}>
-              Meu trabalho não é fazer posts bonitos. É traduzir a essência de cada profissional em presença digital com estratégia, autenticidade e resultado.
+              Porque o problema raramente é a falta de conteúdo. É a falta de direção. Meu trabalho é organizar sua marca, alinhar sua comunicação e criar um caminho claro para que você seja reconhecido pelo valor que entrega.
             </p>
           </div>
         </div>
