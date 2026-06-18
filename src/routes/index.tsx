@@ -205,7 +205,7 @@ function Hero() {
               className="hidden lg:block mx-auto lg:mx-0 w-[240px] sm:w-[420px] md:w-[480px] lg:w-[520px] h-auto mb-2 sm:mb-3"
             />
             <p className="hidden lg:block text-xs sm:text-base uppercase tracking-[0.2em] sm:tracking-[0.22em] text-foreground/70 font-medium mb-3 sm:mb-4">
-              Seu trabalho é excelente. <span className="text-brand">Seu Instagram ainda não sabe disso.</span>
+              Seu trabalho é excelente. <span className="text-brand">Seu público e seu Instagram ainda não sabem disso.</span>
             </p>
             <h1
               className="font-display text-[2.6rem] leading-[1.02] sm:text-6xl md:text-7xl font-medium tracking-tight text-foreground"
