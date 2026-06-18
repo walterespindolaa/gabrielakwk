@@ -202,7 +202,7 @@ function Hero() {
             <img
               src={wordmarkAsset.url}
               alt="Gabi KWK · Estrategista Social Media"
-              className="hidden lg:block mx-auto lg:mx-0 w-[240px] sm:w-[420px] md:w-[480px] lg:w-[520px] h-auto mb-6 sm:mb-8"
+              className="hidden lg:block mx-auto lg:mx-0 w-[240px] sm:w-[420px] md:w-[480px] lg:w-[520px] h-auto mb-2 sm:mb-3"
             />
             <p className="hidden lg:block text-xs sm:text-base uppercase tracking-[0.2em] sm:tracking-[0.22em] text-foreground/70 font-medium mb-3 sm:mb-4">
               Seu trabalho é excelente. <span className="text-brand">Seu Instagram ainda não sabe disso.</span>
@@ -642,12 +642,12 @@ function Deliverables() {
 
 /* ─── Fit checklist ─── */
 const fits = [
-  { icon: Compass, secondary: Sparkles, title: "Está começando", desc: "Quer começar no digital e não sabe por onde. Precisa de clareza e um caminho.", tint: "#F6DCDC", iconBg: "#E89BA3", iconFg: "#3A1320" },
-  { icon: TrendingUp, secondary: Target, title: "Posta sem resultado", desc: "Já posta, mas não vê resultado e não entende por quê. Quer parar de tentar no escuro.", tint: "#EFD9C2", iconBg: "#D49A5C", iconFg: "#3A1320" },
-  { icon: Briefcase, secondary: Megaphone, title: "Tem expertise para mostrar", desc: "Tem um negócio ou expertise real e quer mostrar isso com estratégia, não no improviso.", tint: "#E8D6E1", iconBg: "#A85C8A", iconFg: "#FFFFFF" },
-  { icon: Lightbulb, secondary: PenLine, title: "Quer entender o processo", desc: "Quer entender o porquê de cada escolha. Não só receber um feed bonito pronto.", tint: "#FBE7C6", iconBg: "#E3A847", iconFg: "#3A1320" },
-  { icon: Zap, secondary: UserCheck, title: "Busca autonomia", desc: "Quer sair com autonomia para criar conteúdo sem depender de terceiros toda vez.", tint: "#D9DFEC", iconBg: "#5C7AAE", iconFg: "#FFFFFF" },
-  { icon: Heart, secondary: Sparkles, title: "Quer atrair certo", desc: "Quer atrair as pessoas certas: clientes, oportunidades. Não só seguidores.", tint: "#F4C9D4", iconBg: "#C44569", iconFg: "#FFFFFF" },
+  { icon: Compass, secondary: Sparkles, title: "Está começando", desc: "Quer começar no digital e não sabe por onde. Precisa de clareza e um caminho.", tint: "#DCE3EF", iconBg: "#5C1B2E", iconFg: "#FFFFFF" },
+  { icon: TrendingUp, secondary: Target, title: "Posta sem resultado", desc: "Já posta, mas não vê resultado e não entende por quê. Quer parar de tentar no escuro.", tint: "#B8C5D9", iconBg: "#3A1320", iconFg: "#FFFFFF" },
+  { icon: Briefcase, secondary: Megaphone, title: "Tem expertise para mostrar", desc: "Tem um negócio ou expertise real e quer mostrar isso com estratégia, não no improviso.", tint: "#9DAFC9", iconBg: "#3A1320", iconFg: "#FFFFFF" },
+  { icon: Lightbulb, secondary: PenLine, title: "Quer entender o processo", desc: "Quer entender o porquê de cada escolha. Não só receber um feed bonito pronto.", tint: "#DCE3EF", iconBg: "#5C1B2E", iconFg: "#FFFFFF" },
+  { icon: Zap, secondary: UserCheck, title: "Busca autonomia", desc: "Quer sair com autonomia para criar conteúdo sem depender de terceiros toda vez.", tint: "#B8C5D9", iconBg: "#3A1320", iconFg: "#FFFFFF" },
+  { icon: Heart, secondary: Sparkles, title: "Quer atrair certo", desc: "Quer atrair as pessoas certas: clientes, oportunidades. Não só seguidores.", tint: "#9DAFC9", iconBg: "#3A1320", iconFg: "#FFFFFF" },
 ];
 
 const containerVariants = {
