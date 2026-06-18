@@ -648,12 +648,12 @@ function Deliverables() {
 
 /* ─── Fit checklist ─── */
 const fits = [
-  { icon: Compass, secondary: Sparkles, title: "Está começando", desc: "Quer começar no digital e não sabe por onde. Precisa de clareza e um caminho." },
-  { icon: TrendingUp, secondary: Target, title: "Posta sem resultado", desc: "Já posta, mas não vê resultado e não entende por quê. Quer parar de tentar no escuro." },
-  { icon: Briefcase, secondary: Megaphone, title: "Tem expertise para mostrar", desc: "Tem um negócio ou expertise real e quer mostrar isso com estratégia, não no improviso." },
-  { icon: Lightbulb, secondary: PenLine, title: "Quer entender o processo", desc: "Quer entender o porquê de cada escolha. Não só receber um um feed bonito pronto." },
-  { icon: Zap, secondary: UserCheck, title: "Busca autonomia", desc: "Quer sair com autonomia para criar conteúdo sem depender de terceiros toda vez." },
-  { icon: Heart, secondary: Sparkles, title: "Quer atrair certo", desc: "Quer atrair as pessoas certas: clientes, oportunidades. Não só seguidores." },
+  { icon: Compass, secondary: Sparkles, title: "Está começando", desc: "Quer começar no digital e não sabe por onde. Precisa de clareza e um caminho.", tint: "#F6DCDC", iconBg: "#E89BA3", iconFg: "#3A1320" },
+  { icon: TrendingUp, secondary: Target, title: "Posta sem resultado", desc: "Já posta, mas não vê resultado e não entende por quê. Quer parar de tentar no escuro.", tint: "#EFD9C2", iconBg: "#D49A5C", iconFg: "#3A1320" },
+  { icon: Briefcase, secondary: Megaphone, title: "Tem expertise para mostrar", desc: "Tem um negócio ou expertise real e quer mostrar isso com estratégia, não no improviso.", tint: "#E8D6E1", iconBg: "#A85C8A", iconFg: "#FFFFFF" },
+  { icon: Lightbulb, secondary: PenLine, title: "Quer entender o processo", desc: "Quer entender o porquê de cada escolha. Não só receber um feed bonito pronto.", tint: "#FBE7C6", iconBg: "#E3A847", iconFg: "#3A1320" },
+  { icon: Zap, secondary: UserCheck, title: "Busca autonomia", desc: "Quer sair com autonomia para criar conteúdo sem depender de terceiros toda vez.", tint: "#D9DFEC", iconBg: "#5C7AAE", iconFg: "#FFFFFF" },
+  { icon: Heart, secondary: Sparkles, title: "Quer atrair certo", desc: "Quer atrair as pessoas certas: clientes, oportunidades. Não só seguidores.", tint: "#F4C9D4", iconBg: "#C44569", iconFg: "#FFFFFF" },
 ];
 
 const containerVariants = {
@@ -672,25 +672,39 @@ type FitItemProps = {
   title: string;
   desc: string;
   direction: "left" | "right";
+  tint: string;
+  iconBg: string;
+  iconFg: string;
 };
 
-function FitItem({ icon: Icon, secondary: Secondary, title, desc, direction }: FitItemProps) {
+function FitItem({ icon: Icon, secondary: Secondary, title, desc, direction, tint, iconBg, iconFg }: FitItemProps) {
   return (
     <motion.div
       variants={itemVariants}
       whileHover={{ y: -4 }}
-      className={`group relative rounded-2xl border border-brand/15 bg-surface-alt p-6 shadow-md hover:shadow-xl hover:border-brand/40 transition-all ${direction === "left" ? "md:text-right" : "md:text-left"}`}
+      className={`group relative rounded-2xl border border-brand/15 p-6 shadow-md hover:shadow-xl hover:border-brand/40 transition-all overflow-hidden ${direction === "left" ? "md:text-right" : "md:text-left"}`}
+      style={{ backgroundColor: tint }}
     >
-      <div className={`flex items-center gap-3 mb-3 ${direction === "left" ? "md:flex-row-reverse" : "md:flex-row"}`}>
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-80"
+        style={{
+          background: `linear-gradient(135deg, ${tint} 0%, color-mix(in oklab, ${tint} 75%, white) 100%)`,
+        }}
+      />
+      <div className={`relative flex items-center gap-3 mb-3 ${direction === "left" ? "md:flex-row-reverse" : "md:flex-row"}`}>
         <div className="relative flex-shrink-0">
-          <div className="w-11 h-11 rounded-xl bg-brand/15 flex items-center justify-center text-brand group-hover:bg-brand group-hover:text-brand-foreground transition-colors">
+          <div
+            className="w-11 h-11 rounded-xl flex items-center justify-center shadow-sm transition-transform group-hover:scale-105"
+            style={{ backgroundColor: iconBg, color: iconFg }}
+          >
             <Icon className="w-5 h-5" strokeWidth={1.75} />
           </div>
-          <Secondary className="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 text-brand/70" strokeWidth={2} />
+          <Secondary className="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 text-brand" strokeWidth={2} />
         </div>
         <h3 className="font-display text-lg font-medium tracking-tight text-foreground">{title}</h3>
       </div>
-      <p className="text-sm text-foreground/80 leading-relaxed">{desc}</p>
+      <p className="relative text-sm text-foreground/85 leading-relaxed">{desc}</p>
     </motion.div>
   );
 }
@@ -765,17 +779,11 @@ function FitChecklist() {
             variants={itemVariants}
             className="relative order-first md:order-none mx-auto w-full max-w-[280px] md:w-[280px]"
           >
-            <div className="relative aspect-[3/4]">
+            <div className="relative aspect-[3/4] rounded-3xl overflow-hidden border border-brand/20 shadow-2xl shadow-brand/20">
               <img
                 src={fitPhoto.url}
                 alt="Gabriela Kawikioni"
                 className="w-full h-full object-cover"
-                style={{
-                  WebkitMaskImage:
-                    "radial-gradient(ellipse 70% 75% at 50% 50%, #000 55%, transparent 100%)",
-                  maskImage:
-                    "radial-gradient(ellipse 70% 75% at 50% 50%, #000 55%, transparent 100%)",
-                }}
               />
             </div>
           </motion.div>
