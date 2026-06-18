@@ -205,7 +205,7 @@ function Hero() {
               className="hidden lg:block mx-auto lg:mx-0 w-[240px] sm:w-[420px] md:w-[480px] lg:w-[520px] h-auto mb-2 sm:mb-3"
             />
             <p className="hidden lg:block text-xs sm:text-base uppercase tracking-[0.2em] sm:tracking-[0.22em] text-foreground/70 font-medium mb-3 sm:mb-4">
-              Seu trabalho é excelente. <span className="text-brand">Seu Instagram ainda não sabe disso.</span>
+              Seu trabalho é excelente. <span className="text-brand">Seu público e seu Instagram ainda não sabem disso.</span>
             </p>
             <h1
               className="font-display text-[2.6rem] leading-[1.02] sm:text-6xl md:text-7xl font-medium tracking-tight text-foreground"
@@ -260,7 +260,7 @@ function Hero() {
               className="w-[78%] max-w-[340px] h-auto drop-shadow-sm"
             />
             <p className="mt-3 text-[11px] uppercase tracking-[0.18em] text-foreground/75 font-medium text-center leading-snug">
-              Seu trabalho é excelente. <span className="text-brand">Seu Instagram ainda não sabe disso.</span>
+              Seu trabalho é excelente. <span className="text-brand">Seu público e seu Instagram ainda não sabem disso.</span>
             </p>
           </div>
 
@@ -907,7 +907,7 @@ function Footer() {
     <footer className="border-t border-border/60 py-10 bg-background">
       <div className="max-w-6xl mx-auto px-5 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <span className="font-display text-xl font-semibold tracking-tight">KWK</span>
+          <img src={monogramAsset.url} alt="KWK" className="h-10 w-auto" />
           <span className="text-xs text-muted-foreground">© {new Date().getFullYear()} Gabriela Kawikioni</span>
         </div>
         <Link to="/login" className="text-xs text-muted-foreground hover:text-brand transition-colors">
