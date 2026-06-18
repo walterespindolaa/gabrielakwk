@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Plus, X } from "lucide-react";
+import { Plus, X, ChevronRight } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
 // (kept for future server fn usage in modal)
 import { supabase } from "@/integrations/supabase/client";
@@ -18,6 +18,16 @@ interface ProfileRow {
   full_name: string | null;
   role: "admin" | "consultora" | "cliente";
   created_at: string;
+}
+
+function initials(name: string | null): string {
+  if (!name) return "?";
+  return name
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((w) => w[0]?.toUpperCase() ?? "")
+    .join("");
 }
 
 function ClientesPage() {
@@ -75,60 +85,52 @@ function ClientesPage() {
         </button>
       </div>
 
-      <div className="mt-8 bg-card border border-border/60 rounded-xl overflow-hidden">
+      <div className="mt-8 bg-card border border-border/60 rounded-2xl p-2">
         {loading ? (
           <p className="p-6 text-sm text-muted-foreground">Carregando...</p>
         ) : rows.length === 0 ? (
           <p className="p-6 text-sm text-muted-foreground">Nenhum usuário ainda.</p>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="bg-muted/40">
-                <tr className="text-left text-xs uppercase tracking-wider text-muted-foreground">
-                  <th className="px-5 py-3 font-medium">Nome</th>
-                  <th className="px-5 py-3 font-medium">Papel</th>
-                  <th className="px-5 py-3 font-medium">Criado</th>
-                  <th className="px-5 py-3 font-medium">Jornada</th>
-                  <th className="px-5 py-3"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((r) => (
-                  <tr key={r.id} className="border-t border-border/60">
-                    <td className="px-5 py-3">{r.full_name ?? "Sem nome"}</td>
-                    <td className="px-5 py-3 capitalize">
-                      <span
-                        className={`inline-block px-2 py-0.5 rounded-full text-xs ${
-                          r.role === "cliente"
-                            ? "bg-muted text-muted-foreground"
-                            : "bg-brand-soft text-brand"
-                        }`}
-                      >
-                        {r.role}
-                      </span>
-                    </td>
-                    <td className="px-5 py-3 text-muted-foreground">
-                      {new Date(r.created_at).toLocaleDateString("pt-BR")}
-                    </td>
-                    <td className="px-5 py-3 text-muted-foreground">
-                      {r.role === "cliente"
-                        ? `${progress[r.id] ?? 0} / ${STAGES.length}`
-                        : "—"}
-                    </td>
-                    <td className="px-5 py-3 text-right">
-                      <Link
-                        to="/admin/clientes/$id"
-                        params={{ id: r.id }}
-                        className="text-brand hover:underline text-sm"
-                      >
-                        Abrir
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <ul>
+            {rows.map((r) => (
+              <li key={r.id}>
+                <Link
+                  to="/admin/clientes/$id"
+                  params={{ id: r.id }}
+                  className="group flex items-center justify-between gap-3 px-4 py-3 rounded-xl hover:bg-muted/50 transition-colors"
+                >
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="w-10 h-10 rounded-full bg-brand text-brand-foreground flex items-center justify-center text-sm font-medium shrink-0">
+                      {initials(r.full_name)}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium text-foreground truncate">
+                        {r.full_name ?? "Sem nome"}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Desde {new Date(r.created_at).toLocaleDateString("pt-BR")}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 sm:gap-5 shrink-0">
+                    <span
+                      className={`capitalize text-xs px-2.5 py-1 rounded-full ${
+                        r.role === "cliente"
+                          ? "bg-muted text-muted-foreground"
+                          : "bg-brand-soft text-brand"
+                      }`}
+                    >
+                      {r.role}
+                    </span>
+                    <span className="hidden sm:block text-sm text-muted-foreground min-w-[44px]">
+                      {r.role === "cliente" ? `${progress[r.id] ?? 0} / ${STAGES.length}` : "—"}
+                    </span>
+                    <ChevronRight className="w-4 h-4 text-muted-foreground/60 group-hover:text-brand transition-colors" />
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
         )}
       </div>
 

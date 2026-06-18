@@ -41,7 +41,7 @@ function DiagnosticoPage() {
     swot.forcas.length + swot.fraquezas.length + swot.oportunidades.length + swot.ameacas.length > 0;
 
   return (
-    <div className="max-w-5xl mx-auto px-5 py-8">
+    <div>
       <div className="mb-6">
         <p className="text-[10px] uppercase tracking-[0.25em] text-brand font-semibold">
           Consultoria CRIAR

@@ -37,6 +37,24 @@ interface Assignment {
 
 const STATUS_OPTIONS = ["pendente", "em_andamento", "concluido"] as const;
 
+const TABS = [
+  { key: "diagnostico", label: "Diagnóstico" },
+  { key: "demandas", label: "Demandas" },
+  { key: "encontros", label: "Encontros" },
+  { key: "materiais", label: "Materiais" },
+  { key: "dados", label: "Dados" },
+];
+
+function initials(name: string | null): string {
+  if (!name) return "?";
+  return name
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((w) => w[0]?.toUpperCase() ?? "")
+    .join("");
+}
+
 function ClienteDetail() {
   const { id } = Route.useParams();
   const me = useCurrentUser();
@@ -55,6 +73,7 @@ function ClienteDetail() {
   const [invites, setInvites] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [tab, setTab] = useState("diagnostico");
 
   async function load() {
     setLoading(true);
@@ -182,7 +201,7 @@ function ClienteDetail() {
   const canDelete = me.role === "admin" || profile.role === "cliente";
 
   return (
-    <div className="p-6 md:p-10 max-w-5xl mx-auto">
+    <div className="px-5 md:px-8 py-6 md:py-8 max-w-4xl mx-auto">
       <Link
         to="/admin/clientes"
         className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-brand"
@@ -191,15 +210,20 @@ function ClienteDetail() {
         Voltar para clientes
       </Link>
 
-      <div className="mt-6 flex items-start justify-between flex-wrap gap-4">
-        <div>
-          <h1 className="font-display text-3xl md:text-4xl tracking-tight">
-            {profile.full_name ?? "Sem nome"}
-          </h1>
-          <p className="text-muted-foreground mt-1 text-sm">
-            <span className="capitalize">{profile.role}</span> · Desde{" "}
-            {new Date(profile.created_at).toLocaleDateString("pt-BR")}
-          </p>
+      <div className="mt-5 flex items-center justify-between gap-4 flex-wrap">
+        <div className="flex items-center gap-4 min-w-0">
+          <div className="w-14 h-14 rounded-full bg-brand text-brand-foreground flex items-center justify-center text-lg font-medium shrink-0">
+            {initials(profile.full_name)}
+          </div>
+          <div className="min-w-0">
+            <h1 className="font-display text-2xl md:text-3xl tracking-tight truncate">
+              {profile.full_name ?? "Sem nome"}
+            </h1>
+            <p className="text-muted-foreground mt-0.5 text-sm">
+              <span className="capitalize">{profile.role}</span> · Desde{" "}
+              {new Date(profile.created_at).toLocaleDateString("pt-BR")}
+            </p>
+          </div>
         </div>
         {canDelete && (
           <button
@@ -212,143 +236,154 @@ function ClienteDetail() {
         )}
       </div>
 
-      {/* Dados */}
-      <section className="mt-8 bg-card border border-border/60 rounded-xl p-6">
-        <h2 className="font-semibold mb-4">Dados</h2>
-        <div className="grid md:grid-cols-2 gap-4">
-          <label className="block">
-            <span className="text-xs uppercase tracking-wider text-muted-foreground">Nome</span>
-            <input
-              value={editedName}
-              onChange={(e) => setEditedName(e.target.value)}
-              className="mt-1 w-full bg-background border border-border/60 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand"
-            />
-          </label>
-          <label className="block">
-            <span className="text-xs uppercase tracking-wider text-muted-foreground">Papel</span>
-            <select
-              disabled={!canEditRole}
-              value={editedRole}
-              onChange={(e) => setEditedRole(e.target.value as any)}
-              className="mt-1 w-full bg-background border border-border/60 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand disabled:opacity-60"
-            >
-              <option value="cliente">Cliente</option>
-              <option value="consultora">Consultora</option>
-              <option value="admin">Admin</option>
-            </select>
-          </label>
-        </div>
-        <button
-          onClick={saveProfile}
-          disabled={saving}
-          className="mt-4 px-4 py-2 rounded-lg bg-brand text-brand-foreground text-sm font-semibold hover:opacity-90 disabled:opacity-50"
-        >
-          {saving ? "Salvando..." : "Salvar"}
-        </button>
-      </section>
+      {/* Abas */}
+      <div className="mt-6 flex gap-5 sm:gap-7 border-b border-border/60 overflow-x-auto">
+        {TABS.map((t) => (
+          <button
+            key={t.key}
+            onClick={() => setTab(t.key)}
+            className={`pb-2.5 text-sm whitespace-nowrap border-b-2 -mb-px transition-colors ${
+              tab === t.key
+                ? "border-brand text-brand font-medium"
+                : "border-transparent text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
 
-      {/* Demandas Gerais */}
-      <section className="mt-6 bg-card border border-border/60 rounded-xl p-6">
-        <h2 className="font-display text-2xl tracking-tight mb-1">Demandas gerais</h2>
-        <p className="text-xs text-muted-foreground mb-4">
-          Tudo que for solicitado pela cliente ao longo da consultoria.
-        </p>
-        <DemandasBoard clienteId={id} />
-      </section>
+      <div className="mt-6 mb-10">
+        {tab === "diagnostico" && (
+          <div className="space-y-6">
+            <DiagnosticoEditor clienteId={id} />
+            <section className="bg-card border border-border/60 rounded-2xl p-6">
+              <h2 className="font-semibold mb-4">Respostas de formulários</h2>
+              {responses.length === 0 ? (
+                <p className="text-sm text-muted-foreground">Nenhuma resposta enviada.</p>
+              ) : (
+                <ul className="space-y-3">
+                  {responses.map((r: any) => (
+                    <li key={r.id} className="p-4 rounded-lg bg-muted/30">
+                      <div className="flex justify-between items-center mb-2">
+                        <div className="text-sm font-medium">{r.forms?.title ?? "Formulário"}</div>
+                        <div className="text-xs text-muted-foreground">
+                          {new Date(r.submitted_at).toLocaleString("pt-BR")}
+                        </div>
+                      </div>
+                      <pre className="text-xs text-muted-foreground whitespace-pre-wrap break-words">
+                        {JSON.stringify(r.answers, null, 2)}
+                      </pre>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          </div>
+        )}
 
-      {/* Diagnóstico */}
-      <section className="mt-6 bg-card border border-border/60 rounded-xl p-6">
-        <h2 className="font-display text-2xl tracking-tight mb-1">Diagnóstico</h2>
-        <p className="text-xs text-muted-foreground mb-4">
-          Panorama geral e análise SWOT. A cliente vê isso na área de membros.
-        </p>
-        <DiagnosticoEditor clienteId={id} />
-      </section>
+        {tab === "demandas" && (
+          <section className="bg-card border border-border/60 rounded-2xl p-6">
+            <h2 className="font-display text-2xl tracking-tight mb-1">Demandas gerais</h2>
+            <p className="text-xs text-muted-foreground mb-4">
+              Tudo que for solicitado pela cliente ao longo da consultoria.
+            </p>
+            <DemandasBoard clienteId={id} />
+          </section>
+        )}
 
-      {/* Jornada CRIAR */}
-      <section className="mt-6">
-        <div className="flex items-baseline justify-between mb-4 px-1">
-          <h2 className="font-display text-2xl tracking-tight">Encontros · Jornada CRIAR</h2>
-          <span className="text-xs text-muted-foreground">
-            Pré-consultoria + 4 encontros
-          </span>
-        </div>
-        <JornadaCRIARAdmin clienteId={id} />
-      </section>
+        {tab === "encontros" && (
+          <div className="space-y-6">
+            <section>
+              <div className="flex items-baseline justify-between mb-4 px-1">
+                <h2 className="font-display text-2xl tracking-tight">Encontros · Jornada CRIAR</h2>
+                <span className="text-xs text-muted-foreground">Pré-consultoria + 4 encontros</span>
+              </div>
+              <JornadaCRIARAdmin clienteId={id} />
+            </section>
+            <FormInvitesSection clienteId={id} forms={forms} invites={invites} onChange={load} />
+          </div>
+        )}
 
-      {/* Materiais */}
-      <section className="mt-6 bg-card border border-border/60 rounded-xl p-6">
-        <h2 className="font-semibold mb-4">Materiais atribuídos</h2>
-        {materials.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
-            Nenhum material disponível.{" "}
-            <Link to="/admin/materiais" className="text-brand hover:underline">
-              Criar material
-            </Link>
-          </p>
-        ) : (
-          <ul className="space-y-2">
-            {materials.map((m) => {
-              const assigned = assignments.has(m.id);
-              return (
-                <li
-                  key={m.id}
-                  className="flex items-center justify-between gap-4 p-3 rounded-lg bg-muted/30"
+        {tab === "materiais" && (
+          <section className="bg-card border border-border/60 rounded-2xl p-6">
+            <h2 className="font-semibold mb-4">Materiais atribuídos</h2>
+            {materials.length === 0 ? (
+              <p className="text-sm text-muted-foreground">
+                Nenhum material disponível.{" "}
+                <Link to="/admin/materiais" className="text-brand hover:underline">
+                  Criar material
+                </Link>
+              </p>
+            ) : (
+              <ul className="space-y-2">
+                {materials.map((m) => {
+                  const assigned = assignments.has(m.id);
+                  return (
+                    <li
+                      key={m.id}
+                      className="flex items-center justify-between gap-4 p-3 rounded-lg bg-muted/30"
+                    >
+                      <div className="min-w-0">
+                        <div className="text-sm font-medium truncate">{m.title}</div>
+                        <div className="text-xs text-muted-foreground">
+                          {m.type.toUpperCase()} · {m.stage ?? "geral"}
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => toggleMaterial(m.id, !assigned)}
+                        className={`text-xs px-3 py-1.5 rounded-md font-semibold ${
+                          assigned
+                            ? "bg-brand-soft text-brand"
+                            : "bg-background border border-border/60 text-muted-foreground hover:text-foreground"
+                        }`}
+                      >
+                        {assigned ? "Atribuído" : "Atribuir"}
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </section>
+        )}
+
+        {tab === "dados" && (
+          <section className="bg-card border border-border/60 rounded-2xl p-6">
+            <h2 className="font-semibold mb-4">Dados</h2>
+            <div className="grid md:grid-cols-2 gap-4">
+              <label className="block">
+                <span className="text-xs uppercase tracking-wider text-muted-foreground">Nome</span>
+                <input
+                  value={editedName}
+                  onChange={(e) => setEditedName(e.target.value)}
+                  className="mt-1 w-full bg-background border border-border/60 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand"
+                />
+              </label>
+              <label className="block">
+                <span className="text-xs uppercase tracking-wider text-muted-foreground">Papel</span>
+                <select
+                  disabled={!canEditRole}
+                  value={editedRole}
+                  onChange={(e) => setEditedRole(e.target.value as any)}
+                  className="mt-1 w-full bg-background border border-border/60 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand disabled:opacity-60"
                 >
-                  <div className="min-w-0">
-                    <div className="text-sm font-medium truncate">{m.title}</div>
-                    <div className="text-xs text-muted-foreground">
-                      {m.type.toUpperCase()} · {m.stage ?? "geral"}
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => toggleMaterial(m.id, !assigned)}
-                    className={`text-xs px-3 py-1.5 rounded-md font-semibold ${
-                      assigned
-                        ? "bg-brand-soft text-brand"
-                        : "bg-background border border-border/60 text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    {assigned ? "Atribuído" : "Atribuir"}
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
+                  <option value="cliente">Cliente</option>
+                  <option value="consultora">Consultora</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </label>
+            </div>
+            <button
+              onClick={saveProfile}
+              disabled={saving}
+              className="mt-4 px-4 py-2 rounded-lg bg-brand text-brand-foreground text-sm font-semibold hover:opacity-90 disabled:opacity-50"
+            >
+              {saving ? "Salvando..." : "Salvar"}
+            </button>
+          </section>
         )}
-      </section>
-
-      {/* Convites de formulário */}
-      <FormInvitesSection
-        clienteId={id}
-        forms={forms}
-        invites={invites}
-        onChange={load}
-      />
-
-      {/* Respostas */}
-      <section className="mt-6 mb-10 bg-card border border-border/60 rounded-xl p-6">
-        <h2 className="font-semibold mb-4">Respostas de formulários</h2>
-        {responses.length === 0 ? (
-          <p className="text-sm text-muted-foreground">Nenhuma resposta enviada.</p>
-        ) : (
-          <ul className="space-y-3">
-            {responses.map((r: any) => (
-              <li key={r.id} className="p-4 rounded-lg bg-muted/30">
-                <div className="flex justify-between items-center mb-2">
-                  <div className="text-sm font-medium">{r.forms?.title ?? "Formulário"}</div>
-                  <div className="text-xs text-muted-foreground">
-                    {new Date(r.submitted_at).toLocaleString("pt-BR")}
-                  </div>
-                </div>
-                <pre className="text-xs text-muted-foreground whitespace-pre-wrap break-words">
-                  {JSON.stringify(r.answers, null, 2)}
-                </pre>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+      </div>
     </div>
   );
 }

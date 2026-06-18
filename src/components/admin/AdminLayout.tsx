@@ -1,13 +1,11 @@
-import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
-import { LayoutDashboard, Users, FolderOpen, FileText, LogOut, Menu, X, Inbox } from "lucide-react";
-import { useState } from "react";
+import { useNavigate } from "@tanstack/react-router";
+import { LayoutDashboard, Users, FolderOpen, FileText, Inbox } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useRequireAuth } from "@/lib/auth-guard";
-import monogramAsset from "@/assets/kwk-monogram.png.asset.json";
-import { StickerCollage } from "@/components/ui/sticker-collage";
 import { KwkLoader } from "@/components/KwkLoader";
+import { FloatingRail, type RailItem } from "@/components/FloatingRail";
 
-const nav = [
+const nav: RailItem[] = [
   { to: "/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
   { to: "/admin/leads", label: "Leads", icon: Inbox },
   { to: "/admin/clientes", label: "Clientes", icon: Users },
@@ -18,8 +16,6 @@ const nav = [
 export function AdminLayout({ children }: { children: React.ReactNode }) {
   const auth = useRequireAuth({ requireStaff: true });
   const navigate = useNavigate();
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const [mobileOpen, setMobileOpen] = useState(false);
 
   async function handleSignOut() {
     await supabase.auth.signOut();
@@ -30,111 +26,11 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
     return <KwkLoader />;
   }
 
-  const isActive = (to: string, exact?: boolean) =>
-    exact ? pathname === to : pathname === to || pathname.startsWith(to + "/");
-
-  const SidebarContent = (
-    <>
-      <div className="px-5 py-8 border-b border-brand/15 relative flex flex-col items-center">
-        <Link to="/" className="flex items-center justify-center">
-          <img src={monogramAsset.url} alt="KWK" className="h-24 w-auto" />
-        </Link>
-        {auth.fullName && (
-          <p className="mt-4 text-xs text-muted-foreground truncate text-center">
-            {auth.fullName} · <span className="capitalize">{auth.role}</span>
-          </p>
-        )}
-      </div>
-      <nav className="flex-1 px-3 py-4 space-y-1 relative">
-        {nav.map((item) => {
-          const Icon = item.icon;
-          const active = isActive(item.to, item.exact);
-          return (
-            <Link
-              key={item.to}
-              to={item.to}
-              onClick={() => setMobileOpen(false)}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-colors ${
-                active
-                  ? "bg-brand text-brand-foreground font-semibold shadow-sm shadow-brand/20"
-                  : "text-foreground/70 hover:bg-brand-soft/60 hover:text-brand"
-              }`}
-            >
-              <Icon className="w-4 h-4" />
-              {item.label}
-            </Link>
-          );
-        })}
-      </nav>
-      <div className="p-3 border-t border-brand/15">
-        <button
-          onClick={handleSignOut}
-          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
-        >
-          <LogOut className="w-4 h-4" />
-          Sair
-        </button>
-      </div>
-    </>
-  );
-
   return (
-    <div className="min-h-screen bg-background flex">
-      {/* Desktop sidebar */}
-      <aside className="hidden md:flex w-64 flex-col border-r border-brand/15 bg-card sticky top-0 h-screen relative overflow-hidden">
-        <div aria-hidden className="absolute inset-0 opacity-[0.18] pointer-events-none">
-          <StickerCollage variant="about" />
-        </div>
-        <div className="relative flex-1 flex flex-col">{SidebarContent}</div>
-      </aside>
+    <div className="min-h-screen bg-background">
+      <FloatingRail items={nav} onSignOut={handleSignOut} badge="Admin" />
 
-      {/* Mobile header */}
-      <div className="md:hidden fixed top-0 inset-x-0 z-40 h-14 bg-card border-b border-brand/15 flex items-center justify-between px-4">
-        <Link to="/" className="flex items-center gap-2">
-          <img src={monogramAsset.url} alt="KWK" className="h-9 w-auto" />
-          <span className="font-display text-base font-semibold text-brand">KWK</span>
-          <span className="text-[9px] uppercase tracking-[0.22em] text-muted-foreground font-semibold">
-            Admin
-          </span>
-        </Link>
-        <button
-          onClick={() => setMobileOpen(true)}
-          className="p-2 text-muted-foreground hover:text-foreground"
-          aria-label="Abrir menu"
-        >
-          <Menu className="w-5 h-5" />
-        </button>
-      </div>
-
-      {/* Mobile drawer */}
-      {mobileOpen && (
-        <div className="md:hidden fixed inset-0 z-50 flex">
-          <div
-            className="absolute inset-0 bg-black/40"
-            onClick={() => setMobileOpen(false)}
-          />
-          <aside className="relative w-72 max-w-[85vw] bg-card flex flex-col overflow-hidden">
-            <div aria-hidden className="absolute inset-0 opacity-[0.18] pointer-events-none">
-              <StickerCollage variant="about" />
-            </div>
-            <button
-              onClick={() => setMobileOpen(false)}
-              className="absolute top-4 right-4 p-1 text-muted-foreground hover:text-foreground z-10"
-              aria-label="Fechar menu"
-            >
-              <X className="w-5 h-5" />
-            </button>
-            <div className="relative flex-1 flex flex-col">{SidebarContent}</div>
-          </aside>
-        </div>
-      )}
-
-      <main className="flex-1 min-w-0 pt-14 md:pt-0 relative">
-        <div aria-hidden className="absolute inset-0 opacity-[0.06] pointer-events-none overflow-hidden">
-          <StickerCollage variant="about" />
-        </div>
-        <div className="relative">{children}</div>
-      </main>
+      <main className="md:pl-20 pt-14 md:pt-2 pb-24 md:pb-10">{children}</main>
     </div>
   );
 }
