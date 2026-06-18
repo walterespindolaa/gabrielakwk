@@ -907,7 +907,7 @@ function Footer() {
     <footer className="border-t border-border/60 py-10 bg-background">
       <div className="max-w-6xl mx-auto px-5 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <span className="font-display text-xl font-semibold tracking-tight">KWK</span>
+          <img src={monogramAsset.url} alt="KWK" className="h-10 w-auto" />
           <span className="text-xs text-muted-foreground">© {new Date().getFullYear()} Gabriela Kawikioni</span>
         </div>
         <Link to="/login" className="text-xs text-muted-foreground hover:text-brand transition-colors">
