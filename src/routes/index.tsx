@@ -226,7 +226,7 @@ function Hero() {
         </div>
 
         {/* Right full-bleed image — sits directly on the unified gradient (no column bg) */}
-        <div className="relative order-1 lg:order-2 min-h-[340px] sm:min-h-[460px] lg:min-h-full overflow-visible">
+        <div className="relative order-1 lg:order-2 min-h-[300px] sm:min-h-[400px] lg:min-h-full overflow-hidden">
           {/* Soft glow behind subject to ground her on the gradient */}
           <div
             aria-hidden
@@ -240,7 +240,8 @@ function Hero() {
           <img
             src={heroPhoto.url}
             alt="Gabriela Kawikioni"
-            className="absolute inset-0 w-full h-full object-cover object-center"
+            className="absolute inset-0 w-full h-full object-cover"
+            style={{ objectPosition: "center 18%" }}
           />
           {/* Mobile fade from bottom for legibility of the overlaid wordmark */}
           <div
