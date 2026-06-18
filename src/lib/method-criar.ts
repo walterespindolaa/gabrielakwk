@@ -55,7 +55,7 @@ export const ENCONTROS: Encontro[] = [
     letterFull: "Ativar",
     title: "Entrega final",
     pergunta:
-      "Funil de conteúdo, linha editorial e plano de execução dos próximos 90 dias.",
+      "Funil de conteúdo, linha editorial e plano de execução dos próximos 60 dias.",
     cor: "from-brand to-brand/70",
   },
 ];
