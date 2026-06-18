@@ -260,7 +260,7 @@ function Hero() {
               className="w-[78%] max-w-[340px] h-auto drop-shadow-sm"
             />
             <p className="mt-3 text-[11px] uppercase tracking-[0.18em] text-foreground/75 font-medium text-center leading-snug">
-              Seu trabalho é excelente. <span className="text-brand">Seu Instagram ainda não sabe disso.</span>
+              Seu trabalho é excelente. <span className="text-brand">Seu público e seu Instagram ainda não sabem disso.</span>
             </p>
           </div>
 
