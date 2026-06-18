@@ -33,7 +33,6 @@ import sticker18 from "@/assets/stickers/sticker-18.png.asset.json";
 import sticker19 from "@/assets/stickers/sticker-19.png.asset.json";
 import sticker21 from "@/assets/stickers/sticker-21.png.asset.json";
 
-const WHATSAPP_URL = "https://wa.me/5547988537412";
 const CTA_LABEL = "Quero conhecer a consultoria";
 
 export const Route = createFileRoute("/")({
@@ -139,14 +138,12 @@ function Nav() {
           />
         </Link>
         <div className="flex items-center gap-2 sm:gap-3">
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            to="/aplicar"
             className="inline-flex items-center gap-1.5 rounded-full bg-brand text-brand-foreground px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-semibold shadow-sm shadow-brand/20 hover:bg-brand/90 transition-colors"
           >
             Consultoria
-          </a>
+          </Link>
           <Link
             to="/login"
             className="inline-flex items-center gap-1.5 rounded-full border border-brand/30 bg-brand/5 text-brand px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium hover:bg-brand/10 transition-colors"
