@@ -168,10 +168,32 @@ function Nav() {
 /* ─── Hero ─── */
 function Hero() {
   return (
-    <section className="relative bg-gradient-to-b from-brand-soft via-background to-background overflow-hidden">
-      {/* Pink seam-blob: sits on top of the image's left edge to dissolve the straight cut */}
-      <div className="hidden lg:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[760px] h-[760px] rounded-full bg-brand/20 blur-[120px] pointer-events-none z-10" />
-      <div className="absolute top-40 left-10 w-[400px] h-[400px] rounded-full bg-accent/40 blur-3xl pointer-events-none" />
+    <section
+      className="relative overflow-hidden"
+      style={{
+        background:
+          "linear-gradient(105deg, var(--background) 0%, color-mix(in oklab, var(--background) 70%, var(--brand-soft)) 32%, color-mix(in oklab, var(--brand-soft) 80%, var(--background)) 58%, var(--brand-soft) 100%)",
+      }}
+    >
+      {/* Ambient color blobs — pure decoration, no column seams */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -top-32 -left-20 w-[640px] h-[640px] rounded-full opacity-70"
+        style={{
+          background:
+            "radial-gradient(circle, color-mix(in oklab, var(--brand-soft) 90%, transparent) 0%, transparent 70%)",
+          filter: "blur(60px)",
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute top-1/3 right-0 w-[720px] h-[720px] rounded-full opacity-60"
+        style={{
+          background:
+            "radial-gradient(circle, color-mix(in oklab, var(--brand) 22%, transparent) 0%, transparent 70%)",
+          filter: "blur(80px)",
+        }}
+      />
 
       <div className="relative grid lg:grid-cols-2 items-stretch min-h-[560px] sm:min-h-[680px] lg:min-h-[820px]">
         {/* Left content */}
@@ -203,28 +225,9 @@ function Hero() {
           </div>
         </div>
 
-        {/* Right full-bleed image */}
+        {/* Right full-bleed image — sits directly on the unified gradient (no column bg) */}
         <div className="relative order-1 lg:order-2 min-h-[340px] sm:min-h-[460px] lg:min-h-full overflow-visible">
-          {/* Seam shadow: soft dark vertical blur at the boundary between left cream column and right pink image, to dissolve the straight cut */}
-          <div
-            aria-hidden
-            className="hidden lg:block pointer-events-none absolute top-0 bottom-0 -left-24 w-48 z-20"
-            style={{
-              background:
-                "linear-gradient(to right, transparent 0%, color-mix(in oklab, var(--brand) 14%, transparent) 50%, transparent 100%)",
-              filter: "blur(28px)",
-            }}
-          />
-          {/* Brand-soft pink backdrop matching hero header band */}
-          <div
-            aria-hidden
-            className="absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(ellipse at 65% 45%, color-mix(in oklab, var(--brand-soft) 100%, transparent) 0%, color-mix(in oklab, var(--brand-soft) 85%, transparent) 45%, color-mix(in oklab, var(--brand-soft) 55%, transparent) 75%, transparent 100%), linear-gradient(to bottom, var(--brand-soft) 0%, color-mix(in oklab, var(--brand-soft) 70%, var(--background)) 70%, var(--background) 100%)",
-            }}
-          />
-          {/* Soft glow behind subject */}
+          {/* Soft glow behind subject to ground her on the gradient */}
           <div
             aria-hidden
             className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[620px] h-[620px] rounded-full"
@@ -239,22 +242,12 @@ function Hero() {
             alt="Gabriela Kawikioni"
             className="absolute inset-0 w-full h-full object-cover object-center"
           />
-          {/* Horizontal smoky fade: blends image's left edge into the content column (desktop)
-              Uses brand-soft to match the right column's pink and avoid a hard white seam. */}
-          <div
-            className="absolute inset-0 pointer-events-none hidden lg:block"
-            style={{
-              background:
-                "linear-gradient(to right, var(--brand-soft) 0%, color-mix(in oklab, var(--brand-soft) 70%, transparent) 14%, color-mix(in oklab, var(--brand-soft) 30%, transparent) 28%, transparent 46%)",
-            }}
-            aria-hidden
-          />
-          {/* Mobile fade from bottom into content */}
+          {/* Mobile fade from bottom for legibility of the overlaid wordmark */}
           <div
             className="lg:hidden absolute inset-0 pointer-events-none"
             style={{
               background:
-                "linear-gradient(to bottom, transparent 55%, color-mix(in oklab, var(--brand-soft) 70%, transparent) 80%, var(--background) 100%)",
+                "linear-gradient(to bottom, transparent 55%, color-mix(in oklab, var(--brand-soft) 70%, transparent) 80%, var(--brand-soft) 100%)",
             }}
             aria-hidden
           />
