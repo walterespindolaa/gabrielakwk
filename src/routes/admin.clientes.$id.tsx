@@ -5,6 +5,8 @@ import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { STAGES, type StageKey } from "@/components/admin/AdminLayout";
 import { JornadaCRIARAdmin } from "@/components/admin/JornadaCRIARAdmin";
+import { DemandasBoard } from "@/components/clientes/DemandasBoard";
+import { DiagnosticoEditor } from "@/components/clientes/DiagnosticoEditor";
 import { toast } from "sonner";
 import { useCurrentUser } from "@/lib/auth-guard";
 import { updateUserRole, deleteUser } from "@/lib/admin.functions";
@@ -245,10 +247,28 @@ function ClienteDetail() {
         </button>
       </section>
 
+      {/* Demandas Gerais */}
+      <section className="mt-6 bg-card border border-border/60 rounded-xl p-6">
+        <h2 className="font-display text-2xl tracking-tight mb-1">Demandas gerais</h2>
+        <p className="text-xs text-muted-foreground mb-4">
+          Tudo que for solicitado pela cliente ao longo da consultoria.
+        </p>
+        <DemandasBoard clienteId={id} />
+      </section>
+
+      {/* Diagnóstico */}
+      <section className="mt-6 bg-card border border-border/60 rounded-xl p-6">
+        <h2 className="font-display text-2xl tracking-tight mb-1">Diagnóstico</h2>
+        <p className="text-xs text-muted-foreground mb-4">
+          Panorama geral e análise SWOT. A cliente vê isso na área de membros.
+        </p>
+        <DiagnosticoEditor clienteId={id} />
+      </section>
+
       {/* Jornada CRIAR */}
       <section className="mt-6">
         <div className="flex items-baseline justify-between mb-4 px-1">
-          <h2 className="font-display text-2xl tracking-tight">Jornada CRIAR</h2>
+          <h2 className="font-display text-2xl tracking-tight">Encontros · Jornada CRIAR</h2>
           <span className="text-xs text-muted-foreground">
             Pré-consultoria + 4 encontros
           </span>
