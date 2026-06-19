@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { Plus, X, Copy, Check, ChevronDown, ChevronRight } from "lucide-react";
+import { Plus, X, Copy, Check, ChevronDown, ChevronRight, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -88,6 +88,17 @@ function LeadsPage() {
     toast.success("Link copiado!");
   }
 
+  async function remove(token: string, name: string | null) {
+    if (!confirm(`Excluir o lead "${name ?? "Sem nome"}"? Essa ação não pode ser desfeita.`)) return;
+    const { error } = await supabase.from("form_invites").delete().eq("token", token);
+    if (error) {
+      toast.error("Erro ao excluir o lead.");
+      return;
+    }
+    toast.success("Lead excluído.");
+    setLeads((prev) => prev.filter((l) => l.token !== token));
+  }
+
   return (
     <div className="p-6 md:p-10 max-w-6xl mx-auto">
       <div className="flex items-center justify-between flex-wrap gap-4">
@@ -148,6 +159,14 @@ function LeadsPage() {
                   >
                     <Copy className="w-3.5 h-3.5" />
                     Link
+                  </button>
+                  <button
+                    onClick={() => remove(l.token, l.lead_name)}
+                    className="inline-flex items-center justify-center w-8 h-8 rounded-lg border border-border/60 text-muted-foreground hover:text-destructive hover:border-destructive/40"
+                    title="Excluir lead"
+                    aria-label="Excluir lead"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
                   </button>
                 </div>
                 {isOpen && (

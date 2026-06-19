@@ -73,7 +73,7 @@ export function DiagnosticoEditor({ clienteId }: { clienteId: string }) {
   return (
     <div className="space-y-6">
       {/* Panorama */}
-      <div>
+      <div className="rounded-2xl bg-surface-alt border border-brand/15 p-5">
         <label className="text-sm font-semibold text-foreground">Panorama geral</label>
         <p className="text-xs text-muted-foreground mb-2">
           Resumo de quem é a cliente, momento atual e contexto da marca.
@@ -83,12 +83,12 @@ export function DiagnosticoEditor({ clienteId }: { clienteId: string }) {
           value={panorama}
           onChange={(e) => setPanorama(e.target.value)}
           placeholder="Escreva o panorama da cliente..."
-          className="w-full bg-background border border-border/60 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 transition-all resize-y"
+          className="w-full bg-card border border-border/60 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-brand focus:ring-2 focus:ring-brand/20 transition-all resize-y"
         />
       </div>
 
       {/* SWOT editor */}
-      <div>
+      <div className="rounded-2xl bg-surface-alt border border-brand/15 p-5">
         <div className="flex items-center justify-between mb-3">
           <label className="text-sm font-semibold text-foreground">Análise SWOT</label>
           <button

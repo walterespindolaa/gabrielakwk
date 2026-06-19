@@ -43,13 +43,13 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Um processo de 4 encontros para transformar quem você é em uma presença digital que atrai, conecta e gera resultado. Método CRIAR por Gabriela Kawikioni.",
+          "Um processo de 5 encontros para transformar quem você é em uma presença digital que atrai, conecta e gera resultado. Método CRIAR por Gabriela Kawikioni.",
       },
       { property: "og:title", content: "Consultoria CRIAR | KWK" },
       {
         property: "og:description",
         content:
-          "Seu trabalho é excelente. Seu Instagram ainda não sabe disso. Método CRIAR. 4 encontros, estratégia e autonomia.",
+          "Seu trabalho é excelente. Seu Instagram ainda não sabe disso. Método CRIAR. 5 encontros, estratégia e autonomia.",
       },
     ],
   }),
@@ -210,7 +210,7 @@ function Hero() {
               />
             </h1>
             <p className="mt-5 sm:mt-6 text-sm sm:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0" style={{ textWrap: "pretty", lineHeight: "1.55" }}>
-              Um processo de 4 encontros para transformar quem você é em uma presença digital que atrai, conecta e gera resultado. Seja você iniciante ou já presente no digital.
+              Um processo de 5 encontros para transformar quem você é em uma presença digital que atrai, conecta e gera resultado. Seja você iniciante ou já presente no digital.
             </p>
             <div className="mt-7 sm:mt-9 flex justify-center lg:justify-start">
               <CTAButton size="lg">{CTA_LABEL}</CTAButton>
@@ -483,7 +483,7 @@ function Meetings() {
       <div className="relative z-10 max-w-5xl mx-auto px-5">
         <div className="text-center mb-12">
           <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight" style={{ lineHeight: "1.15" }}>
-            4 encontros. Um processo. Um resultado.
+            5 encontros. Um processo. Um resultado.
           </h2>
           <p className="mt-4 text-muted-foreground">
             100% online. Cada encontro com foco em uma etapa do método.
@@ -828,10 +828,10 @@ const faqs = [
   { q: "Minha essência vai ser respeitada?", a: "É a base de tudo. Não existe fórmula pronta aqui. Cada etapa do processo parte de quem você é — sua história, seus valores, seu jeito de falar. O resultado final precisa parecer você, não um template de marca." },
   { q: "E se eu não souber nada de marketing?", a: "Melhor assim. Começamos do zero juntas, sem pressupor nenhum conhecimento anterior. Além disso, você recebe um mini dicionário com 35 termos do marketing digital explicados em linguagem direta — exatamente para você entender o que estamos construindo em cada etapa." },
   { q: "O que diferencia essa consultoria de contratar um social media?", a: "Um social media executa. Essa consultoria posiciona. A diferença está na profundidade: antes de pensar em qualquer post, a gente entende quem você é, para quem você fala e o que te diferencia. Você sai com posicionamento construído, identidade de comunicação definida e um plano real — não com conteúdo que para quando o contrato termina." },
-  { q: "Vou sair da consultoria sabendo exatamente o que fazer?", a: "Sim. O último encontro é dedicado inteiramente à ativação: funil de conteúdo, linha editorial, ideias de posts com títulos prontos e plano dos próximos 90 dias. Além disso, você recebe um relatório completo com tudo que foi construído ao longo dos 4 encontros — do posicionamento ao plano de execução. E ainda tem 30 dias de suporte via WhatsApp depois." },
+  { q: "Vou sair da consultoria sabendo exatamente o que fazer?", a: "Sim. O último encontro é dedicado inteiramente à ativação: funil de conteúdo, linha editorial, ideias de posts com títulos prontos e plano dos próximos 90 dias. Além disso, você recebe um relatório completo com tudo que foi construído ao longo dos 5 encontros — do posicionamento ao plano de execução. E ainda tem 30 dias de suporte via WhatsApp depois." },
   { q: "Essa consultoria é para quem está começando ou para quem já empreende?", a: "Para as duas. Se você está começando, sai com uma base sólida antes de publicar o primeiro post. Se você já empreende mas sente que seu digital não reflete o que você entrega, o processo reorganiza tudo — com base no que você já construiu, não do zero. O ponto de partida muda, mas o método é o mesmo." },
   { q: "Quantas pessoas você atende ao mesmo tempo?", a: "Atendo até 4 clientes simultaneamente, com um encontro por semana cada. Isso garante dedicação real ao seu processo — não é uma consultoria em grupo nem um curso gravado." },
-  { q: "O que acontece depois dos 4 encontros?", a: "Você recebe o relatório completo e todos os materiais — e ainda tem 30 dias de suporte via WhatsApp para dúvidas sobre posicionamento, comunicação e aplicação do método. A ideia é que você saia com autonomia para criar, não dependendo de mim para continuar." },
+  { q: "O que acontece depois dos 5 encontros?", a: "Você recebe o relatório completo e todos os materiais — e ainda tem 30 dias de suporte via WhatsApp para dúvidas sobre posicionamento, comunicação e aplicação do método. A ideia é que você saia com autonomia para criar, não dependendo de mim para continuar." },
 ];
 
 function FAQ() {
@@ -881,7 +881,7 @@ function FinalCTA() {
           Se você continuar esperando se sentir pronta, vai continuar parada.
         </h2>
         <p className="mt-6 text-brand-foreground/85 max-w-xl mx-auto text-lg" style={{ textWrap: "pretty" }}>
-          4 encontros. Um método. Um relatório completo. E você no controle da sua presença digital.
+          5 encontros. Um método. Um relatório completo. E você no controle da sua presença digital.
         </p>
         <div className="mt-10 flex flex-col items-center gap-4">
           <CTAButton size="lg" variant="ghost-light">{CTA_LABEL}</CTAButton>

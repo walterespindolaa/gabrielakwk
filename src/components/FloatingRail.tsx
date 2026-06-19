@@ -1,6 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { LogOut, type LucideIcon } from "lucide-react";
-import monogramAsset from "@/assets/kwk-monogram.png.asset.json";
 
 export interface RailItem {
   to: string;
@@ -12,30 +11,32 @@ export interface RailItem {
 interface FloatingRailProps {
   items: RailItem[];
   onSignOut: () => void;
-  /** Pequeno selo de contexto (ex.: "Admin" / "Membros") — usado no mobile. */
   badge?: string;
 }
 
 /**
- * Menu lateral flutuante e enxuto (estilo CRIA, na marca KWK).
- * Desktop: pill claro descolado da borda, centralizado verticalmente.
- * Mobile: barra inferior com ícones.
+ * Menu lateral fixo, full-height, encostado na borda (estilo CRIA/Learnify) na
+ * marca KWK: trilho vinho com ícones creme, item ativo em destaque claro.
+ * Desktop: rail fixo à esquerda. Mobile: top bar + barra inferior.
  */
 export function FloatingRail({ items, onSignOut, badge }: FloatingRailProps) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const isActive = (to: string, exact?: boolean) =>
     exact ? pathname === to : pathname === to || pathname.startsWith(to + "/");
 
+  const tooltip =
+    "pointer-events-none absolute left-full ml-3 whitespace-nowrap rounded-lg bg-card text-foreground border border-border/60 text-xs font-medium px-2.5 py-1.5 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all shadow-md z-10";
+
   return (
     <>
-      {/* Desktop — rail flutuante */}
-      <aside className="hidden md:flex fixed left-4 top-1/2 -translate-y-1/2 z-40 flex-col items-center gap-1.5 bg-card/95 backdrop-blur border border-border/60 rounded-[26px] shadow-lg shadow-brand/5 px-2 py-3">
+      {/* Desktop — rail fixo full-height */}
+      <aside className="hidden md:flex fixed left-0 top-0 h-screen w-16 z-40 flex-col items-center gap-1.5 bg-brand py-4">
         <Link
           to="/"
           aria-label="Início"
-          className="flex items-center justify-center w-10 h-10 rounded-2xl hover:bg-brand-soft/50 transition-colors mb-1"
+          className="flex items-center justify-center w-10 h-10 rounded-xl bg-brand-foreground/10 text-brand-foreground font-display text-xs tracking-wide mb-3 hover:bg-brand-foreground/20 transition-colors"
         >
-          <img src={monogramAsset.url} alt="KWK" className="h-7 w-auto" />
+          KW
         </Link>
 
         {items.map((item) => {
@@ -48,35 +49,30 @@ export function FloatingRail({ items, onSignOut, badge }: FloatingRailProps) {
               aria-label={item.label}
               className={`group relative flex items-center justify-center w-11 h-11 rounded-2xl transition-colors ${
                 active
-                  ? "bg-brand-soft text-brand"
-                  : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                  ? "bg-brand-foreground text-brand"
+                  : "text-brand-foreground/60 hover:bg-brand-foreground/10 hover:text-brand-foreground"
               }`}
             >
               <Icon className="w-5 h-5" />
-              <span className="pointer-events-none absolute left-full ml-3 whitespace-nowrap rounded-lg bg-brand text-brand-foreground text-xs font-medium px-2.5 py-1.5 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all shadow-md">
-                {item.label}
-              </span>
+              <span className={tooltip}>{item.label}</span>
             </Link>
           );
         })}
 
-        <div className="w-7 h-px bg-border/70 my-1" />
+        <div className="flex-1" />
 
         <button
           onClick={onSignOut}
           aria-label="Sair"
-          className="group relative flex items-center justify-center w-11 h-11 rounded-2xl text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors"
+          className="group relative flex items-center justify-center w-11 h-11 rounded-2xl text-brand-foreground/60 hover:bg-brand-foreground/10 hover:text-brand-foreground transition-colors"
         >
           <LogOut className="w-5 h-5" />
-          <span className="pointer-events-none absolute left-full ml-3 whitespace-nowrap rounded-lg bg-brand text-brand-foreground text-xs font-medium px-2.5 py-1.5 opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all shadow-md">
-            Sair
-          </span>
+          <span className={tooltip}>Sair</span>
         </button>
       </aside>
 
       {/* Mobile — header fino */}
       <div className="md:hidden fixed top-0 inset-x-0 z-40 h-14 bg-card/95 backdrop-blur border-b border-border/60 flex items-center gap-2 px-4">
-        <img src={monogramAsset.url} alt="KWK" className="h-8 w-auto" />
         <span className="font-display text-base font-semibold text-brand">KWK</span>
         {badge && (
           <span className="text-[9px] uppercase tracking-[0.22em] text-muted-foreground font-semibold">

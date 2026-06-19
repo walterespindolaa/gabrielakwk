@@ -25,6 +25,7 @@ import { Route as AreaPerfilRouteImport } from './routes/area.perfil'
 import { Route as AreaMateriaisRouteImport } from './routes/area.materiais'
 import { Route as AreaFormulariosRouteImport } from './routes/area.formularios'
 import { Route as AreaDiagnosticoRouteImport } from './routes/area.diagnostico'
+import { Route as AreaDemandasRouteImport } from './routes/area.demandas'
 import { Route as AdminMateriaisRouteImport } from './routes/admin.materiais'
 import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
 import { Route as AdminFormulariosRouteImport } from './routes/admin.formularios'
@@ -111,6 +112,11 @@ const AreaDiagnosticoRoute = AreaDiagnosticoRouteImport.update({
   path: '/diagnostico',
   getParentRoute: () => AreaRoute,
 } as any)
+const AreaDemandasRoute = AreaDemandasRouteImport.update({
+  id: '/demandas',
+  path: '/demandas',
+  getParentRoute: () => AreaRoute,
+} as any)
 const AdminMateriaisRoute = AdminMateriaisRouteImport.update({
   id: '/materiais',
   path: '/materiais',
@@ -150,6 +156,7 @@ export interface FileRoutesByFullPath {
   '/admin/formularios': typeof AdminFormulariosRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/materiais': typeof AdminMateriaisRoute
+  '/area/demandas': typeof AreaDemandasRoute
   '/area/diagnostico': typeof AreaDiagnosticoRoute
   '/area/formularios': typeof AreaFormulariosRoute
   '/area/materiais': typeof AreaMateriaisRoute
@@ -171,6 +178,7 @@ export interface FileRoutesByTo {
   '/admin/formularios': typeof AdminFormulariosRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/materiais': typeof AdminMateriaisRoute
+  '/area/demandas': typeof AreaDemandasRoute
   '/area/diagnostico': typeof AreaDiagnosticoRoute
   '/area/formularios': typeof AreaFormulariosRoute
   '/area/materiais': typeof AreaMateriaisRoute
@@ -195,6 +203,7 @@ export interface FileRoutesById {
   '/admin/formularios': typeof AdminFormulariosRoute
   '/admin/leads': typeof AdminLeadsRoute
   '/admin/materiais': typeof AdminMateriaisRoute
+  '/area/demandas': typeof AreaDemandasRoute
   '/area/diagnostico': typeof AreaDiagnosticoRoute
   '/area/formularios': typeof AreaFormulariosRoute
   '/area/materiais': typeof AreaMateriaisRoute
@@ -220,6 +229,7 @@ export interface FileRouteTypes {
     | '/admin/formularios'
     | '/admin/leads'
     | '/admin/materiais'
+    | '/area/demandas'
     | '/area/diagnostico'
     | '/area/formularios'
     | '/area/materiais'
@@ -241,6 +251,7 @@ export interface FileRouteTypes {
     | '/admin/formularios'
     | '/admin/leads'
     | '/admin/materiais'
+    | '/area/demandas'
     | '/area/diagnostico'
     | '/area/formularios'
     | '/area/materiais'
@@ -264,6 +275,7 @@ export interface FileRouteTypes {
     | '/admin/formularios'
     | '/admin/leads'
     | '/admin/materiais'
+    | '/area/demandas'
     | '/area/diagnostico'
     | '/area/formularios'
     | '/area/materiais'
@@ -402,6 +414,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AreaDiagnosticoRouteImport
       parentRoute: typeof AreaRoute
     }
+    '/area/demandas': {
+      id: '/area/demandas'
+      path: '/demandas'
+      fullPath: '/area/demandas'
+      preLoaderRoute: typeof AreaDemandasRouteImport
+      parentRoute: typeof AreaRoute
+    }
     '/admin/materiais': {
       id: '/admin/materiais'
       path: '/materiais'
@@ -461,6 +480,7 @@ const AdminRouteChildren: AdminRouteChildren = {
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface AreaRouteChildren {
+  AreaDemandasRoute: typeof AreaDemandasRoute
   AreaDiagnosticoRoute: typeof AreaDiagnosticoRoute
   AreaFormulariosRoute: typeof AreaFormulariosRoute
   AreaMateriaisRoute: typeof AreaMateriaisRoute
@@ -469,6 +489,7 @@ interface AreaRouteChildren {
 }
 
 const AreaRouteChildren: AreaRouteChildren = {
+  AreaDemandasRoute: AreaDemandasRoute,
   AreaDiagnosticoRoute: AreaDiagnosticoRoute,
   AreaFormulariosRoute: AreaFormulariosRoute,
   AreaMateriaisRoute: AreaMateriaisRoute,

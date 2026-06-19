@@ -5,13 +5,16 @@ import { KwkLoader } from "@/components/KwkLoader";
 import {
   Calendar,
   CheckCircle2,
-  Circle,
   Copy,
   Link as LinkIcon,
   Loader2,
   Send,
   FileText,
   Pencil,
+  Paperclip,
+  Upload,
+  Download,
+  Trash2,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -69,12 +72,14 @@ export function JornadaCRIARAdmin({ clienteId }: Props) {
   const [responses, setResponses] = useState<ResponseRow[]>([]);
   const [submissions, setSubmissions] = useState<SubmissionRow[]>([]);
   const [encontros, setEncontros] = useState<EncontroRow[]>([]);
+  const [materials, setMaterials] = useState<any[]>([]);
+  const [assignedIds, setAssignedIds] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [expanded, setExpanded] = useState<number | "pre" | null>("pre");
 
   async function load() {
     setLoading(true);
-    const [fs, inv, resp, sub, enc] = await Promise.all([
+    const [fs, inv, resp, sub, enc, mats, ass] = await Promise.all([
       supabase
         .from("forms")
         .select("id, title, description, stage, kind, encontro, order_index")
@@ -97,12 +102,16 @@ export function JornadaCRIARAdmin({ clienteId }: Props) {
         .select("id, numero, scheduled_at, completed_at, meet_url, notes, next_steps, status")
         .eq("cliente_id", clienteId)
         .order("numero", { ascending: true }),
+      supabase.from("materials").select("id, title, stage, type, file_path, external_url"),
+      supabase.from("material_assignments").select("material_id").eq("cliente_id", clienteId),
     ]);
     setForms((fs.data as FormRow[]) ?? []);
     setInvites((inv.data as InviteRow[]) ?? []);
     setResponses((resp.data as ResponseRow[]) ?? []);
     setSubmissions((sub.data as SubmissionRow[]) ?? []);
     setEncontros((enc.data as EncontroRow[]) ?? []);
+    setMaterials((mats.data as any[]) ?? []);
+    setAssignedIds(new Set(((ass.data as any[]) ?? []).map((a) => a.material_id)));
     setLoading(false);
   }
 
@@ -150,6 +159,49 @@ export function JornadaCRIARAdmin({ clienteId }: Props) {
     load();
   }
 
+  const anexosForStage = (stageKey: string) =>
+    materials.filter((m) => assignedIds.has(m.id) && m.stage === stageKey);
+
+  async function uploadAnexo(stageKey: string, file: File) {
+    if (file.size > 50 * 1024 * 1024) return toast.error("Arquivo maior que 50MB.");
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+    const path = `${crypto.randomUUID()}-${safeName}`;
+    const up = await supabase.storage
+      .from("materiais")
+      .upload(path, file, { contentType: file.type || "application/octet-stream" });
+    if (up.error) return toast.error(up.error.message);
+    const { data: userData } = await supabase.auth.getUser();
+    const { data: mat, error } = await supabase
+      .from("materials")
+      .insert({
+        title: file.name,
+        stage: stageKey,
+        type: "pdf",
+        file_path: path,
+        created_by: userData.user?.id,
+      } as any)
+      .select("id")
+      .single();
+    if (error || !mat) return toast.error(error?.message ?? "Falha ao salvar arquivo.");
+    const { error: aErr } = await supabase
+      .from("material_assignments")
+      .insert({ cliente_id: clienteId, material_id: (mat as any).id, unlocked: true } as any);
+    if (aErr) return toast.error(aErr.message);
+    toast.success("Arquivo anexado e liberado para a cliente.");
+    load();
+  }
+
+  async function removeAnexo(material: any) {
+    if (!confirm("Remover este arquivo?")) return;
+    if (material.file_path) {
+      await supabase.storage.from("materiais").remove([material.file_path]);
+    }
+    const { error } = await supabase.from("materials").delete().eq("id", material.id);
+    if (error) return toast.error(error.message);
+    toast.success("Arquivo removido.");
+    load();
+  }
+
   if (loading) {
     return <KwkLoader fullScreen={false} label="Carregando jornada" />;
   }
@@ -186,6 +238,9 @@ export function JornadaCRIARAdmin({ clienteId }: Props) {
             responses={responses}
             submissions={submissions}
             enc={enc}
+            anexos={anexosForStage(e.key)}
+            onUpload={(file: File) => uploadAnexo(e.key, file)}
+            onRemoveAnexo={removeAnexo}
             onGenerate={generateInvite}
             onCopy={copyInvite}
             onSaveEncontro={(patch: Partial<EncontroRow>) => upsertEncontro(e.numero, patch)}
@@ -262,6 +317,9 @@ function EncontroCard({
   responses,
   submissions,
   enc,
+  anexos,
+  onUpload,
+  onRemoveAnexo,
   onGenerate,
   onCopy,
   onSaveEncontro,
@@ -349,6 +407,15 @@ function EncontroCard({
             </div>
           )}
 
+          {/* Materiais / anexos do encontro */}
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <Paperclip className="w-4 h-4 text-brand" />
+              <h3 className="text-sm font-semibold">Materiais do encontro</h3>
+            </div>
+            <AnexosBlock anexos={anexos} onUpload={onUpload} onRemove={onRemoveAnexo} />
+          </div>
+
           {/* Encontro: anotações da call */}
           <div>
             <div className="flex items-center gap-2 mb-2">
@@ -359,6 +426,75 @@ function EncontroCard({
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function AnexosBlock({
+  anexos,
+  onUpload,
+  onRemove,
+}: {
+  anexos: any[];
+  onUpload: (file: File) => void | Promise<void>;
+  onRemove: (m: any) => void;
+}) {
+  const [busy, setBusy] = useState(false);
+
+  async function handleFile(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    setBusy(true);
+    await onUpload(file);
+    setBusy(false);
+  }
+
+  return (
+    <div className="bg-muted/40 rounded-lg p-3 space-y-2">
+      {anexos.length === 0 ? (
+        <p className="text-xs text-muted-foreground">Nenhum arquivo anexado nesta etapa ainda.</p>
+      ) : (
+        <ul className="space-y-1.5">
+          {anexos.map((m) => (
+            <li
+              key={m.id}
+              className="flex items-center justify-between gap-2 bg-background border border-border/50 rounded-lg px-3 py-2"
+            >
+              <div className="flex items-center gap-2 min-w-0">
+                <FileText className="w-4 h-4 text-brand shrink-0" />
+                <span className="text-sm truncate">{m.title}</span>
+              </div>
+              <div className="flex items-center gap-1.5 shrink-0">
+                {m.external_url && (
+                  <a
+                    href={m.external_url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-muted-foreground hover:text-brand"
+                    aria-label="Abrir"
+                  >
+                    <Download className="w-4 h-4" />
+                  </a>
+                )}
+                <button
+                  onClick={() => onRemove(m)}
+                  className="text-muted-foreground hover:text-destructive"
+                  aria-label="Remover arquivo"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <label className="inline-flex items-center gap-1.5 bg-brand text-brand-foreground px-3 py-1.5 rounded-md text-xs font-semibold hover:opacity-90 cursor-pointer w-fit">
+        {busy ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Upload className="w-3.5 h-3.5" />}
+        {busy ? "Enviando..." : "Anexar arquivo"}
+        <input type="file" className="hidden" onChange={handleFile} disabled={busy} />
+      </label>
     </div>
   );
 }
@@ -376,16 +512,13 @@ function StatusBadge({
   doneLabel: string;
   small?: boolean;
 }) {
-  const Icon = done ? CheckCircle2 : Circle;
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-full font-semibold ${
-        small ? "px-2 py-0.5 text-[10px]" : "px-3 py-1.5 text-xs"
-      } ${
-        done ? "bg-brand text-brand-foreground" : "bg-muted text-muted-foreground"
-      }`}
+      className={`inline-flex items-center gap-1 rounded-full font-medium whitespace-nowrap ${
+        small ? "px-2 py-0.5 text-[10px]" : "px-2.5 py-1 text-xs"
+      } ${done ? "bg-success/15 text-success" : "bg-muted text-muted-foreground"}`}
     >
-      <Icon className={small ? "w-3 h-3" : "w-3.5 h-3.5"} />
+      {done && <CheckCircle2 className={small ? "w-3 h-3" : "w-3.5 h-3.5"} />}
       {done ? doneLabel : pendingLabel}
     </span>
   );

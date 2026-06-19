@@ -1,5 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
-import { Map, FolderOpen, FileText, User, Compass } from "lucide-react";
+import { Map, FolderOpen, FileText, User, Compass, ClipboardList } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useRequireAuth } from "@/lib/auth-guard";
 import { KwkLoader } from "@/components/KwkLoader";
@@ -7,6 +7,7 @@ import { FloatingRail, type RailItem } from "@/components/FloatingRail";
 
 const nav: RailItem[] = [
   { to: "/area", label: "Jornada", icon: Map, exact: true },
+  { to: "/area/demandas", label: "Demandas", icon: ClipboardList },
   { to: "/area/diagnostico", label: "Diagnóstico", icon: Compass },
   { to: "/area/materiais", label: "Materiais", icon: FolderOpen },
   { to: "/area/formularios", label: "Formulários", icon: FileText },

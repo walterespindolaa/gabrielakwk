@@ -1,19 +1,26 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import {
-  CheckCircle2,
-  Circle,
-  Calendar,
+  CalendarRange,
+  ClipboardList,
+  Compass,
+  Target,
+  Bell,
   FileText,
   Pencil,
+  Calendar,
   ExternalLink,
-  ArrowRight,
+  CheckCircle2,
+  Circle,
+  Lock,
   Sparkles,
+  Download,
+  ArrowRight,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useCurrentUser } from "@/lib/auth-guard";
 import { ENCONTROS, PRE_CONSULTORIA, PLATAFORMA_CRIA_URL } from "@/lib/method-criar";
-import { StickerCollage } from "@/components/ui/sticker-collage";
+import { normalizeSwot } from "@/lib/client-workspace";
 
 export const Route = createFileRoute("/area/")({
   component: JornadaPage,
@@ -24,7 +31,6 @@ function greetingFor(hour: number) {
   if (hour < 18) return "Boa tarde";
   return "Boa noite";
 }
-
 function initials(name: string | null): string {
   if (!name) return "?";
   return name.trim().split(/\s+/).slice(0, 2).map((w) => w[0]?.toUpperCase() ?? "").join("");
@@ -36,8 +42,9 @@ function JornadaPage() {
   const [responses, setResponses] = useState<any[]>([]);
   const [invites, setInvites] = useState<any[]>([]);
   const [encontros, setEncontros] = useState<any[]>([]);
-  const [matCount, setMatCount] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [materials, setMaterials] = useState<any[]>([]);
+  const [demandasCount, setDemandasCount] = useState(0);
+  const [swotCount, setSwotCount] = useState(0);
   const [greeting, setGreeting] = useState("Olá");
 
   useEffect(() => setGreeting(greetingFor(new Date().getHours())), []);
@@ -45,215 +52,147 @@ function JornadaPage() {
   useEffect(() => {
     if (!auth.userId) return;
     (async () => {
-      const [fs, rs, inv, enc, mat] = await Promise.all([
-        supabase
-          .from("forms")
-          .select("id, title, kind, encontro, order_index")
-          .like("title", "Método CRIAR%")
-          .order("order_index"),
-        supabase.from("form_responses").select("form_id, submitted_at").eq("cliente_id", auth.userId!),
-        supabase.from("form_invites").select("form_id, token, submitted_at").eq("cliente_id", auth.userId!),
-        supabase
-          .from("encontros")
-          .select("numero, scheduled_at, completed_at, meet_url, notes, next_steps, status")
-          .eq("cliente_id", auth.userId!)
-          .order("numero"),
-        supabase
-          .from("material_assignments")
-          .select("material_id", { count: "exact", head: true })
-          .eq("cliente_id", auth.userId!),
+      const uid = auth.userId!;
+      const [fs, rs, inv, enc, ass, dem, diag] = await Promise.all([
+        supabase.from("forms").select("id, title, kind, encontro, order_index").like("title", "Método CRIAR%").order("order_index"),
+        supabase.from("form_responses").select("form_id, submitted_at, forms:form_id(title)").eq("cliente_id", uid),
+        supabase.from("form_invites").select("form_id, token, submitted_at").eq("cliente_id", uid),
+        supabase.from("encontros").select("numero, scheduled_at, meet_url, next_steps, status").eq("cliente_id", uid).order("numero"),
+        supabase.from("material_assignments").select("material_id").eq("cliente_id", uid),
+        (supabase as any).from("client_demandas").select("id", { count: "exact", head: true }).eq("cliente_id", uid),
+        (supabase as any).from("client_diagnostico").select("swot").eq("cliente_id", uid).maybeSingle(),
       ]);
       setForms(fs.data ?? []);
       setResponses(rs.data ?? []);
       setInvites(inv.data ?? []);
       setEncontros(enc.data ?? []);
-      setMatCount(mat.count ?? 0);
-      setLoading(false);
+      const ids = new Set(((ass.data as any[]) ?? []).map((a) => a.material_id));
+      if (ids.size) {
+        const { data: mats } = await supabase
+          .from("materials")
+          .select("id, title, stage, type, file_path, external_url")
+          .in("id", Array.from(ids));
+        setMaterials(mats ?? []);
+      }
+      setDemandasCount((dem as any)?.count ?? 0);
+      const swot = normalizeSwot((diag as any)?.data?.swot);
+      setSwotCount(swot.forcas.length + swot.fraquezas.length + swot.oportunidades.length + swot.ameacas.length);
     })();
   }, [auth.userId]);
 
   const firstName = auth.fullName?.split(" ")[0] ?? "olá";
   const isFormDone = (formId: string) =>
-    responses.some((r) => r.form_id === formId) ||
-    invites.some((i) => i.form_id === formId && i.submitted_at);
+    responses.some((r) => r.form_id === formId) || invites.some((i) => i.form_id === formId && i.submitted_at);
   const inviteFor = (formId: string) => invites.find((i) => i.form_id === formId);
 
   const total = ENCONTROS.length;
   const realizados = encontros.filter((e) => e.status === "realizado").length;
-  const allDone = realizados === total;
+  const unlockedThrough = realizados + 1; // libera o próximo quando o anterior é realizado
   const preForm = forms.find((f) => f.kind === "formulario" && f.encontro === 0);
-  const licoesPendentes = forms.filter(
-    (f) => f.kind === "licao_casa" && !isFormDone(f.id),
-  ).length;
-  const currentNumero = ENCONTROS.find(
-    (e) => encontros.find((x) => x.numero === e.numero)?.status !== "realizado",
-  )?.numero;
+  const preDone = preForm ? isFormDone(preForm.id) : false;
+  const licoesPendentes = forms.filter((f) => f.kind === "licao_casa" && !isFormDone(f.id)).length;
+  const pendingActions = licoesPendentes + (preForm && !preDone && inviteFor(preForm.id) ? 1 : 0);
 
-  // Próximo passo
-  let nextStep: { title: string; sub?: string; href?: string; cta?: string; external?: boolean } | null = null;
-  if (preForm && !isFormDone(preForm.id)) {
-    const inv = inviteFor(preForm.id);
-    nextStep = inv
-      ? { title: "Responda a pré-consultoria", sub: "O formulário de expectativas antes do Encontro 1", href: `/f/${inv.token}`, cta: "Responder" }
-      : { title: "Pré-consultoria a caminho", sub: "A Gabriela vai te enviar o formulário em breve." };
-  } else {
-    const nextEnc = ENCONTROS.find(
-      (e) => encontros.find((x) => x.numero === e.numero)?.status !== "realizado",
-    );
-    if (nextEnc) {
-      const enc = encontros.find((x) => x.numero === nextEnc.numero);
-      nextStep = {
-        title: `Encontro ${nextEnc.numero} · ${nextEnc.letterFull}`,
-        sub: enc?.scheduled_at
-          ? new Date(enc.scheduled_at).toLocaleString("pt-BR", { dateStyle: "long", timeStyle: "short" })
-          : "Encontro a agendar com a Gabriela.",
-        href: enc?.meet_url ?? undefined,
-        cta: enc?.meet_url ? "Entrar na call" : undefined,
-        external: true,
-      };
-    } else {
-      nextStep = { title: "Jornada concluída!", sub: "Sua casa está em ordem. Acesse a plataforma CRIA.", href: PLATAFORMA_CRIA_URL, cta: "Acessar CRIA", external: true };
-    }
-  }
+  const encUnlocked = (numero: number) => numero <= unlockedThrough;
+  const stageUnlocked = (stage: string | null) => {
+    if (!stage || stage === "geral") return true;
+    const e = ENCONTROS.find((x) => x.key === stage);
+    return e ? encUnlocked(e.numero) : true;
+  };
+  const answeredForms = forms.filter((f) => isFormDone(f.id));
 
   return (
-    <div className="space-y-7">
-      {/* Hero: saudação + próximo passo */}
-      <section className="relative overflow-hidden rounded-3xl border border-brand/15 bg-card p-6 sm:p-8">
-        <div aria-hidden className="absolute inset-0 opacity-[0.08] pointer-events-none">
-          <StickerCollage variant="about" />
+    <div className="space-y-6">
+      {/* Cabeçalho: saudação + notificações + dados */}
+      <div className="flex items-center justify-between gap-4 flex-wrap">
+        <div>
+          <div className="text-sm text-muted-foreground">{greeting},</div>
+          <div className="font-display text-2xl sm:text-3xl tracking-tight leading-none mt-0.5">{firstName}</div>
         </div>
-        <div className="relative">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-mint text-mint-foreground flex items-center justify-center text-base font-medium shrink-0">
+        <div className="flex items-center gap-2.5">
+          <div className="relative w-10 h-10 rounded-full bg-card border border-border/60 flex items-center justify-center text-muted-foreground">
+            <Bell className="w-5 h-5" />
+            {pendingActions > 0 && (
+              <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 rounded-full bg-accent text-accent-foreground text-[10px] font-semibold flex items-center justify-center">
+                {pendingActions}
+              </span>
+            )}
+          </div>
+          <div className="flex items-center gap-2.5 bg-card border border-border/60 rounded-full pl-1.5 pr-3.5 py-1.5">
+            <div className="w-8 h-8 rounded-full bg-mint text-mint-foreground flex items-center justify-center text-xs font-medium">
               {initials(auth.fullName)}
             </div>
-            <div>
-              <div className="text-sm text-muted-foreground">{greeting},</div>
-              <div className="font-display text-2xl sm:text-3xl tracking-tight leading-none mt-0.5">
-                {firstName}
-              </div>
+            <div className="leading-tight">
+              <div className="text-xs font-medium text-foreground">{firstName}</div>
+              <div className="text-[10px] text-muted-foreground capitalize">{auth.role ?? "cliente"}</div>
             </div>
           </div>
-
-          {nextStep && (
-            <div className="mt-6 rounded-2xl bg-brand text-brand-foreground p-5 sm:p-6 flex items-center justify-between gap-4 flex-wrap">
-              <div className="min-w-0">
-                <div className="text-[10px] uppercase tracking-[0.2em] opacity-70">Seu próximo passo</div>
-                <div className="font-display text-xl sm:text-2xl mt-1.5">{nextStep.title}</div>
-                {nextStep.sub && <div className="text-sm opacity-80 mt-1">{nextStep.sub}</div>}
-              </div>
-              {nextStep.href && nextStep.cta && (
-                <a
-                  href={nextStep.href}
-                  {...(nextStep.external ? { target: "_blank", rel: "noreferrer" } : {})}
-                  className="inline-flex items-center gap-2 rounded-full bg-brand-foreground text-brand px-5 py-2.5 text-sm font-semibold hover:opacity-90 transition-opacity whitespace-nowrap"
-                >
-                  {nextStep.cta}
-                  <ArrowRight className="w-4 h-4" />
-                </a>
-              )}
-            </div>
-          )}
         </div>
-      </section>
-
-      {/* Chips */}
-      <div className="grid grid-cols-3 gap-3">
-        <Chip value={`${realizados}/${total}`} label="Encontros" />
-        <Chip value={licoesPendentes} label="Lições pendentes" />
-        <Chip value={matCount} label="Materiais" />
       </div>
 
-      {/* Jornada */}
-      <section>
-        <div className="flex items-baseline justify-between mb-4">
-          <h2 className="font-display text-xl tracking-tight">Sua jornada CRIAR</h2>
-          <span className="text-xs text-muted-foreground hidden sm:block">
-            Compreender · Reconhecer · Identificar · Ativar · Reorganizar
-          </span>
-        </div>
+      {/* 4 cards de topo */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        <TopCard icon={CalendarRange} title="Cronograma" sub={`${realizados}/${total} encontros`} href="#encontros" />
+        <TopCard icon={ClipboardList} title="Demandas" sub={`${demandasCount} ${demandasCount === 1 ? "item" : "itens"}`} to="/area/demandas" />
+        <TopCard icon={Compass} title="Diagnóstico" sub="Panorama da marca" to="/area/diagnostico" />
+        <TopCard icon={Target} title="Análise SWOT" sub={swotCount > 0 ? `${swotCount} pontos` : "Em preparação"} to="/area/diagnostico" />
+      </div>
 
-        {loading ? (
-          <div className="space-y-3">
-            {[0, 1, 2, 3, 4].map((i) => (
-              <div key={i} className="bg-card border border-border/60 rounded-2xl h-24 animate-pulse" />
-            ))}
-          </div>
-        ) : (
-          <div className="space-y-3">
-            {preForm && (
-              <ClientCard
-                letter="0"
-                tag="Etapa inicial"
-                title={PRE_CONSULTORIA.title}
-                subtitle={PRE_CONSULTORIA.subtitle}
-                done={isFormDone(preForm.id)}
-                actionLabel={isFormDone(preForm.id) ? "Respondido" : "Preencher"}
-                actionHref={inviteFor(preForm.id) ? `/f/${inviteFor(preForm.id)!.token}` : undefined}
-                actionHint={!inviteFor(preForm.id) ? "Aguardando envio" : undefined}
-              />
-            )}
+      {/* Inferior: encontros (principal) + forms/materiais (lateral) */}
+      <div className="grid lg:grid-cols-3 gap-4">
+        {/* Encontros */}
+        <div id="encontros" className="lg:col-span-2 space-y-3 scroll-mt-20">
+          <h2 className="font-display text-xl tracking-tight">Seus encontros</h2>
 
-            {ENCONTROS.map((e) => {
-              const fForm = forms.find((f) => f.kind === "formulario" && f.encontro === e.numero);
-              const lForm = forms.find((f) => f.kind === "licao_casa" && f.encontro === e.numero);
-              const enc = encontros.find((x) => x.numero === e.numero);
-              const fInv = fForm ? inviteFor(fForm.id) : undefined;
-              const lInv = lForm ? inviteFor(lForm.id) : undefined;
-              const status = enc?.status === "realizado" ? "realizado" : "pendente";
-              const isCurrent = e.numero === currentNumero;
-              return (
-                <div
-                  key={e.numero}
-                  className={`bg-card rounded-2xl p-5 border transition-shadow ${
-                    isCurrent ? "border-brand/40 shadow-md shadow-brand/5" : "border-brand/15"
-                  }`}
-                >
-                  <div className="flex items-start gap-4">
-                    <div
-                      className={`w-12 h-12 rounded-2xl flex items-center justify-center font-display text-xl flex-shrink-0 ${
-                        status === "realizado"
-                          ? "bg-brand text-brand-foreground"
-                          : isCurrent
-                            ? "bg-brand text-brand-foreground"
-                            : "bg-brand-soft text-brand"
-                      }`}
-                    >
-                      {e.letter}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-semibold">
-                        Encontro {e.numero} · {e.letterFull}
-                      </div>
-                      <div className="font-display text-lg mt-0.5">{e.title}</div>
-                      <p className="text-sm text-muted-foreground mt-1">{e.pergunta}</p>
-                    </div>
-                    <StatusPill status={status} isCurrent={isCurrent} />
+          {preForm && (
+            <PreRow
+              done={preDone}
+              href={inviteFor(preForm.id) ? `/f/${inviteFor(preForm.id)!.token}` : undefined}
+              hint={!inviteFor(preForm.id) ? "Aguardando envio" : undefined}
+            />
+          )}
+
+          {ENCONTROS.map((e) => {
+            const unlocked = encUnlocked(e.numero);
+            const enc = encontros.find((x) => x.numero === e.numero);
+            const status = enc?.status === "realizado" ? "realizado" : e.numero === unlockedThrough ? "atual" : "bloqueado";
+            const fForm = forms.find((f) => f.kind === "formulario" && f.encontro === e.numero);
+            const lForm = forms.find((f) => f.kind === "licao_casa" && f.encontro === e.numero);
+            const fInv = fForm ? inviteFor(fForm.id) : undefined;
+            const lInv = lForm ? inviteFor(lForm.id) : undefined;
+            return (
+              <div
+                key={e.numero}
+                className={`rounded-2xl border overflow-hidden ${
+                  status === "atual" ? "border-brand/40 shadow-md shadow-brand/5" : "border-brand/15"
+                } ${unlocked ? "bg-card" : "bg-card/60"}`}
+              >
+                {/* Capa vinho */}
+                <div className={`px-5 py-3.5 flex items-center gap-3 ${unlocked ? "bg-brand text-brand-foreground" : "bg-brand/40 text-brand-foreground"}`}>
+                  <div className="w-9 h-9 rounded-xl bg-brand-foreground/15 flex items-center justify-center font-display text-lg">
+                    {unlocked ? e.letter : <Lock className="w-4 h-4" />}
                   </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-[10px] uppercase tracking-[0.18em] opacity-70">
+                      Encontro {e.numero} · {e.letterFull}
+                    </div>
+                    <div className="font-display text-lg leading-tight">{e.title}</div>
+                  </div>
+                  {status === "realizado" && <CheckCircle2 className="w-5 h-5 opacity-90" />}
+                  {status === "atual" && (
+                    <span className="text-[10px] uppercase tracking-wider bg-brand-foreground/15 px-2 py-1 rounded-full">Atual</span>
+                  )}
+                </div>
 
-                  <div className="mt-4 space-y-2">
+                {/* Corpo */}
+                {unlocked ? (
+                  <div className="p-4 space-y-2">
+                    <p className="text-sm text-muted-foreground">{e.pergunta}</p>
                     {fForm && (
-                      <TaskRow
-                        icon={FileText}
-                        label="Formulário do encontro"
-                        done={isFormDone(fForm.id)}
-                        href={fInv ? `/f/${fInv.token}` : undefined}
-                        hint={!fInv ? "Aguardando envio" : undefined}
-                      />
+                      <TaskRow icon={FileText} label="Formulário do encontro" done={isFormDone(fForm.id)} href={fInv ? `/f/${fInv.token}` : undefined} hint={!fInv ? "Aguardando envio" : undefined} />
                     )}
                     {lForm && (
-                      <TaskRow
-                        icon={Pencil}
-                        label={
-                          e.numero < total
-                            ? `Lição de casa → prepara o E${e.numero + 1}`
-                            : "Lição de casa final"
-                        }
-                        done={isFormDone(lForm.id)}
-                        href={lInv ? `/f/${lInv.token}` : undefined}
-                        hint={!lInv ? `Liberada após o E${e.numero}` : undefined}
-                      />
+                      <TaskRow icon={Pencil} label="Lição de casa" done={isFormDone(lForm.id)} href={lInv ? `/f/${lInv.token}` : undefined} hint={!lInv ? "Em breve" : undefined} />
                     )}
                     <div className="flex items-center gap-3 px-3 py-2 rounded-xl bg-muted/40">
                       <Calendar className="w-4 h-4 text-brand flex-shrink-0" />
@@ -261,18 +200,10 @@ function JornadaPage() {
                         {enc?.scheduled_at ? (
                           <>
                             <span className="font-medium">
-                              {new Date(enc.scheduled_at).toLocaleString("pt-BR", {
-                                dateStyle: "short",
-                                timeStyle: "short",
-                              })}
+                              {new Date(enc.scheduled_at).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" })}
                             </span>
                             {enc.meet_url && (
-                              <a
-                                href={enc.meet_url}
-                                target="_blank"
-                                rel="noreferrer"
-                                className="ml-2 text-brand font-semibold hover:underline inline-flex items-center gap-1"
-                              >
+                              <a href={enc.meet_url} target="_blank" rel="noreferrer" className="ml-2 text-brand font-semibold hover:underline inline-flex items-center gap-1">
                                 entrar <ExternalLink className="w-3 h-3" />
                               </a>
                             )}
@@ -282,145 +213,139 @@ function JornadaPage() {
                         )}
                       </div>
                     </div>
-                    {enc?.next_steps && (
-                      <div className="px-3 py-2 rounded-xl bg-brand-soft/50 text-sm">
-                        <span className="text-[10px] uppercase tracking-wider font-bold text-brand block mb-0.5">
-                          Próximos passos
-                        </span>
-                        {enc.next_steps}
-                      </div>
-                    )}
                   </div>
-                </div>
-              );
-            })}
-
-            {/* Plataforma CRIA */}
-            <div
-              className={`rounded-2xl p-6 border ${
-                allDone ? "bg-brand text-brand-foreground border-brand" : "bg-card border-dashed border-brand/30"
-              }`}
-            >
-              <div className="flex items-start gap-4">
-                <div
-                  className={`w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 ${
-                    allDone ? "bg-brand-foreground text-brand" : "bg-brand-soft text-brand"
-                  }`}
-                >
-                  <Sparkles className="w-6 h-6" />
-                </div>
-                <div className="flex-1">
-                  <div className="text-[10px] uppercase tracking-[0.2em] font-semibold opacity-80">
-                    Pós-consultoria
+                ) : (
+                  <div className="p-4 flex items-center gap-2 text-sm text-muted-foreground">
+                    <Lock className="w-4 h-4" />
+                    Libera após o Encontro {e.numero - 1}.
                   </div>
-                  <div className="font-display text-lg">Plataforma CRIA</div>
-                  <p className={`text-sm mt-1 ${allDone ? "opacity-90" : "text-muted-foreground"}`}>
-                    {allDone
-                      ? "Seu acesso está liberado. Continue sua jornada de social media."
-                      : `Liberada após concluir os ${total} encontros.`}
-                  </p>
-                  {allDone && (
-                    <a
-                      href={PLATAFORMA_CRIA_URL}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center gap-2 mt-3 bg-brand-foreground text-brand px-4 py-2 rounded-full text-sm font-semibold hover:opacity-90"
-                    >
-                      Acessar CRIA <ExternalLink className="w-4 h-4" />
-                    </a>
-                  )}
-                </div>
+                )}
               </div>
+            );
+          })}
+
+          {/* CRIA */}
+          <div className={`rounded-2xl p-5 border ${realizados === total ? "bg-brand text-brand-foreground border-brand" : "bg-card border-dashed border-brand/30"}`}>
+            <div className="flex items-center gap-3">
+              <div className={`w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0 ${realizados === total ? "bg-brand-foreground text-brand" : "bg-brand-soft text-brand"}`}>
+                <Sparkles className="w-5 h-5" />
+              </div>
+              <div className="flex-1">
+                <div className="font-display text-lg">Plataforma CRIA</div>
+                <p className={`text-sm ${realizados === total ? "opacity-90" : "text-muted-foreground"}`}>
+                  {realizados === total ? "Acesso liberado. Continue sua jornada." : `Liberada após os ${total} encontros.`}
+                </p>
+              </div>
+              {realizados === total && (
+                <a href={PLATAFORMA_CRIA_URL} target="_blank" rel="noreferrer" className="bg-brand-foreground text-brand px-4 py-2 rounded-full text-sm font-semibold hover:opacity-90 inline-flex items-center gap-1.5">
+                  Acessar <ExternalLink className="w-4 h-4" />
+                </a>
+              )}
             </div>
           </div>
-        )}
-      </section>
+        </div>
 
-      <div className="text-center">
-        <Link to="/area/materiais" className="text-sm font-semibold text-brand hover:underline">
-          Ver todos os materiais →
-        </Link>
+        {/* Lateral: forms respondidos + materiais */}
+        <div className="space-y-4">
+          <div className="bg-card border border-border/60 rounded-2xl p-5">
+            <h3 className="font-display text-lg mb-3">Formulários respondidos</h3>
+            {answeredForms.length === 0 ? (
+              <p className="text-sm text-muted-foreground">Nenhum ainda.</p>
+            ) : (
+              <ul className="space-y-2">
+                {answeredForms.slice(0, 6).map((f) => (
+                  <li key={f.id} className="flex items-center gap-2.5 text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-success flex-shrink-0" />
+                    <span className="truncate">{f.title.replace("Método CRIAR · ", "")}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          <div className="bg-card border border-border/60 rounded-2xl p-5">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="font-display text-lg">Materiais</h3>
+              <Link to="/area/materiais" className="text-xs text-brand hover:underline">Ver todos</Link>
+            </div>
+            {materials.length === 0 ? (
+              <p className="text-sm text-muted-foreground">Nada liberado ainda.</p>
+            ) : (
+              <ul className="space-y-2">
+                {materials.slice(0, 6).map((m) => {
+                  const open = stageUnlocked(m.stage);
+                  return (
+                    <li key={m.id} className="flex items-center gap-2.5 text-sm">
+                      {open ? (
+                        <FileText className="w-4 h-4 text-brand flex-shrink-0" />
+                      ) : (
+                        <Lock className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                      )}
+                      <span className={`truncate flex-1 ${open ? "" : "text-muted-foreground"}`}>{m.title}</span>
+                      {open && m.external_url && (
+                        <a href={m.external_url} target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-brand">
+                          <Download className="w-4 h-4" />
+                        </a>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-function Chip({ value, label }: { value: React.ReactNode; label: string }) {
-  return (
-    <div className="rounded-2xl bg-card border border-border/60 px-4 py-3">
-      <div className="font-display text-2xl text-foreground leading-none">{value}</div>
-      <div className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground mt-1.5">{label}</div>
-    </div>
-  );
-}
-
-function StatusPill({ status, isCurrent }: { status: string; isCurrent: boolean }) {
-  if (status === "realizado") {
-    return (
-      <span className="inline-flex items-center gap-1 text-xs text-success bg-success/15 px-2.5 py-1 rounded-full whitespace-nowrap shrink-0">
-        <CheckCircle2 className="w-3.5 h-3.5" /> Realizado
-      </span>
-    );
-  }
-  if (isCurrent) {
-    return (
-      <span className="text-xs text-brand bg-brand-soft px-2.5 py-1 rounded-full whitespace-nowrap shrink-0">
-        Atual
-      </span>
-    );
-  }
-  return (
-    <span className="text-xs text-muted-foreground bg-muted px-2.5 py-1 rounded-full whitespace-nowrap shrink-0">
-      Em breve
-    </span>
-  );
-}
-
-function ClientCard({
-  letter,
-  tag,
+function TopCard({
+  icon: Icon,
   title,
-  subtitle,
-  done,
-  actionLabel,
-  actionHref,
-  actionHint,
+  sub,
+  to,
+  href,
 }: {
-  letter: string;
-  tag: string;
+  icon: any;
   title: string;
-  subtitle: string;
-  done: boolean;
-  actionLabel: string;
-  actionHref?: string;
-  actionHint?: string;
+  sub: string;
+  to?: string;
+  href?: string;
 }) {
-  return (
-    <div className="bg-card border border-brand/15 rounded-2xl p-5 flex items-center gap-4 flex-wrap">
-      <div className="w-12 h-12 rounded-2xl bg-brand-soft text-brand flex items-center justify-center font-display text-xl flex-shrink-0">
-        {letter}
+  const inner = (
+    <div className="rounded-2xl overflow-hidden border border-border/60 bg-card hover:shadow-md hover:shadow-brand/5 transition-shadow h-full">
+      <div className="bg-brand text-brand-foreground px-4 py-3 flex items-center gap-2">
+        <Icon className="w-4 h-4" />
+        <span className="font-display text-base">{title}</span>
       </div>
+      <div className="px-4 py-3 flex items-center justify-between">
+        <span className="text-sm text-muted-foreground">{sub}</span>
+        <ArrowRight className="w-4 h-4 text-brand" />
+      </div>
+    </div>
+  );
+  if (to) return <Link to={to} className="block h-full">{inner}</Link>;
+  return <a href={href} className="block h-full">{inner}</a>;
+}
+
+function PreRow({ done, href, hint }: { done: boolean; href?: string; hint?: string }) {
+  return (
+    <div className="bg-card border border-brand/15 rounded-2xl p-4 flex items-center gap-4">
+      <div className="w-10 h-10 rounded-xl bg-brand-soft text-brand flex items-center justify-center font-display text-lg flex-shrink-0">0</div>
       <div className="flex-1 min-w-0">
-        <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-semibold">{tag}</div>
-        <div className="font-display text-lg">{title}</div>
-        <div className="text-xs text-muted-foreground">{subtitle}</div>
+        <div className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-semibold">Etapa inicial</div>
+        <div className="font-display text-base">{PRE_CONSULTORIA.title}</div>
       </div>
       {done ? (
         <span className="inline-flex items-center gap-1.5 bg-success/15 text-success text-xs font-semibold px-3 py-1.5 rounded-full">
-          <CheckCircle2 className="w-3.5 h-3.5" /> {actionLabel}
+          <CheckCircle2 className="w-3.5 h-3.5" /> Respondido
         </span>
-      ) : actionHref ? (
-        <a
-          href={actionHref}
-          className="inline-flex items-center gap-1.5 bg-brand text-brand-foreground text-xs font-semibold px-4 py-2 rounded-full hover:opacity-90"
-        >
-          {actionLabel}
-          <ArrowRight className="w-3.5 h-3.5" />
+      ) : href ? (
+        <a href={href} className="inline-flex items-center gap-1.5 bg-brand text-brand-foreground text-xs font-semibold px-4 py-2 rounded-full hover:opacity-90">
+          Preencher <ArrowRight className="w-3.5 h-3.5" />
         </a>
       ) : (
-        <span className="text-xs text-muted-foreground italic" title={actionHint}>
-          {actionHint ?? actionLabel}
-        </span>
+        <span className="text-xs text-muted-foreground italic">{hint}</span>
       )}
     </div>
   );
@@ -441,19 +366,13 @@ function TaskRow({
 }) {
   return (
     <div className="flex items-center gap-3 px-3 py-2 rounded-xl bg-muted/40">
-      {done ? (
-        <CheckCircle2 className="w-4 h-4 text-success flex-shrink-0" />
-      ) : (
-        <Circle className="w-4 h-4 text-muted-foreground flex-shrink-0" />
-      )}
+      {done ? <CheckCircle2 className="w-4 h-4 text-success flex-shrink-0" /> : <Circle className="w-4 h-4 text-muted-foreground flex-shrink-0" />}
       <Icon className="w-4 h-4 text-muted-foreground flex-shrink-0" />
       <span className="text-sm flex-1 min-w-0">{label}</span>
       {done ? (
         <span className="text-[10px] uppercase tracking-wider font-bold text-success">Feito</span>
       ) : href ? (
-        <a href={href} className="text-xs font-semibold text-brand hover:underline">
-          Abrir →
-        </a>
+        <a href={href} className="text-xs font-semibold text-brand hover:underline">Abrir →</a>
       ) : (
         <span className="text-[10px] text-muted-foreground italic">{hint}</span>
       )}
