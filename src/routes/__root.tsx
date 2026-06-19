@@ -45,11 +45,12 @@ export const Route = createRootRoute({
       {
         children: `
           (function() {
-            var theme = localStorage.getItem('continuum_theme') || 'light';
-            if (theme === 'system') {
-              theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-            }
-            if (theme === 'dark') document.documentElement.classList.add('dark');
+            var t = localStorage.getItem('kwk_theme') || 'clean';
+            var el = document.documentElement;
+            el.classList.remove('dark');
+            el.removeAttribute('data-palette');
+            if (t === 'dark') el.classList.add('dark');
+            else if (t === 'clean' || t === 'rose') el.setAttribute('data-palette', t);
           })();
         `,
       },

@@ -6,7 +6,6 @@ import {
   Inbox,
   CalendarRange,
   ClipboardCheck,
-  Bell,
   CalendarClock,
   ChevronRight,
 } from "lucide-react";
@@ -14,6 +13,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useCurrentUser } from "@/lib/auth-guard";
 import { listLeads } from "@/lib/public-forms.functions";
 import { ENCONTROS } from "@/lib/method-criar";
+import { ThemeSwitcher } from "@/components/ThemeSwitcher";
+import { NotificationsMenu, type NotifItem } from "@/components/NotificationsMenu";
 
 export const Route = createFileRoute("/admin/")({
   component: DashboardPage,
@@ -71,6 +72,12 @@ function DashboardPage() {
   const leadsAguardando = leads.filter((l) => l.submitted_at && !l.approved_at && !l.cliente_id);
   const recentLeads = leads.filter((l) => !l.cliente_id).slice(0, 5);
 
+  const notifItems: NotifItem[] = leadsAguardando.slice(0, 8).map((l) => ({
+    title: `${l.lead_name ?? "Lead"} respondeu o formulário`,
+    sub: "Aguardando sua aprovação",
+    href: "/admin/leads",
+  }));
+
   const metrics = [
     { label: "Clientes", value: clientes.length, icon: Users, to: "/admin/clientes" },
     { label: "Leads aguardando", value: leadsAguardando.length, icon: Inbox, to: "/admin/leads" },
@@ -89,14 +96,8 @@ function DashboardPage() {
           </div>
         </div>
         <div className="flex items-center gap-2.5">
-          <div className="relative w-10 h-10 rounded-full bg-card border border-border/60 flex items-center justify-center text-muted-foreground">
-            <Bell className="w-5 h-5" />
-            {leadsAguardando.length > 0 && (
-              <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 rounded-full bg-accent text-accent-foreground text-[10px] font-semibold flex items-center justify-center">
-                {leadsAguardando.length}
-              </span>
-            )}
-          </div>
+          <ThemeSwitcher />
+          <NotificationsMenu items={notifItems} />
           <div className="flex items-center gap-2.5 bg-card border border-border/60 rounded-full pl-1.5 pr-3.5 py-1.5">
             <div className="w-8 h-8 rounded-full bg-brand text-brand-foreground flex items-center justify-center text-xs font-medium">
               {initials(auth.fullName)}

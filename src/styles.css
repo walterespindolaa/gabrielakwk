@@ -100,6 +100,34 @@
   --sidebar-ring: oklch(0.28 0.10 12);
 }
 
+/* ===== Tema "Clean" — superfícies brancas/cinza, sem bege ===== */
+:root[data-palette="clean"] {
+  --background: oklch(0.992 0.002 255);
+  --card: oklch(1 0 0);
+  --popover: oklch(1 0 0);
+  --muted: oklch(0.965 0.004 255);
+  --border: oklch(0.912 0.005 255);
+  --input: oklch(0.912 0.005 255);
+  --surface-alt: oklch(0.972 0.004 255);
+  --brand-soft: oklch(0.93 0.03 12);
+  --sidebar: oklch(1 0 0);
+  --sidebar-border: oklch(0.912 0.005 255);
+}
+
+/* ===== Tema "Rosé" — branco levemente rosado ===== */
+:root[data-palette="rose"] {
+  --background: oklch(0.986 0.008 350);
+  --card: oklch(1 0 0);
+  --popover: oklch(1 0 0);
+  --muted: oklch(0.96 0.012 350);
+  --border: oklch(0.91 0.012 350);
+  --input: oklch(0.91 0.012 350);
+  --surface-alt: oklch(0.968 0.018 350);
+  --brand-soft: oklch(0.92 0.04 350);
+  --sidebar: oklch(1 0 0);
+  --sidebar-border: oklch(0.91 0.012 350);
+}
+
 .dark {
   --background: oklch(0.15 0.01 60);
   --foreground: oklch(0.93 0.005 70);

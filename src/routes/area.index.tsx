@@ -5,7 +5,6 @@ import {
   ClipboardList,
   Compass,
   Target,
-  Bell,
   FileText,
   Pencil,
   Calendar,
@@ -21,6 +20,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useCurrentUser } from "@/lib/auth-guard";
 import { ENCONTROS, PRE_CONSULTORIA, PLATAFORMA_CRIA_URL } from "@/lib/method-criar";
 import { normalizeSwot } from "@/lib/client-workspace";
+import { ThemeSwitcher } from "@/components/ThemeSwitcher";
+import { NotificationsMenu, type NotifItem } from "@/components/NotificationsMenu";
 
 export const Route = createFileRoute("/area/")({
   component: JornadaPage,
@@ -101,6 +102,14 @@ function JornadaPage() {
   };
   const answeredForms = forms.filter((f) => isFormDone(f.id));
 
+  const notifItems: NotifItem[] = [];
+  if (preForm && !preDone && inviteFor(preForm.id)) {
+    notifItems.push({ title: "Responda a pré-consultoria", sub: "Antes do Encontro 1", href: `/f/${inviteFor(preForm.id)!.token}` });
+  }
+  forms
+    .filter((f) => f.kind === "licao_casa" && !isFormDone(f.id) && inviteFor(f.id))
+    .forEach((f) => notifItems.push({ title: "Lição de casa pendente", sub: f.title.replace("Método CRIAR · ", ""), href: `/f/${inviteFor(f.id)!.token}` }));
+
   return (
     <div className="space-y-6">
       {/* Cabeçalho: saudação + notificações + dados */}
@@ -110,14 +119,8 @@ function JornadaPage() {
           <div className="font-display text-2xl sm:text-3xl tracking-tight leading-none mt-0.5">{firstName}</div>
         </div>
         <div className="flex items-center gap-2.5">
-          <div className="relative w-10 h-10 rounded-full bg-card border border-border/60 flex items-center justify-center text-muted-foreground">
-            <Bell className="w-5 h-5" />
-            {pendingActions > 0 && (
-              <span className="absolute -top-1 -right-1 min-w-5 h-5 px-1 rounded-full bg-accent text-accent-foreground text-[10px] font-semibold flex items-center justify-center">
-                {pendingActions}
-              </span>
-            )}
-          </div>
+          <ThemeSwitcher />
+          <NotificationsMenu items={notifItems} />
           <div className="flex items-center gap-2.5 bg-card border border-border/60 rounded-full pl-1.5 pr-3.5 py-1.5">
             <div className="w-8 h-8 rounded-full bg-mint text-mint-foreground flex items-center justify-center text-xs font-medium">
               {initials(auth.fullName)}

@@ -276,19 +276,16 @@ function PreCard({
     <div className="bg-card border border-brand/15 rounded-2xl overflow-hidden">
       <button
         onClick={onToggle}
-        className="w-full flex items-center gap-4 p-5 text-left hover:bg-brand-soft/40 transition-colors"
+        className="w-full flex items-center gap-4 px-5 py-4 text-left bg-brand text-brand-foreground hover:bg-brand/90 transition-colors"
       >
-        <div className="w-12 h-12 rounded-xl bg-brand-soft text-brand flex items-center justify-center font-display text-lg font-bold">
+        <div className="w-11 h-11 rounded-xl bg-brand-foreground/15 flex items-center justify-center font-display text-lg">
           0
         </div>
         <div className="flex-1 min-w-0">
-          <div className="text-xs uppercase tracking-[0.18em] text-muted-foreground font-semibold">
-            Etapa inicial
-          </div>
-          <div className="font-display text-lg font-semibold">{PRE_CONSULTORIA.title}</div>
-          <div className="text-xs text-muted-foreground mt-0.5">{PRE_CONSULTORIA.subtitle}</div>
+          <div className="text-[10px] uppercase tracking-[0.18em] opacity-70">Etapa inicial</div>
+          <div className="font-display text-lg leading-tight">{PRE_CONSULTORIA.title}</div>
         </div>
-        <StatusBadge done={submitted} pendingLabel="Aguardando" doneLabel="Respondido" />
+        <StatusBadge done={submitted} pendingLabel="Aguardando" doneLabel="Respondido" onDark />
       </button>
 
       {expanded && form && (
@@ -344,26 +341,23 @@ function EncontroCard({
     <div className="bg-card border border-brand/15 rounded-2xl overflow-hidden">
       <button
         onClick={onToggle}
-        className="w-full flex items-center gap-4 p-5 text-left hover:bg-brand-soft/40 transition-colors"
+        className="w-full flex items-center gap-4 px-5 py-4 text-left bg-brand text-brand-foreground hover:bg-brand/90 transition-colors"
       >
-        <div className="w-12 h-12 rounded-xl bg-brand text-brand-foreground flex items-center justify-center font-display text-lg font-bold shadow-sm shadow-brand/20">
+        <div className="w-11 h-11 rounded-xl bg-brand-foreground/15 flex items-center justify-center font-display text-lg shrink-0">
           {encontro.letter}
         </div>
         <div className="flex-1 min-w-0">
-          <div className="text-xs uppercase tracking-[0.18em] text-muted-foreground font-semibold">
+          <div className="text-[10px] uppercase tracking-[0.18em] opacity-70">
             Encontro {encontro.numero} · {encontro.letterFull}
           </div>
-          <div className="font-display text-lg font-semibold">{encontro.title}</div>
-          <div className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
-            {encontro.pergunta}
-          </div>
+          <div className="font-display text-lg leading-tight truncate">{encontro.title}</div>
         </div>
-        <div className="flex flex-col items-end gap-1">
-          <StatusBadge done={fDone} pendingLabel="Form pendente" doneLabel="Form ok" small />
+        <div className="flex flex-col items-end gap-1 shrink-0">
+          <StatusBadge done={fDone} pendingLabel="Form pendente" doneLabel="Form ok" small onDark />
           {encontro.licaoCasa && (
-            <StatusBadge done={lDone} pendingLabel="Lição pendente" doneLabel="Lição ok" small />
+            <StatusBadge done={lDone} pendingLabel="Lição pendente" doneLabel="Lição ok" small onDark />
           )}
-          <StatusBadge done={encDone} pendingLabel="Encontro a fazer" doneLabel="Realizado" small />
+          <StatusBadge done={encDone} pendingLabel="Encontro a fazer" doneLabel="Realizado" small onDark />
         </div>
       </button>
 
@@ -506,17 +500,26 @@ function StatusBadge({
   pendingLabel,
   doneLabel,
   small,
+  onDark,
 }: {
   done: boolean;
   pendingLabel: string;
   doneLabel: string;
   small?: boolean;
+  onDark?: boolean;
 }) {
+  const tone = onDark
+    ? done
+      ? "bg-brand-foreground/20 text-brand-foreground"
+      : "bg-brand-foreground/10 text-brand-foreground/80"
+    : done
+      ? "bg-success/15 text-success"
+      : "bg-muted text-muted-foreground";
   return (
     <span
       className={`inline-flex items-center gap-1 rounded-full font-medium whitespace-nowrap ${
         small ? "px-2 py-0.5 text-[10px]" : "px-2.5 py-1 text-xs"
-      } ${done ? "bg-success/15 text-success" : "bg-muted text-muted-foreground"}`}
+      } ${tone}`}
     >
       {done && <CheckCircle2 className={small ? "w-3 h-3" : "w-3.5 h-3.5"} />}
       {done ? doneLabel : pendingLabel}
