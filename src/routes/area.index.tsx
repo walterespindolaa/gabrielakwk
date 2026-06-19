@@ -138,7 +138,7 @@ function JornadaPage() {
         <TopCard icon={CalendarRange} title="Cronograma" sub={`${realizados}/${total} encontros`} href="#encontros" />
         <TopCard icon={ClipboardList} title="Demandas" sub={`${demandasCount} ${demandasCount === 1 ? "item" : "itens"}`} to="/area/demandas" />
         <TopCard icon={Compass} title="Diagnóstico" sub="Panorama da marca" to="/area/diagnostico" />
-        <TopCard icon={Target} title="Análise SWOT" sub={swotCount > 0 ? `${swotCount} pontos` : "Em preparação"} to="/area/diagnostico" />
+        <TopCard icon={Target} title="Análise SWOT" sub={swotCount > 0 ? `${swotCount} pontos` : "Em preparação"} to="/area/diagnostico" hash="swot" />
       </div>
 
       {/* Inferior: encontros (principal) + forms/materiais (lateral) */}
@@ -308,12 +308,14 @@ function TopCard({
   sub,
   to,
   href,
+  hash,
 }: {
   icon: any;
   title: string;
   sub: string;
   to?: string;
   href?: string;
+  hash?: string;
 }) {
   const inner = (
     <div className="rounded-2xl overflow-hidden border border-border/60 bg-card hover:shadow-md hover:shadow-brand/5 transition-shadow h-full">
@@ -327,7 +329,7 @@ function TopCard({
       </div>
     </div>
   );
-  if (to) return <Link to={to} className="block h-full">{inner}</Link>;
+  if (to) return <Link to={to} hash={hash} className="block h-full">{inner}</Link>;
   return <a href={href} className="block h-full">{inner}</a>;
 }
 

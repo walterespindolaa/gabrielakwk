@@ -75,7 +75,11 @@ function DiagnosticoPage() {
           )}
 
           {/* SWOT */}
-          {swotHasItems && <SwotBoard swot={swot} />}
+          {swotHasItems && (
+            <div id="swot" className="scroll-mt-20">
+              <SwotBoard swot={swot} />
+            </div>
+          )}
 
           {/* Briefing link */}
           <Link
