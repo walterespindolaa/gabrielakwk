@@ -58,3 +58,28 @@ export const DEMANDA_STATUS: { key: DemandaStatus; label: string }[] = [
   { key: "em_andamento", label: "Em andamento" },
   { key: "concluida", label: "Concluída" },
 ];
+
+// ----- Plano editorial / banco de ideias -----
+
+export type ContentStatus = "ideia" | "em_producao" | "agendado" | "postado";
+
+export interface ContentItem {
+  id: string;
+  cliente_id: string;
+  titulo: string;
+  formato: string | null;
+  pilar: string | null;
+  status: ContentStatus;
+  scheduled_for: string | null;
+  notas: string | null;
+  created_at: string;
+}
+
+export const CONTENT_STATUS: { key: ContentStatus; label: string }[] = [
+  { key: "ideia", label: "Ideias" },
+  { key: "em_producao", label: "Em produção" },
+  { key: "agendado", label: "Agendados" },
+  { key: "postado", label: "Postados" },
+];
+
+export const CONTENT_FORMATOS = ["Reel", "Carrossel", "Story", "Feed", "Live", "Outro"];

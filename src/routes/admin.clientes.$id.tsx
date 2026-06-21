@@ -7,6 +7,7 @@ import { STAGES, type StageKey } from "@/components/admin/AdminLayout";
 import { JornadaCRIARAdmin } from "@/components/admin/JornadaCRIARAdmin";
 import { DemandasBoard } from "@/components/clientes/DemandasBoard";
 import { DiagnosticoEditor } from "@/components/clientes/DiagnosticoEditor";
+import { ContentBoard } from "@/components/clientes/ContentBoard";
 import { toast } from "sonner";
 import { useCurrentUser } from "@/lib/auth-guard";
 import { updateUserRole, deleteUser } from "@/lib/admin.functions";
@@ -41,6 +42,7 @@ const TABS = [
   { key: "diagnostico", label: "Diagnóstico" },
   { key: "demandas", label: "Demandas" },
   { key: "encontros", label: "Encontros" },
+  { key: "conteudo", label: "Conteúdo" },
   { key: "materiais", label: "Materiais" },
   { key: "dados", label: "Dados" },
 ];
@@ -303,6 +305,16 @@ function ClienteDetail() {
             </section>
             <FormInvitesSection clienteId={id} forms={forms} invites={invites} onChange={load} />
           </div>
+        )}
+
+        {tab === "conteudo" && (
+          <section className="bg-card border border-border/60 rounded-2xl p-6">
+            <h2 className="font-display text-2xl tracking-tight mb-1">Plano editorial</h2>
+            <p className="text-xs text-muted-foreground mb-4">
+              Banco de ideias e cronograma de conteúdo. A cliente acompanha em "Conteúdo".
+            </p>
+            <ContentBoard clienteId={id} />
+          </section>
         )}
 
         {tab === "materiais" && (
