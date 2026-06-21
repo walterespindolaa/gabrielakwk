@@ -104,7 +104,7 @@ function FormulariosPage() {
             const isOpen = expanded.has(f.id);
             const resps = responses[f.id] ?? [];
             return (
-              <div key={f.id} className="bg-card border border-border/60 rounded-xl">
+              <div key={f.id} className="bg-card border border-border/60 rounded-2xl hover:border-brand/40 transition-colors">
                 <div className="px-5 py-4 flex items-center justify-between gap-3">
                   <button
                     onClick={() => toggle(f.id)}

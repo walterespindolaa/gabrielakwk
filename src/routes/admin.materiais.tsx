@@ -102,7 +102,7 @@ function MateriaisPage() {
           <p className="text-sm text-muted-foreground">Nenhum material nesse filtro.</p>
         ) : (
           filtered.map((m) => (
-            <div key={m.id} className="bg-card border border-border/60 rounded-xl p-5 flex flex-col">
+            <div key={m.id} className="bg-card border border-border/60 rounded-2xl p-5 flex flex-col hover:shadow-md hover:shadow-brand/5 transition-shadow">
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
                   <div className="text-xs uppercase tracking-wider text-brand font-semibold">
