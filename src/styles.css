@@ -337,3 +337,14 @@
 .animate-waves {
   animation: waves 8s linear infinite alternate;
 }
+
+/* ===== Impressão (relatório → PDF) ===== */
+@media print {
+  body { background: #fff; }
+  main { padding-left: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; }
+  .no-print { display: none !important; }
+  #relatorio, #relatorio * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

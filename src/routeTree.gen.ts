@@ -21,6 +21,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AreaIndexRouteImport } from './routes/area.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as FTokenRouteImport } from './routes/f.$token'
+import { Route as AreaRelatorioRouteImport } from './routes/area.relatorio'
 import { Route as AreaPerfilRouteImport } from './routes/area.perfil'
 import { Route as AreaMateriaisRouteImport } from './routes/area.materiais'
 import { Route as AreaFormulariosRouteImport } from './routes/area.formularios'
@@ -92,6 +93,11 @@ const FTokenRoute = FTokenRouteImport.update({
   path: '/f/$token',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AreaRelatorioRoute = AreaRelatorioRouteImport.update({
+  id: '/relatorio',
+  path: '/relatorio',
+  getParentRoute: () => AreaRoute,
+} as any)
 const AreaPerfilRoute = AreaPerfilRouteImport.update({
   id: '/perfil',
   path: '/perfil',
@@ -161,6 +167,7 @@ export interface FileRoutesByFullPath {
   '/area/formularios': typeof AreaFormulariosRoute
   '/area/materiais': typeof AreaMateriaisRoute
   '/area/perfil': typeof AreaPerfilRoute
+  '/area/relatorio': typeof AreaRelatorioRoute
   '/f/$token': typeof FTokenRoute
   '/admin/': typeof AdminIndexRoute
   '/area/': typeof AreaIndexRoute
@@ -183,6 +190,7 @@ export interface FileRoutesByTo {
   '/area/formularios': typeof AreaFormulariosRoute
   '/area/materiais': typeof AreaMateriaisRoute
   '/area/perfil': typeof AreaPerfilRoute
+  '/area/relatorio': typeof AreaRelatorioRoute
   '/f/$token': typeof FTokenRoute
   '/admin': typeof AdminIndexRoute
   '/area': typeof AreaIndexRoute
@@ -208,6 +216,7 @@ export interface FileRoutesById {
   '/area/formularios': typeof AreaFormulariosRoute
   '/area/materiais': typeof AreaMateriaisRoute
   '/area/perfil': typeof AreaPerfilRoute
+  '/area/relatorio': typeof AreaRelatorioRoute
   '/f/$token': typeof FTokenRoute
   '/admin/': typeof AdminIndexRoute
   '/area/': typeof AreaIndexRoute
@@ -234,6 +243,7 @@ export interface FileRouteTypes {
     | '/area/formularios'
     | '/area/materiais'
     | '/area/perfil'
+    | '/area/relatorio'
     | '/f/$token'
     | '/admin/'
     | '/area/'
@@ -256,6 +266,7 @@ export interface FileRouteTypes {
     | '/area/formularios'
     | '/area/materiais'
     | '/area/perfil'
+    | '/area/relatorio'
     | '/f/$token'
     | '/admin'
     | '/area'
@@ -280,6 +291,7 @@ export interface FileRouteTypes {
     | '/area/formularios'
     | '/area/materiais'
     | '/area/perfil'
+    | '/area/relatorio'
     | '/f/$token'
     | '/admin/'
     | '/area/'
@@ -386,6 +398,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FTokenRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/area/relatorio': {
+      id: '/area/relatorio'
+      path: '/relatorio'
+      fullPath: '/area/relatorio'
+      preLoaderRoute: typeof AreaRelatorioRouteImport
+      parentRoute: typeof AreaRoute
+    }
     '/area/perfil': {
       id: '/area/perfil'
       path: '/perfil'
@@ -485,6 +504,7 @@ interface AreaRouteChildren {
   AreaFormulariosRoute: typeof AreaFormulariosRoute
   AreaMateriaisRoute: typeof AreaMateriaisRoute
   AreaPerfilRoute: typeof AreaPerfilRoute
+  AreaRelatorioRoute: typeof AreaRelatorioRoute
   AreaIndexRoute: typeof AreaIndexRoute
 }
 
@@ -494,6 +514,7 @@ const AreaRouteChildren: AreaRouteChildren = {
   AreaFormulariosRoute: AreaFormulariosRoute,
   AreaMateriaisRoute: AreaMateriaisRoute,
   AreaPerfilRoute: AreaPerfilRoute,
+  AreaRelatorioRoute: AreaRelatorioRoute,
   AreaIndexRoute: AreaIndexRoute,
 }
 

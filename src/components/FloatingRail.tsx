@@ -30,7 +30,7 @@ export function FloatingRail({ items, onSignOut, badge }: FloatingRailProps) {
   return (
     <>
       {/* Desktop — rail fixo full-height */}
-      <aside className="hidden md:flex fixed left-0 top-0 h-screen w-16 z-40 flex-col items-center gap-1.5 bg-brand py-4">
+      <aside className="hidden md:flex print:!hidden fixed left-0 top-0 h-screen w-16 z-40 flex-col items-center gap-1.5 bg-brand py-4">
         <Link
           to="/"
           aria-label="Início"
@@ -72,7 +72,7 @@ export function FloatingRail({ items, onSignOut, badge }: FloatingRailProps) {
       </aside>
 
       {/* Mobile — header fino */}
-      <div className="md:hidden fixed top-0 inset-x-0 z-40 h-14 bg-card/95 backdrop-blur border-b border-border/60 flex items-center gap-2 px-4">
+      <div className="md:hidden print:!hidden fixed top-0 inset-x-0 z-40 h-14 bg-card/95 backdrop-blur border-b border-border/60 flex items-center gap-2 px-4">
         <span className="font-display text-base font-semibold text-brand">KWK</span>
         {badge && (
           <span className="text-[9px] uppercase tracking-[0.22em] text-muted-foreground font-semibold">
@@ -82,7 +82,7 @@ export function FloatingRail({ items, onSignOut, badge }: FloatingRailProps) {
       </div>
 
       {/* Mobile — barra inferior */}
-      <nav className="md:hidden fixed bottom-0 inset-x-0 z-40 bg-card/95 backdrop-blur border-t border-border/60 flex items-stretch justify-around px-1 pb-[env(safe-area-inset-bottom)]">
+      <nav className="md:hidden print:!hidden fixed bottom-0 inset-x-0 z-40 bg-card/95 backdrop-blur border-t border-border/60 flex items-stretch justify-around px-1 pb-[env(safe-area-inset-bottom)]">
         {items.map((item) => {
           const Icon = item.icon;
           const active = isActive(item.to, item.exact);
