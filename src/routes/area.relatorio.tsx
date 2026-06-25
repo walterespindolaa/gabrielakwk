@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useCurrentUser } from "@/lib/auth-guard";
 import { KwkLoader } from "@/components/KwkLoader";
 import { SwotBoard } from "@/components/clientes/SwotBoard";
+import { RichContent } from "@/components/clientes/RichContent";
 import { normalizeSwot, EMPTY_SWOT, type SwotData } from "@/lib/client-workspace";
 import { ENCONTROS } from "@/lib/method-criar";
 import monogramAsset from "@/assets/kwk-monogram.png.asset.json";
@@ -73,7 +74,7 @@ function RelatorioPage() {
           {panorama && (
             <section>
               <h3 className="font-display text-xl tracking-tight mb-2">Panorama geral</h3>
-              <p className="text-sm leading-relaxed whitespace-pre-wrap text-foreground/90">{panorama}</p>
+              <RichContent html={panorama} className="text-sm leading-relaxed text-foreground/90" />
             </section>
           )}
 

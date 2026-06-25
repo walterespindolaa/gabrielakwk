@@ -1,10 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { FileText, Sparkles } from "lucide-react";
+import { FileText, Sparkles, Download } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useCurrentUser } from "@/lib/auth-guard";
 import { KwkLoader } from "@/components/KwkLoader";
 import { SwotBoard } from "@/components/clientes/SwotBoard";
+import { RichContent } from "@/components/clientes/RichContent";
 import { normalizeSwot, EMPTY_SWOT, type SwotData } from "@/lib/client-workspace";
 
 export const Route = createFileRoute("/area/diagnostico")({
@@ -15,6 +16,8 @@ function DiagnosticoPage() {
   const auth = useCurrentUser();
   const [panorama, setPanorama] = useState<string | null>(null);
   const [swot, setSwot] = useState<SwotData>(EMPTY_SWOT);
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+  const [pdfName, setPdfName] = useState<string | null>(null);
   const [hasData, setHasData] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -23,12 +26,20 @@ function DiagnosticoPage() {
     (async () => {
       const { data } = await (supabase as any)
         .from("client_diagnostico")
-        .select("panorama, swot")
+        .select("panorama, swot, pdf_path, pdf_name")
         .eq("cliente_id", auth.userId!)
         .maybeSingle();
       if (data) {
         setPanorama((data as any).panorama ?? null);
         setSwot(normalizeSwot((data as any).swot));
+        const pdfPath = (data as any).pdf_path as string | null;
+        if (pdfPath) {
+          const { data: signed } = await supabase.storage
+            .from("materiais")
+            .createSignedUrl(pdfPath, 3600);
+          if (signed?.signedUrl) setPdfUrl(signed.signedUrl);
+          setPdfName((data as any).pdf_name ?? "Diagnóstico.pdf");
+        }
         setHasData(true);
       }
       setLoading(false);
@@ -64,21 +75,52 @@ function DiagnosticoPage() {
         </div>
       ) : (
         <div className="space-y-6">
-          {/* Panorama */}
-          {panorama && (
+          {pdfUrl ? (
+            /* PDF anexado pela Gabriela — substitui o diagnóstico gerado */
             <section className="bg-card border border-border/60 rounded-2xl p-6">
-              <h2 className="font-display text-2xl mb-3">Panorama geral</h2>
-              <p className="text-sm leading-relaxed whitespace-pre-wrap text-foreground/90">
-                {panorama}
-              </p>
+              <div className="flex items-center justify-between gap-3 mb-4">
+                <h2 className="font-display text-2xl">Seu diagnóstico</h2>
+                <a
+                  href={pdfUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-full bg-brand text-brand-foreground px-4 py-2 text-xs font-semibold hover:bg-brand/90 transition-colors shrink-0"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  Baixar PDF
+                </a>
+              </div>
+              <object
+                data={pdfUrl}
+                type="application/pdf"
+                className="w-full h-[75vh] rounded-xl border border-border/60"
+              >
+                <p className="text-sm text-muted-foreground p-4">
+                  Não foi possível exibir o PDF aqui.{" "}
+                  <a href={pdfUrl} target="_blank" rel="noopener noreferrer" className="text-brand underline">
+                    Clique para abrir {pdfName}
+                  </a>
+                  .
+                </p>
+              </object>
             </section>
-          )}
+          ) : (
+            <>
+              {/* Panorama */}
+              {panorama && (
+                <section className="bg-card border border-border/60 rounded-2xl p-6">
+                  <h2 className="font-display text-2xl mb-3">Panorama geral</h2>
+                  <RichContent html={panorama} className="text-sm leading-relaxed text-foreground/90" />
+                </section>
+              )}
 
-          {/* SWOT */}
-          {swotHasItems && (
-            <div id="swot" className="scroll-mt-20">
-              <SwotBoard swot={swot} />
-            </div>
+              {/* SWOT */}
+              {swotHasItems && (
+                <div id="swot" className="scroll-mt-20">
+                  <SwotBoard swot={swot} />
+                </div>
+              )}
+            </>
           )}
 
           {/* Briefing link */}

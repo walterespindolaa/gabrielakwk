@@ -338,6 +338,57 @@
   animation: waves 8s linear infinite alternate;
 }
 
+/* ===== Texto rico (Panorama do diagnóstico) ===== */
+.rich-content {
+  line-height: 1.65;
+}
+.rich-content p {
+  margin: 0 0 0.6em;
+}
+.rich-content p:last-child {
+  margin-bottom: 0;
+}
+.rich-content strong {
+  font-weight: 600;
+}
+.rich-content em {
+  font-style: italic;
+}
+.rich-content h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  font-size: 1.1em;
+  margin: 0.9em 0 0.4em;
+}
+.rich-content ul,
+.rich-content ol {
+  margin: 0.4em 0 0.8em;
+  padding-left: 1.4em;
+}
+.rich-content ul {
+  list-style: disc;
+}
+.rich-content ol {
+  list-style: decimal;
+}
+.rich-content li {
+  margin: 0.2em 0;
+  padding-left: 0.2em;
+}
+.rich-content li::marker {
+  color: var(--brand, currentColor);
+}
+/* Placeholder do editor vazio (TipTap) */
+.rich-content.ProseMirror p.is-editor-empty:first-child::before,
+.rich-content .is-empty::before {
+  content: attr(data-placeholder);
+  color: var(--muted-foreground);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
 /* ===== Impressão (relatório → PDF) ===== */
 @media print {
   body { background: #fff; }
