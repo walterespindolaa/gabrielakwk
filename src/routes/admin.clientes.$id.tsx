@@ -86,7 +86,7 @@ function ClienteDetail() {
       supabase.from("material_assignments").select("material_id, unlocked").eq("cliente_id", id),
       supabase
         .from("form_responses")
-        .select("id, form_id, answers, submitted_at, forms:form_id(title)")
+        .select("id, form_id, answers, submitted_at, forms:form_id(title, schema)")
         .eq("cliente_id", id)
         .order("submitted_at", { ascending: false }),
       supabase.from("forms").select("id, title").order("created_at", { ascending: false }),
@@ -273,9 +273,37 @@ function ClienteDetail() {
                           {new Date(r.submitted_at).toLocaleString("pt-BR")}
                         </div>
                       </div>
-                      <pre className="text-xs text-muted-foreground whitespace-pre-wrap break-words">
-                        {JSON.stringify(r.answers, null, 2)}
-                      </pre>
+                      <dl className="space-y-2 text-sm mt-1">
+                        {(() => {
+                          const fields =
+                            r.forms?.schema?.fields ??
+                            r.forms?.schema?.stages?.flatMap((s: any) => s.fields ?? []) ??
+                            [];
+                          if (fields.length === 0) {
+                            return Object.entries(r.answers ?? {}).map(([k, v]) => (
+                              <div key={k}>
+                                <dt className="text-xs text-muted-foreground">{k}</dt>
+                                <dd className="whitespace-pre-wrap">
+                                  {Array.isArray(v) ? v.join(", ") : String(v)}
+                                </dd>
+                              </div>
+                            ));
+                          }
+                          return fields.map((field: any) => {
+                            const v = r.answers?.[field.id];
+                            if (field.type === "section" || v === undefined || v === null || v === "")
+                              return null;
+                            return (
+                              <div key={field.id}>
+                                <dt className="text-xs text-muted-foreground">{field.label}</dt>
+                                <dd className="whitespace-pre-wrap">
+                                  {Array.isArray(v) ? v.join(", ") : String(v)}
+                                </dd>
+                              </div>
+                            );
+                          });
+                        })()}
+                      </dl>
                     </li>
                   ))}
                 </ul>

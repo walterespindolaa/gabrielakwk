@@ -57,7 +57,7 @@ function JornadaPage() {
       const [fs, rs, inv, enc, ass, dem, diag] = await Promise.all([
         supabase.from("forms").select("id, title, kind, encontro, order_index").like("title", "Método CRIAR%").order("order_index"),
         supabase.from("form_responses").select("form_id, submitted_at, forms:form_id(title)").eq("cliente_id", uid),
-        supabase.from("form_invites").select("form_id, token, submitted_at").eq("cliente_id", uid),
+        supabase.from("form_invites").select("form_id, token, submitted_at, forms:form_id(title)").eq("cliente_id", uid),
         supabase.from("encontros").select("numero, scheduled_at, meet_url, next_steps, status").eq("cliente_id", uid).order("numero"),
         supabase.from("material_assignments").select("material_id").eq("cliente_id", uid),
         (supabase as any).from("client_demandas").select("id", { count: "exact", head: true }).eq("cliente_id", uid),
@@ -90,7 +90,11 @@ function JornadaPage() {
   const realizados = encontros.filter((e) => e.status === "realizado").length;
   const unlockedThrough = realizados + 1; // libera o próximo quando o anterior é realizado
   const preForm = forms.find((f) => f.kind === "formulario" && f.encontro === 0);
-  const preDone = preForm ? isFormDone(preForm.id) : false;
+  const preRe = /pr[eé].?consultoria|candidatura/i;
+  const preDone =
+    (preForm ? isFormDone(preForm.id) : false) ||
+    responses.some((r) => preRe.test(r.forms?.title ?? "")) ||
+    invites.some((i) => i.submitted_at && preRe.test(i.forms?.title ?? ""));
   const licoesPendentes = forms.filter((f) => f.kind === "licao_casa" && !isFormDone(f.id)).length;
   const pendingActions = licoesPendentes + (preForm && !preDone && inviteFor(preForm.id) ? 1 : 0);
 

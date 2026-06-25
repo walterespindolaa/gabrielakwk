@@ -10,6 +10,11 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+
+# Env (já está só com chave publicável, mas por higiene)
+.env
+.env.*
+!.env.example
 .output
 .vinxi
 .tanstack/**

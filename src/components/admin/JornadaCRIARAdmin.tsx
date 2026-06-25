@@ -87,11 +87,11 @@ export function JornadaCRIARAdmin({ clienteId }: Props) {
         .order("order_index", { ascending: true }),
       supabase
         .from("form_invites")
-        .select("token, form_id, submitted_at, answers")
+        .select("token, form_id, submitted_at, answers, forms:form_id(title)")
         .eq("cliente_id", clienteId),
       supabase
         .from("form_responses")
-        .select("id, form_id, answers, submitted_at")
+        .select("id, form_id, answers, submitted_at, forms:form_id(title)")
         .eq("cliente_id", clienteId),
       supabase
         .from("exercise_submissions")
@@ -267,8 +267,11 @@ function PreCard({
   onToggle,
 }: any) {
   const form = forms[0];
-  const invite = form ? invites.find((i: any) => i.form_id === form.id) : undefined;
-  const response = form ? responses.find((r: any) => r.form_id === form.id) : undefined;
+  const preRe = /pr[eé].?consultoria|candidatura/i;
+  const isPre = (x: any) => (form && x.form_id === form.id) || preRe.test(x.forms?.title ?? "");
+  const invite =
+    invites.find((i: any) => i.submitted_at && isPre(i)) ?? (form ? invites.find((i: any) => i.form_id === form.id) : undefined);
+  const response = responses.find((r: any) => isPre(r));
   const submitted = !!(invite?.submitted_at || response);
   const answers = response?.answers ?? invite?.answers;
 
