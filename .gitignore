@@ -11,10 +11,11 @@ node_modules
 dist
 dist-ssr
 
-# Env (já está só com chave publicável, mas por higiene)
-.env
-.env.*
-!.env.example
+# Env — .env contém só chaves PÚBLICAS (URL + publishable),
+# necessárias no build da Lovable, por isso fica versionado.
+# Variantes com segredos (.env.local etc.) seguem ignoradas.
+.env.local
+.env.*.local
 .output
 .vinxi
 .tanstack/**
