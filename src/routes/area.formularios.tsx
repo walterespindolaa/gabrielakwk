@@ -4,6 +4,8 @@ import { FileText, Check, ChevronLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useCurrentUser } from "@/lib/auth-guard";
 import { toast } from "sonner";
+import { StepForm } from "@/components/forms/StepForm";
+import type { FormField, FormAnswers } from "@/lib/form-types";
 
 export const Route = createFileRoute("/area/formularios")({
   component: FormulariosPage,
@@ -136,19 +138,17 @@ function FillForm({
   onSubmitted: () => void;
 }) {
   const auth = useCurrentUser();
-  const [answers, setAnswers] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
-  const fields = form.schema?.fields ?? [];
+  const fields = (form.schema?.fields ?? []) as unknown as FormField[];
 
-  async function submit(e: React.FormEvent) {
-    e.preventDefault();
+  async function handleSubmit(answers: FormAnswers) {
     if (!auth.userId) return;
     setBusy(true);
     try {
       const { error } = await supabase.from("form_responses").insert({
         form_id: form.id,
         cliente_id: auth.userId,
-        answers,
+        answers: answers as any,
       });
       if (error) throw error;
       toast.success("Resposta enviada!");
@@ -164,82 +164,16 @@ function FillForm({
     <div>
       <button
         onClick={onClose}
-        className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-brand"
+        className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-brand mb-6"
       >
         <ChevronLeft className="w-4 h-4" />
         Voltar
       </button>
-      <h1 className="font-display text-3xl md:text-4xl tracking-tight mt-4">{form.title}</h1>
-      {form.description && (
-        <p className="text-muted-foreground mt-2">{form.description}</p>
-      )}
-
-      <form onSubmit={submit} className="mt-8 space-y-5">
-        {fields.map((f) => (
-          <div key={f.id} className="bg-card border border-border/60 rounded-2xl p-5">
-            <label className="block">
-              <span className="text-sm font-semibold">{f.label}</span>
-            </label>
-            {f.type === "short" && (
-              <input
-                required
-                maxLength={300}
-                value={answers[f.id] ?? ""}
-                onChange={(e) => setAnswers({ ...answers, [f.id]: e.target.value })}
-                className="mt-3 w-full bg-background border border-border/60 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand"
-              />
-            )}
-            {f.type === "long" && (
-              <textarea
-                required
-                rows={4}
-                maxLength={2000}
-                value={answers[f.id] ?? ""}
-                onChange={(e) => setAnswers({ ...answers, [f.id]: e.target.value })}
-                className="mt-3 w-full bg-background border border-border/60 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand"
-              />
-            )}
-            {f.type === "choice" && (
-              <div className="mt-3 space-y-2">
-                {(f.options ?? []).map((opt) => (
-                  <label
-                    key={opt}
-                    className="flex items-center gap-3 p-3 rounded-lg bg-muted/40 cursor-pointer hover:bg-muted"
-                  >
-                    <input
-                      type="radio"
-                      name={f.id}
-                      required
-                      value={opt}
-                      checked={answers[f.id] === opt}
-                      onChange={() => setAnswers({ ...answers, [f.id]: opt })}
-                      className="accent-brand"
-                    />
-                    <span className="text-sm">{opt}</span>
-                  </label>
-                ))}
-              </div>
-            )}
-          </div>
-        ))}
-
-        <div className="flex gap-3">
-          <button
-            type="button"
-            onClick={onClose}
-            className="flex-1 py-3 rounded-xl border border-border/60 text-sm font-semibold hover:bg-muted"
-          >
-            Cancelar
-          </button>
-          <button
-            type="submit"
-            disabled={busy}
-            className="flex-1 py-3 rounded-xl bg-brand text-brand-foreground text-sm font-semibold hover:opacity-90 disabled:opacity-50"
-          >
-            {busy ? "Enviando..." : "Enviar"}
-          </button>
-        </div>
-      </form>
+      <div className="text-center mb-8 max-w-2xl mx-auto">
+        <h1 className="font-display text-2xl md:text-3xl tracking-tight">{form.title}</h1>
+        {form.description && <p className="text-muted-foreground mt-2 text-sm">{form.description}</p>}
+      </div>
+      <StepForm fields={fields} onSubmit={handleSubmit} submitting={busy} submitLabel="Enviar respostas" />
     </div>
   );
 }

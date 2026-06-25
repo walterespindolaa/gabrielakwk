@@ -382,6 +382,8 @@ function Method() {
               src={circleAsset.url}
               alt=""
               aria-hidden="true"
+              loading="lazy"
+              decoding="async"
               className="h-16 sm:h-28 md:h-32 w-auto"
             />
             <div className="flex flex-col items-center sm:items-start">
@@ -770,6 +772,8 @@ function FitChecklist() {
               <img
                 src={fitPhoto.url}
                 alt="Gabriela Kawikioni"
+                loading="lazy"
+                decoding="async"
                 className="w-full h-full object-cover"
               />
             </div>
@@ -794,7 +798,7 @@ function About() {
       <StickerCollage variant="about" />
       <div className="relative z-10 max-w-5xl mx-auto px-5 grid md:grid-cols-[320px_1fr] gap-10 items-center">
         <div className="mx-auto md:mx-0 w-full max-w-[320px] aspect-[3/4] rounded-3xl overflow-hidden border border-border/40 shadow-xl shadow-brand/10">
-          <img src={aboutPhoto.url} alt="Gabriela Kawikioni" className="w-full h-full object-cover" />
+          <img src={aboutPhoto.url} alt="Gabriela Kawikioni" loading="lazy" decoding="async" className="w-full h-full object-cover" />
         </div>
         <div>
           <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-medium tracking-tight mb-6" style={{ lineHeight: "1.15" }}>
@@ -900,7 +904,7 @@ function Footer() {
     <footer className="border-t border-border/60 py-10 bg-background">
       <div className="max-w-6xl mx-auto px-5 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <img src={monogramAsset.url} alt="KWK" className="h-10 w-auto" />
+          <img src={monogramAsset.url} alt="KWK" loading="lazy" decoding="async" className="h-10 w-auto" />
           <span className="text-xs text-muted-foreground">© {new Date().getFullYear()} Gabriela Kawikioni</span>
         </div>
         <Link to="/login" className="text-xs text-muted-foreground hover:text-brand transition-colors">
