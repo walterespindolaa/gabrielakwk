@@ -22,6 +22,7 @@ import { ENCONTROS, PRE_CONSULTORIA, PLATAFORMA_CRIA_URL } from "@/lib/method-cr
 import { normalizeSwot } from "@/lib/client-workspace";
 import { ThemeSwitcher } from "@/components/ThemeSwitcher";
 import { NotificationsMenu, type NotifItem } from "@/components/NotificationsMenu";
+import { WelcomeOnboarding } from "@/components/area/WelcomeOnboarding";
 
 export const Route = createFileRoute("/area/")({
   component: JornadaPage,
@@ -116,6 +117,8 @@ function JornadaPage() {
 
   return (
     <div className="space-y-6">
+      <WelcomeOnboarding firstName={firstName} />
+
       {/* Cabeçalho: saudação + notificações + dados */}
       <div className="flex items-center justify-between gap-4 flex-wrap">
         <div>
